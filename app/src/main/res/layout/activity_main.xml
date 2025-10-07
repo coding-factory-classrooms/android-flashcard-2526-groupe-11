@@ -13,9 +13,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/cr_background" />
 
     <ImageView
@@ -28,26 +29,55 @@
         app:layout_constraintTop_toTopOf="@+id/crBackgroundImageView"
         app:srcCompat="@drawable/cr_logo" />
 
-    <Button
-        android:id="@+id/battleButton"
+    <LinearLayout
+        android:id="@+id/menuButtonLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="Battle"
-        app:layout_constraintBottom_toBottomOf="@+id/AboutButton"
-        app:layout_constraintEnd_toStartOf="@+id/AboutButton"
-        app:layout_constraintTop_toTopOf="@+id/AboutButton" />
-
-    <Button
-        android:id="@+id/AboutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="About"
+        android:layout_marginBottom="200dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.631"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <Button
+            android:id="@+id/battleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:backgroundTint="#FFB903"
+            android:fontFamily="@font/clash_regular"
+            android:hapticFeedbackEnabled="false"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            android:text="Battle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/white"
+            app:cornerRadius="5dp" />
+
+        <Space
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/AboutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:backgroundTint="#00B0FF"
+            android:fontFamily="@font/clash_regular"
+            android:text="About"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/white"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            app:cornerRadius="5dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
