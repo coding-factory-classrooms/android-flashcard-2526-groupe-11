@@ -11,6 +11,7 @@
         android:id="@+id/ListeBg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +19,7 @@
         app:srcCompat="@drawable/clashroyalebg" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/QuestionsListRecycler"
+        android:id="@+id/RecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbars="vertical"
@@ -27,7 +28,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/HomeButton" />
+        app:layout_constraintTop_toBottomOf="@id/HomeButton"
+        tools:listitem="@layout/item_question" />
 
     <Button
         android:id="@+id/HomeButton"
@@ -36,19 +38,5 @@
         android:text="Retour"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.helper.widget.Layer android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <androidx.constraintlayout.helper.widget.Layer android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="141dp"
-        tools:layout_editor_absoluteY="197dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

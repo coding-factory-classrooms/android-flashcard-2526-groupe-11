@@ -18,13 +18,13 @@
             android:name=".PlayActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ListQuestionsActivity"
             android:exported="false" />
         <activity
             android:name=".AboutActivity"
             android:exported="false" />
         <activity
-            android:name=".ListQuestionsActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

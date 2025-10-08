@@ -25,7 +25,7 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Code relou pour récupérer notre item_currency.xml
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_list_questions,
+        View view = LayoutInflater.from(context).inflate(R.layout.item_question,
                 parent,
                 false);
 
@@ -45,7 +45,7 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
 
     @Override
     public int getItemCount() {
-        return 0;
+        return questions.size();
     }
 
     // Ce sont des instances de ViewHolder qui vont être recyclés lorsqu'on scroll
