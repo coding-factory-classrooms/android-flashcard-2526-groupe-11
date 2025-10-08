@@ -47,6 +47,7 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
         holder.answerView1.setImageResource(question.Answers.get(0));
         holder.answerView2.setImageResource(question.Answers.get(1));
         holder.answerView3.setImageResource(question.Answers.get(2));
+        holder.DifficultyImage.setImageResource(question.Difficulty.getImage());
         MediaPlayer mediaPlayer = MediaPlayer.create(holder.SoundButton.getContext(), question.Sound);
         holder.SoundButton.setOnClickListener(v -> {
             if (mediaPlayer != null) {
@@ -69,6 +70,7 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
         ImageView answerView2;
         ImageView answerView3;
         Button SoundButton;
+        ImageView DifficultyImage;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -77,6 +79,7 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
             answerView2 = itemView.findViewById(R.id.imageAnswer2);
             answerView3 = itemView.findViewById(R.id.imageAnswer3);
             SoundButton = itemView.findViewById(R.id.SoundButton);
+            DifficultyImage = itemView.findViewById(R.id.DifficultyImage);
         }
     }
 }
