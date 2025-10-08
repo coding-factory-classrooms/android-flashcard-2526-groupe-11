@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,12 +20,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ArenaAdapter.OnArenaListener {
+public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnArenaListener {
 
-    public static final String TAG = "Difficulty";
+    public static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,17 @@ public class MainActivity extends AppCompatActivity implements ArenaAdapter.OnAr
         });
 
 
+        Button list = findViewById(R.id.buttonList);
+        list.setOnClickListener(v -> {
+            Intent newIntent = new Intent(MainActivity.this, ListQuestionsActivity.class);
+            startActivity(newIntent);
+        });
 
+        Button battleButton = findViewById(R.id.battleButton);
+        battleButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+            startActivity(intent);
+        });
 
 
 
@@ -85,5 +96,6 @@ public class MainActivity extends AppCompatActivity implements ArenaAdapter.OnAr
         firstMainGroup.setVisibility(View.VISIBLE);
     }
 }
+
 
 
