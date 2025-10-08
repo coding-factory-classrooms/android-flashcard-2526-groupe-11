@@ -2,6 +2,7 @@ package com.example.flashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -38,6 +39,13 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
         });
 
 
+        ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
+        Group firstMainGroup = findViewById(R.id.firstMainGroup);
+        TextView difficultyArenaTextView = findViewById(R.id.difficultyArenaTextView);
+
+
+
+
         Button list = findViewById(R.id.buttonList);
         list.setOnClickListener(v -> {
             Intent newIntent = new Intent(MainActivity.this, ListQuestionsActivity.class);
@@ -46,15 +54,16 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
         Button battleButton = findViewById(R.id.battleButton);
         battleButton.setOnClickListener(v -> {
+            int resIDImage = getResources().getIdentifier("arenaImageButton", "id", getPackageName());
+            String difficultyName = difficultyArenaTextView.getText().toString();
+            Arena arena = new Arena(resIDImage, difficultyName);
+
             Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+            intent.putExtra("arena", arena);
             startActivity(intent);
         });
 
 
-
-        ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
-        Group firstMainGroup = findViewById(R.id.firstMainGroup);
-        TextView difficultyArenaTextView = findViewById(R.id.difficultyArenaTextView);
 
 
         Arena DefaultArena = new Arena(R.drawable.cr_arene_easy, "Facile");
