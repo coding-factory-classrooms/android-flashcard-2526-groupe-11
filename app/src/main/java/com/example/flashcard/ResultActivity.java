@@ -1,8 +1,6 @@
 package com.example.flashcard;
 
 import android.os.Bundle;
-
-// Import des différentes fonctionnalités utilisées
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,15 +15,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ResultActivity extends AppCompatActivity {
 
-    // Déclaration des boutons
+    // Buttons
     private Button restartButton;
     private Button shareButton;
-    // Déclaration des variables utilisé
-    private TextView choiceDifficult;
-    private TextView messageResult;
+
+    // Variables
+    private TextView chosenDifficulty;
+    private TextView resultMessage;
     private TextView scoreResult;
     private ImageView resultImage;
-    private int bonneReponses;
+    private int correctAnswers;
     private int totalQuestions;
 
     @Override
@@ -33,73 +32,73 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_result);
+
+        // Adjust padding to account for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Récupère les infos "extra" depuis PlayActivity
+        // Get extras from PlayActivity
         String difficulty = getIntent().getStringExtra("difficulty");
         totalQuestions = getIntent().getIntExtra("maxRound", 0);
-        bonneReponses = getIntent().getIntExtra("score", 0);
+        correctAnswers = getIntent().getIntExtra("score", 0);
 
-        // Code de debug
+        // Debug code (to remove once everything is linked)
         difficulty = "facile";
         totalQuestions = 10;
-        bonneReponses = 9;
+        correctAnswers = 9;
 
-        // Récupère et affiche la difficulté choisi via l'id
-        choiceDifficult = findViewById(R.id.difficultyTextView);
-        choiceDifficult.setText(difficulty);
+        // Display the chosen difficulty
+        chosenDifficulty = findViewById(R.id.difficultyTextView);
+        chosenDifficulty.setText(difficulty);
 
-        // Affichage du score du joueur
+        // Display the score
         scoreResult = findViewById(R.id.scoreTextView);
-        scoreResult.setText("Score : " + bonneReponses + "/" + totalQuestions);
+        scoreResult.setText("Score : " + correctAnswers + "/" + totalQuestions);
 
-        // Affiche une image et un petit message différent en fonction du résultat en utilisant if/else if
+        // Display an image and a message depending on the result
         resultImage = findViewById(R.id.resultImageView);
-        messageResult = findViewById(R.id.messageTextView);
+        resultMessage = findViewById(R.id.messageTextView);
 
-        // Récupère le pourcentage du score : en utilisant float afin de récupérer le score en décimal et le *100
-        float pourcentage = ((float) bonneReponses / totalQuestions * 100);
+        // Calculate success percentage
+        float percentage = ((float) correctAnswers / totalQuestions * 100);
 
-        // On applique les conditions et affiche les différents messages
-        if (pourcentage < 50) {
+        // Apply conditions and display different messages
+        if (percentage < 50) {
             resultImage.setImageResource(R.drawable.loss);
-            messageResult.setText("Entraîne-toi !");
-        } else if (pourcentage < 80) {
+            resultMessage.setText("Entraîne-toi !");
+        } else if (percentage < 80) {
             resultImage.setImageResource(R.drawable.card_hog_rider);
-            messageResult.setText("Bien joué !");
+            resultMessage.setText("Bien joué !");
         } else {
             resultImage.setImageResource(R.drawable.emote_win);
-            messageResult.setText("Excellent !");
+            resultMessage.setText("Excellent !");
         }
 
-        // Récupère le bouton "Rejouer" via l'id
+        // "Replay" button
         restartButton = findViewById(R.id.restartButton);
         restartButton.setOnClickListener(v -> {
-            Log.d("ResultActivity", "Bouton rejouer cliqué");
+            Log.d("ResultActivity", "Replay button clicked");
 
-            // Renvoie vers la page d’accueil lors du clic sur le bouton "Rejouer"
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
 
-        // Récupère le bouton "Partager" via l'id
+        // "Share" button
         shareButton = findViewById(R.id.shareButton);
         shareButton.setOnClickListener(v -> {
-            Log.d("ResultActivity", "Bouton partager cliqué");
+            Log.d("ResultActivity", "Share button clicked");
 
-            // Message à partager
-            String message = "J'ai fait : " + bonneReponses + " / " + totalQuestions + " au Flashcard, essaie toi aussi !";
+            // Message to share
+            String message = "J'ai fait : " + correctAnswers + " / " + totalQuestions + " au Flashcard, essaie toi aussi !";
 
-            // Partage via l'Intent
+            // Send via intent
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, message);
 
-            // Lanceur des différentes applis disponibles
             startActivity(Intent.createChooser(shareIntent, "Partagez via"));
         });
     }
