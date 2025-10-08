@@ -22,7 +22,7 @@
         android:layout_height="30dp"
         android:fontFamily="@font/font_clash_royal"
         android:gravity="center"
-        android:text="QuestionTitle"
+        android:text="À qui appartient ce bruit ?"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
