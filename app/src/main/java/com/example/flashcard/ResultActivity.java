@@ -40,9 +40,9 @@ public class ResultActivity extends AppCompatActivity {
         });
 
         // Récupère les infos "extra" depuis PlayActivity
-        String difficulty = getIntent().getStringExtra("difficult");
-        totalQuestions = getIntent().getIntExtra("totalquestionns", 0);
-        bonneReponses = getIntent().getIntExtra("bonneRéponse", 0);
+        String difficulty = getIntent().getStringExtra("difficulty");
+        totalQuestions = getIntent().getIntExtra("maxRound", 0);
+        bonneReponses = getIntent().getIntExtra("score", 0);
 
         // Code de debug
         difficulty = "facile";

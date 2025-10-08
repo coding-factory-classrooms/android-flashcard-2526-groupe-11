@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,9 +26,15 @@ public class PlayActivity extends AppCompatActivity {
 
     private ImageButton response1, response2, response3;
     private ImageView emoteencadre, emotereaction, type_response;
+    private TextView indexQuestionTextView;
     private Button listenButton;
 
     private Card correctCard;
+
+    public int score = 0;
+    public int roundNumber = 0;
+    public int maxRoundNumber = 2;
+    public Arena arena;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +49,8 @@ public class PlayActivity extends AppCompatActivity {
 
         // Get arena from intent
         Intent srcIntent = getIntent();
-        Arena arena = srcIntent.getParcelableExtra("arena");
+        Arena arenaGet = srcIntent.getParcelableExtra("arena");
+        this.arena =arenaGet;
 
 
         // set background
@@ -64,15 +72,19 @@ public class PlayActivity extends AppCompatActivity {
         response1 = findViewById(R.id.response1);
         response2 = findViewById(R.id.response2);
         response3 = findViewById(R.id.response3);
+        indexQuestionTextView = findViewById(R.id.indexQuestionTextView);
 
         // Hide reactions at start
         emoteencadre.setVisibility(View.GONE);
         emotereaction.setVisibility(View.GONE);
         type_response.setVisibility(View.GONE);
 
+        indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
+
         gameManager = new GameManager();
         startNewRound();
         startBarrelAnimation();
+
     }
 
     // Start a new round
@@ -115,7 +127,19 @@ public class PlayActivity extends AppCompatActivity {
                 showReaction(false);
             }
             // Start new round after 2s
-            new Handler().postDelayed(this::startNewRound, 2000);
+
+            Log.d("test", "onCreate: " + roundNumber);
+            roundNumber++;
+            indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
+
+            if (roundNumber< maxRoundNumber)
+            {
+                new Handler().postDelayed(this::startNewRound, 2000);
+            }
+            else{
+                new Handler().postDelayed(this::navigateToVictory, 2000);
+            }
+
         });
     }
 
@@ -128,6 +152,7 @@ public class PlayActivity extends AppCompatActivity {
         if (correct) {
             emotereaction.setImageResource(R.drawable.emote_win);
             type_response.setImageResource(R.drawable.text_true);
+            score ++;
         } else {
             emotereaction.setImageResource(R.drawable.emote_lose);
             type_response.setImageResource(R.drawable.text_false);
@@ -155,6 +180,15 @@ public class PlayActivity extends AppCompatActivity {
                     new Handler().postDelayed(this::startBarrelAnimation, 4000);
                 })
                 .start();
+    }
+    private void navigateToVictory()
+    {
+        Intent intent = new Intent(this, ResultActivity.class);
+        intent.putExtra("score", score);
+        intent.putExtra("difficulty", arena.getDifficulty());
+        intent.putExtra("maxRound", maxRoundNumber);
+        startActivity(intent);
+
     }
 
     @Override
