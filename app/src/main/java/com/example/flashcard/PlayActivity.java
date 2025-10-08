@@ -43,7 +43,6 @@ public class PlayActivity extends AppCompatActivity {
         // Get arena from intent
         Intent srcIntent = getIntent();
         Arena arena = srcIntent.getParcelableExtra("arena");
-        Log.d("arena", "imageID: " + arena.getImage() + "Difficulty: " + arena.getDifficulty() + " Background :" + arena.getBackgroundImage());
 
 
         // set background

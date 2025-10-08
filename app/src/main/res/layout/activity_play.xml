@@ -76,10 +76,14 @@
 
     <Button
         android:id="@+id/lissenbutton"
-        android:layout_width="98dp"
+        android:layout_width="120dp"
         android:layout_height="49dp"
         android:backgroundTint="#D9561C"
+        android:fontFamily="@font/clash_regular"
         android:text="écouter"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textColorLink="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.496"
@@ -118,21 +122,36 @@
         app:layout_constraintStart_toStartOf="@+id/emoteencadre"
         app:srcCompat="@drawable/emote_win" />
 
-    <ImageView
+    <TextView
         android:id="@+id/imageView6"
         android:layout_width="86dp"
         android:layout_height="22dp"
         android:layout_marginBottom="56dp"
+        android:fontFamily="@font/clash_regular"
+        android:shadowColor="#FFFFFF"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:text="Questions"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/lissenbutton"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.118"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:srcCompat="@drawable/text_question" />
 
-    <ImageView
+    <TextView
         android:id="@+id/imageView7"
         android:layout_width="94dp"
         android:layout_height="39dp"
+        android:fontFamily="@font/clash_regular"
+        android:shadowColor="#FFFFFF"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:textColor="@color/black"
+        android:text="Réponses"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.124"
         app:layout_constraintStart_toStartOf="@+id/textView2"
@@ -194,5 +213,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.67"
         app:srcCompat="@drawable/text_true" />
+
+    <TextView
+        android:id="@+id/indexQuestionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/clash_regular"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView13"
+        app:layout_constraintEnd_toEndOf="@+id/imageView13"
+        app:layout_constraintStart_toStartOf="@+id/imageView13"
+        app:layout_constraintTop_toTopOf="@+id/imageView13"
+        tools:text="1/10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
