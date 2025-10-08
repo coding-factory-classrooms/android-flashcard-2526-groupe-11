@@ -1,13 +1,18 @@
 package com.example.flashcard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ListQuestionsActivity extends AppCompatActivity {
 
@@ -15,14 +20,28 @@ public class ListQuestionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_questions);
-        // Je crée en dur 15000 currencies pour avoir des trucs a afficher
+
+        Button list = findViewById(R.id.HomeButton);
+        list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent = new Intent(v.getContext(), MainActivity.class);
+                startActivity(newIntent);
+            }
+        });
+
+        // Je crée en dur 3000 currencies pour avoir des trucs a afficher
         // Ca peut venir d'une API, un DB, etc
-        ArrayList<String> questions = new ArrayList<>();
-        Log.d("ListQuestionsActivity","LE ROI?");
+        ArrayList<Question> questions = new ArrayList<>();
+        List<Integer> Answers = new ArrayList<Integer>();
+        Answers.add(R.drawable.card_prince);
+        Answers.add(R.drawable.card_hog_rider);
+        Answers.add(R.drawable.card_valkiry);
         for (int i = 0; i < 3000; i++) {
-            questions.add("LE ROI");
+            questions.add(new Question(Answers,R.drawable.card_hog_rider,R.raw.hog_rider_voice,new Arena(R.drawable.cr_arene_hard,"Difficile")));
+            questions.add(new Question(Answers,R.drawable.card_hog_rider,R.raw.gobelins_voice,new Arena(R.drawable.cr_arene_medium,"Moyen")));
+            questions.add(new Question(Answers,R.drawable.card_hog_rider,R.raw.mini_pekka_voice,new Arena(R.drawable.cr_arene_easy,"Facile")));
         }
-        Log.d("ListQuestionsActivity","LE ROI!");
         // On branche tout le monde
         // les données a l'adapter
         // l'adapter au recyclerview
