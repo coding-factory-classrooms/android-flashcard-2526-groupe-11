@@ -18,9 +18,9 @@ import java.util.Collections;
 
 
 public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQuestions.ViewHolder> {
-    ArrayList<Question> questions;
+    ArrayList<Card> questions;
 
-    public RecyclerListQuestions(ArrayList<Question> questions) {
+    public RecyclerListQuestions(ArrayList<Card> questions) {
         this.questions = questions;
     }
 
@@ -42,13 +42,9 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
     // on va modifier les données pour une row de notre RecyclerView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Question question = questions.get(position);
-        Collections.shuffle(question.Answers);
-        holder.answerView1.setImageResource(question.Answers.get(0));
-        holder.answerView2.setImageResource(question.Answers.get(1));
-        holder.answerView3.setImageResource(question.Answers.get(2));
-        holder.DifficultyImage.setImageResource(question.Difficulty.getImage());
-        MediaPlayer mediaPlayer = MediaPlayer.create(holder.SoundButton.getContext(), question.Sound);
+        Card question = questions.get(position);
+        holder.answerView1.setImageResource(question.getImageResId());
+        MediaPlayer mediaPlayer = MediaPlayer.create(holder.SoundButton.getContext(), question.getAudioResId());
         holder.SoundButton.setOnClickListener(v -> {
             if (mediaPlayer != null) {
                 mediaPlayer.start();

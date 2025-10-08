@@ -49,7 +49,6 @@ public class GameManager {
         // shuffle the order of the cards
         Collections.shuffle(roundOptions);
     }
-
     public Card getCorrectCard() {
         return correctCard;
     }
