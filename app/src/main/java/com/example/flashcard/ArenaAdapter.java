@@ -67,7 +67,6 @@ public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageButton arenaChooseImageButton;
         TextView difficultyTextView;
-        ImageView mainBackgroundImagView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

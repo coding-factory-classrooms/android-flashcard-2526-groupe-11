@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
     public static final String TAG = "MainActivity";
 
+    public Arena selectedArena =  new Arena(R.drawable.cr_arene_easy, "Facile", R.drawable.backgraound_level_one);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,60 +43,40 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
 
         ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
-        ImageButton mainBackgroundImagView = findViewById(R.id.mainBackgroundImagView);
         Group firstMainGroup = findViewById(R.id.firstMainGroup);
         TextView difficultyArenaTextView = findViewById(R.id.difficultyArenaTextView);
 
 
 
 
+        // Navigate to ListQuestionsActivity
         Button list = findViewById(R.id.questionButton);
         list.setOnClickListener(v -> {
             Intent newIntent = new Intent(MainActivity.this, ListQuestionsActivity.class);
             startActivity(newIntent);
         });
 
+        // Navigate to PlayActivity
         Button battleButton = findViewById(R.id.battleButton);
         battleButton.setOnClickListener(view -> {
-            int resIDImage = getResources().getIdentifier("arenaImageButton", "id", getPackageName());
-            String difficultyName = difficultyArenaTextView.getText().toString();
-//            int resIDBackground = getResources().getIdentifier("mainBackgroundImagView", "id", getPackageName());
+            Arena arena = new Arena(selectedArena.getImage(), selectedArena.getDifficulty(), selectedArena.getBackgroundImage());
 
-            int resIDBackground = 0;
-            switch (difficultyName){
-                case "Facile":
-                    resIDBackground = R.drawable.backgraound_level_one;
-                    break;
-                case "Moyen":
-                    resIDBackground = R.drawable.backgraound_level_two;
-                    break;
-                case "Difficle":
-                    resIDBackground = R.drawable.backgraound_level_three;
-                    break;
-            }
-            Log.d("arena", "onCreate: "+resIDBackground);
-
-            Arena arena = new Arena(resIDImage, difficultyName, resIDBackground);
-
-            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+            Intent intent = new Intent(this, PlayActivity.class);
             intent.putExtra("arena", arena);
             startActivity(intent);
         });
 
 
-
-
-        Arena DefaultArena = new Arena(R.drawable.cr_arene_easy, "Facile", R.drawable.backgraound_level_one);
-        arenaImageButton.setImageResource(DefaultArena.getImage());
-        mainBackgroundImagView.setImageResource(DefaultArena.getBackgroundImage());
-        difficultyArenaTextView.setText(DefaultArena.getDifficulty());
+        arenaImageButton.setImageResource(selectedArena.getImage());
+        difficultyArenaTextView.setText(selectedArena.getDifficulty());
 
 
 
+        // Display recyclerView
         arenaImageButton.setOnClickListener(view->{
+            RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
 
             firstMainGroup.setVisibility(View.INVISIBLE);
-            RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
             recyclerView.setVisibility(View.VISIBLE);
 
             ArrayList<Arena> arenas = new ArrayList<>();
@@ -114,16 +96,13 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
     public void onArenaSelected(Arena arena){
         Group firstMainGroup = findViewById(R.id.firstMainGroup);
         RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
-
         ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
-        ImageView mainBackgroundImagView = findViewById(R.id.mainBackgroundImagView);
         TextView difficultyArenaTextView = findViewById(R.id.difficultyArenaTextView);
 
-        arenaImageButton.setImageResource(arena.getImage());
-        mainBackgroundImagView.setImageResource(arena.getBackgroundImage());
-        difficultyArenaTextView.setText(arena.getDifficulty());
-        Log.d("arena", "onArenaSelected: " +arena.getBackgroundImage());
+        this.selectedArena = arena;
 
+        arenaImageButton.setImageResource(arena.getImage());
+        difficultyArenaTextView.setText(arena.getDifficulty());
 
         recyclerView.setVisibility(View.INVISIBLE);
         firstMainGroup.setVisibility(View.VISIBLE);
