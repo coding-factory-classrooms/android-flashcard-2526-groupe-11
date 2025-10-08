@@ -3,8 +3,10 @@ package com.example.flashcard;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +45,33 @@ public class PlayActivity extends AppCompatActivity {
                 mediaPlayer.start();
             }
         });
+
+        ImageView emoteencadre = findViewById(R.id.emoteencadre);
+        ImageView emotereaction = findViewById(R.id.emotereaction);
+        ImageButton response1 = findViewById(R.id.response1);
+        ImageButton response2 = findViewById(R.id.response2);
+        ImageButton response3 = findViewById(R.id.response3);
+
+
+        // Listener for all answer buttons
+        View.OnClickListener responseClickListener = v -> {
+
+            // Show the emote images when a button is clicked
+            emoteencadre.setVisibility(View.VISIBLE);
+            emotereaction.setVisibility(View.VISIBLE);
+
+            // Hide the emote images after 2 seconds
+            emoteencadre.postDelayed(() -> {
+                emoteencadre.setVisibility(View.GONE);
+                emotereaction.setVisibility(View.GONE);
+            }, 2000);
+        };
+
+        // Set the listener on all three answer buttons
+        response1.setOnClickListener(responseClickListener);
+        response2.setOnClickListener(responseClickListener);
+        response3.setOnClickListener(responseClickListener);
+
     }
 
     @Override
