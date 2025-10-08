@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".MainActivity">
 
     <ImageView
@@ -19,15 +20,68 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/cr_background" />
 
-    <ImageView
-        android:id="@+id/crLogoImageView"
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/firstMainGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="arenaImageButton,questionButton,logotextView,menuButtonLinearLayout,crLogoImageView,difficultyArenaTextView"
+        tools:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/arenaRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:itemCount="10"
+        tools:layout_editor_absoluteX="166dp"
+        tools:layout_editor_absoluteY="179dp"
+        tools:listitem="@layout/item_arena"
+        tools:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/arenaImageButton"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="32dp"
+        android:background="@null"
+        android:contentDescription="Choose difficulty"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/menuButtonLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/crBackgroundImageView"
-        app:srcCompat="@drawable/cr_logo" />
+        app:layout_constraintTop_toBottomOf="@+id/logotextView"
+        app:srcCompat="@drawable/cr_arene_hard" />
+
+    <Button
+        android:id="@+id/questionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#00B0FF"
+        android:fontFamily="@font/clash_regular"
+        android:padding="15dp"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:text="Questions"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/menuButtonLinearLayout"
+        app:layout_constraintStart_toStartOf="@+id/menuButtonLinearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/menuButtonLinearLayout" />
+
+    <TextView
+        android:id="@+id/logotextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/clash_regular"
+        android:text="Clash Royal Blind Test"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crLogoImageView" />
 
     <LinearLayout
         android:id="@+id/menuButtonLinearLayout"
@@ -80,51 +134,26 @@
             app:cornerRadius="5dp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/LogotextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/clash_regular"
-        android:text="Clash Royal Blind Test"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crLogoImageView" />
-
-    <ImageButton
-        android:id="@+id/arenaImageButton"
+    <ImageView
+        android:id="@+id/crLogoImageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:background="@null"
-        android:contentDescription="Choose difficulty"
-        android:scaleType="fitCenter"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/crBackgroundImageView"
+        app:srcCompat="@drawable/cr_logo" />
+
+    <TextView
+        android:id="@+id/difficultyArenaTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/menuButtonLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LogotextView"
-        app:srcCompat="@drawable/cr_arene_hard" />
-
-    <Button
-        android:id="@+id/questionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Questions"
-        app:layout_constraintEnd_toEndOf="@+id/menuButtonLinearLayout"
-        app:layout_constraintStart_toStartOf="@+id/menuButtonLinearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/menuButtonLinearLayout"
-        android:textColor="@color/white"
-        app:cornerRadius="5dp"
-        android:backgroundTint="#00B0FF"
-        android:fontFamily="@font/clash_regular"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:padding="15dp"
-        android:shadowColor="#000000"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="4"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/arenaImageButton"
+        tools:text="Difficile"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
