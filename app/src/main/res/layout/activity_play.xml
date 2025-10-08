@@ -8,7 +8,7 @@
     tools:context=".PlayActivity">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageAnswer1"
         android:layout_width="543dp"
         android:layout_height="1376dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/backgraound_level_one" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imageAnswer3"
         android:layout_width="456dp"
         android:layout_height="672dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,10 +37,10 @@
         android:layout_height="27dp"
         android:layout_marginTop="280dp"
         android:text="_____________________________________________"
-        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="@+id/imageAnswer3"
         app:layout_constraintHorizontal_bias="0.437"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+        app:layout_constraintStart_toStartOf="@+id/imageAnswer3"
+        app:layout_constraintTop_toTopOf="@+id/imageAnswer3" />
 
     <ImageButton
         android:id="@+id/response1"
@@ -96,8 +96,8 @@
         android:layout_marginTop="496dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.962"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageAnswer3"
+        app:layout_constraintTop_toTopOf="@+id/imageAnswer3"
         app:srcCompat="@drawable/emote_encadre" />
 
     <ImageView
@@ -139,7 +139,7 @@
         android:layout_marginTop="700dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageAnswer1"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/decorthree" />
 
