@@ -29,6 +29,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/font_clash_royal"
+        android:gravity="bottom|center"
+        android:text="Réponse"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/AnswerImage"
+        app:layout_constraintEnd_toEndOf="@+id/AnswerImage"
+        app:layout_constraintStart_toStartOf="@+id/AnswerImage" />
+
     <ImageView
         android:id="@+id/DifficultyImage"
         android:layout_width="140dp"
@@ -41,50 +54,46 @@
         app:srcCompat="@drawable/cr_arene_hard" />
 
     <ImageView
-        android:id="@+id/imageAnswer2"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="20dp"
-        android:scaleType="center"
+        android:id="@+id/AnswerImage"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="30dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/DifficultyImage"
-        app:layout_constraintTop_toBottomOf="@+id/SoundButton"
-        app:srcCompat="@drawable/card_hog_rider" />
-
-    <ImageView
-        android:id="@+id/imageAnswer1"
-        android:layout_width="70dp"
-        android:layout_height="0dp"
-        android:scaleType="center"
-        app:layout_constraintBottom_toBottomOf="@+id/imageAnswer2"
-        app:layout_constraintEnd_toStartOf="@+id/imageAnswer2"
-        app:layout_constraintStart_toEndOf="@+id/DifficultyImage"
-        app:layout_constraintTop_toTopOf="@+id/imageAnswer2"
-        app:srcCompat="@drawable/card_valkiry" />
-
-    <ImageView
-        android:id="@+id/imageAnswer3"
-        android:layout_width="70dp"
-        android:layout_height="0dp"
-        android:scaleType="center"
-        app:layout_constraintBottom_toBottomOf="@+id/imageAnswer2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageAnswer2"
-        app:layout_constraintTop_toTopOf="@+id/imageAnswer2"
-        app:srcCompat="@drawable/card_prince" />
+        app:layout_constraintStart_toEndOf="@+id/soundButton"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:srcCompat="@drawable/unknown_card" />
 
     <Button
         android:id="@+id/SoundButton"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginTop="10dp"
+        android:backgroundTint="#00B0FF"
         android:text="Play"
+        app:cornerRadius="15dp"
         app:icon="@android:drawable/ic_media_play"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/DifficultyImage"
+        app:layout_constraintEnd_toEndOf="@+id/soundButton"
+        app:layout_constraintStart_toStartOf="@+id/soundButton"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/soundButton"
+        android:layout_width="130dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FFB903"
+        android:text="Répondre"
+        app:cornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/DifficultyImage"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.75" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

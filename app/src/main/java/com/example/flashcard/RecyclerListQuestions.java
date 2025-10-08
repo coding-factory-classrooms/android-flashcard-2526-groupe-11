@@ -1,26 +1,23 @@
 package com.example.flashcard;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQuestions.ViewHolder> {
-    ArrayList<Question> questions;
+    ArrayList<Card> questions;
 
-    public RecyclerListQuestions(ArrayList<Question> questions) {
+    public RecyclerListQuestions(ArrayList<Card> questions) {
         this.questions = questions;
     }
 
@@ -42,17 +39,15 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
     // on va modifier les données pour une row de notre RecyclerView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Question question = questions.get(position);
-        Collections.shuffle(question.Answers);
-        holder.answerView1.setImageResource(question.Answers.get(0));
-        holder.answerView2.setImageResource(question.Answers.get(1));
-        holder.answerView3.setImageResource(question.Answers.get(2));
-        holder.DifficultyImage.setImageResource(question.Difficulty.getImage());
-        MediaPlayer mediaPlayer = MediaPlayer.create(holder.SoundButton.getContext(), question.Sound);
+        Card question = questions.get(position);
+        MediaPlayer mediaPlayer = MediaPlayer.create(holder.SoundButton.getContext(), question.getAudioResId());
         holder.SoundButton.setOnClickListener(v -> {
             if (mediaPlayer != null) {
                 mediaPlayer.start();
             }
+        });
+        holder.answerView.setOnClickListener(v -> {
+            holder.answerView.setImageResource(question.getImageResId());
         });
     }
 
@@ -66,18 +61,14 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
     // Un ViewHolder fait le lien avec un item_currency.xml
     // Si j'ai 10 items visibles a l'écran, j'aurais 10 instances de ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView answerView1;
-        ImageView answerView2;
-        ImageView answerView3;
+        ImageView answerView;
         Button SoundButton;
         ImageView DifficultyImage;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            answerView1 = itemView.findViewById(R.id.imageAnswer1);
-            answerView2 = itemView.findViewById(R.id.imageAnswer2);
-            answerView3 = itemView.findViewById(R.id.imageAnswer3);
+            answerView = itemView.findViewById(R.id.AnswerImage);
             SoundButton = itemView.findViewById(R.id.SoundButton);
             DifficultyImage = itemView.findViewById(R.id.DifficultyImage);
         }
