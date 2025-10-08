@@ -18,6 +18,7 @@ public class ResultActivity extends AppCompatActivity {
 
     // Déclaration du bouton
     private Button restartButton;
+    private Button shareButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,23 @@ public class ResultActivity extends AppCompatActivity {
             // Renvoie vers la page d'acceuil lors du clique sur le boutton rejouer
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+        });
+
+        // Récupere le bouton partage via l'id
+        shareButton = findViewById(R.id.shareButton);
+        shareButton.setOnClickListener(v -> {
+            Log.d("ResultActivity", "Boutton partagez cliqué");
+
+            // Message a partagez
+            String message = "J'ai terminé le quiz sur FlashCard, essaie toi aussi ! ";
+
+            // Partage via l' Intent
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+
+            // lanceur des différentes appli dispo
+            startActivity(Intent.createChooser(shareIntent, "Partagez via"));
         });
     }
 }
