@@ -39,11 +39,6 @@ public class MainActivity extends AppCompatActivity implements ArenaAdapter.OnAr
 
 
 
-        // Changer tout
-
-
-
-
 
 
         ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
@@ -51,35 +46,19 @@ public class MainActivity extends AppCompatActivity implements ArenaAdapter.OnAr
         TextView difficultyArenaTextView = findViewById(R.id.difficultyArenaTextView);
 
 
-
-        ArrayList<Arena> arenas = new ArrayList<>();
-        ArenaAdapter adapter = new ArenaAdapter(arenas, this);
-
-//        Intent srcIntent = getIntent();
-//        Arena arenaGet = srcIntent.getParcelableExtra("arena");
-
-        int arenaImage;
-        String arenaDifficulty;
-
-         arenaImage = adapter.chooseArena.getImage();
-         arenaDifficulty = adapter.chooseArena.getDifficulty();
-
-
-
-        arenaImageButton.setImageResource(arenaImage);
-        difficultyArenaTextView.setText(arenaDifficulty);
-
-
-
+        Arena DefaultArena = new Arena(R.drawable.cr_arene_easy, "Facile");
+        arenaImageButton.setImageResource(DefaultArena.getImage());
+        difficultyArenaTextView.setText(DefaultArena.getDifficulty());
 
 
         arenaImageButton.setOnClickListener(view->{
-            Log.d(TAG, "Click");
+
             firstMainGroup.setVisibility(View.INVISIBLE);
             RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
             recyclerView.setVisibility(View.VISIBLE);
 
-
+            ArrayList<Arena> arenas = new ArrayList<>();
+            ArenaAdapter adapter = new ArenaAdapter(arenas, this);
 
             arenas.clear();
             arenas.add(new Arena(R.drawable.cr_arene_easy,"Facile"));
@@ -87,12 +66,8 @@ public class MainActivity extends AppCompatActivity implements ArenaAdapter.OnAr
             arenas.add(new Arena(R.drawable.cr_arene_hard,"Difficile"));
 
 
-            // On branche tout le monde
-            //  les données à l'adapter
-            // l'adapter au recyclerView
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         });
     }
     @Override
@@ -108,8 +83,6 @@ public class MainActivity extends AppCompatActivity implements ArenaAdapter.OnAr
 
         recyclerView.setVisibility(View.INVISIBLE);
         firstMainGroup.setVisibility(View.VISIBLE);
-        Log.d(TAG, "onArenaSelected: "+arena);
-
     }
 }
 
