@@ -23,12 +23,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button list = findViewById(R.id.buttonList);
-        list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent newIntent = new Intent(v.getContext(), ListQuestionsActivity.class);
-                startActivity(newIntent);
-            }
+        list.setOnClickListener(v -> {
+            Intent newIntent = new Intent(MainActivity.this, ListQuestionsActivity.class);
+            startActivity(newIntent);
         });
+
+        Button battleButton = findViewById(R.id.battleButton);
+        battleButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+            startActivity(intent);
+        });
+
+        Log.d(TAG, "Hello Flashcard");
     }
 }

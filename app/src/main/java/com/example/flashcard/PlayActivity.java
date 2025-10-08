@@ -27,8 +27,6 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_play);
-
-        // Adjust padding to handle system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -51,29 +49,36 @@ public class PlayActivity extends AppCompatActivity {
                 mediaPlayer.start();
             }
         });
-        // Emotes and answer buttons
+
         ImageView emoteencadre = findViewById(R.id.emoteencadre);
         ImageView emotereaction = findViewById(R.id.emotereaction);
+        ImageView text_true = findViewById(R.id.text_true);
         ImageButton response1 = findViewById(R.id.response1);
         ImageButton response2 = findViewById(R.id.response2);
         ImageButton response3 = findViewById(R.id.response3);
-        // Listener for all answer buttons
+
+        emoteencadre.setVisibility(View.GONE);
+        emotereaction.setVisibility(View.GONE);
+        text_true.setVisibility(View.GONE);
+
         View.OnClickListener responseClickListener = v -> {
-            // Show emotes
             emoteencadre.setVisibility(View.VISIBLE);
             emotereaction.setVisibility(View.VISIBLE);
-
-            // Hide emotes after 2 seconds
+            text_true.setVisibility(View.VISIBLE);
             emoteencadre.postDelayed(() -> {
                 emoteencadre.setVisibility(View.GONE);
                 emotereaction.setVisibility(View.GONE);
+                text_true.setVisibility(View.GONE);
             }, 2000);
         };
+
         response1.setOnClickListener(responseClickListener);
         response2.setOnClickListener(responseClickListener);
         response3.setOnClickListener(responseClickListener);
+        text_true.setOnClickListener(responseClickListener);
         startBarrelAnimation();
     }
+
     private void startBarrelAnimation() {
         ImageView squeleton = findViewById(R.id.squelleton);
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -85,7 +90,7 @@ public class PlayActivity extends AppCompatActivity {
                 screenWidth,
                 -squeleton.getWidth()
         );
-        animator.setDuration(2000);
+        animator.setDuration(2500);
         animator.start();
         animator.addListener(new AnimatorListenerAdapter() {
             @Override

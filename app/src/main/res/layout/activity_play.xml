@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.527"
+        app:layout_constraintVertical_bias="0.552"
         app:srcCompat="@drawable/backgraound_level_one" />
 
     <ImageView
@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_bias="0.222"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333"
+        app:layout_constraintVertical_bias="0.328"
         app:srcCompat="@drawable/carte" />
 
     <TextView
@@ -46,21 +46,23 @@
         android:id="@+id/response1"
         android:layout_width="49dp"
         android:layout_height="74dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintHorizontal_bias="0.184"
         app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:srcCompat="@drawable/card_hog_rider"
-        tools:layout_editor_absoluteY="425dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/card_hog_rider" />
 
     <ImageButton
         android:id="@+id/response2"
         android:layout_width="49dp"
         android:layout_height="74dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:srcCompat="@drawable/card_prince"
-        tools:layout_editor_absoluteY="425dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/card_prince" />
 
     <ImageButton
         android:id="@+id/response3"
@@ -69,8 +71,8 @@
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:srcCompat="@drawable/card_valkiry"
-        tools:layout_editor_absoluteY="425dp" />
+        app:layout_constraintTop_toTopOf="@+id/response2"
+        app:srcCompat="@drawable/card_valkiry" />
 
     <Button
         android:id="@+id/lissenbutton"
@@ -78,24 +80,29 @@
         android:layout_height="49dp"
         android:backgroundTint="#D9561C"
         android:text="écouter"
-        tools:layout_editor_absoluteX="164dp"
-        tools:layout_editor_absoluteY="296dp" />
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/textView2" />
 
     <ImageButton
         android:id="@+id/homebutton"
         android:layout_width="68dp"
         android:layout_height="64dp"
-        app:srcCompat="@drawable/button_home"
-        tools:layout_editor_absoluteX="334dp"
-        tools:layout_editor_absoluteY="9dp" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/button_home" />
 
     <ImageView
         android:id="@+id/emoteencadre"
         android:layout_width="117dp"
         android:layout_height="81dp"
-        android:layout_marginTop="496dp"
+        android:layout_marginTop="504dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.962"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4"
         app:srcCompat="@drawable/emote_encadre" />
@@ -107,7 +114,7 @@
         android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/emoteencadre"
         app:layout_constraintEnd_toEndOf="@+id/emoteencadre"
-        app:layout_constraintHorizontal_bias="0.814"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="@+id/emoteencadre"
         app:srcCompat="@drawable/emote_win" />
 
@@ -156,11 +163,14 @@
 
     <ImageView
         android:id="@+id/imageView13"
-        android:layout_width="355dp"
-        android:layout_height="67dp"
-        app:srcCompat="@drawable/banner"
-        tools:layout_editor_absoluteX="-50dp"
-        tools:layout_editor_absoluteY="-2dp" />
+        android:layout_width="198dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/banner" />
 
     <ImageView
         android:id="@+id/squelleton"
@@ -172,5 +182,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/decorone" />
+
+    <ImageView
+        android:id="@+id/text_true"
+        android:layout_width="167dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="280dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/text_true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
