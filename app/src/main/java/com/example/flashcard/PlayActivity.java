@@ -36,6 +36,8 @@ public class PlayActivity extends AppCompatActivity {
     public Arena arena;
     public int currentTimePerQuestion = 5;
     public int timePerQuestion = 5;
+    Handler TimerHandler;
+    Runnable TimerRunnable;
 
 
 
@@ -52,8 +54,7 @@ public class PlayActivity extends AppCompatActivity {
 
         // Get arena from intent
         Intent srcIntent = getIntent();
-        Arena arenaGet = srcIntent.getParcelableExtra("arena");
-        this.arena =arenaGet;
+        this.arena = srcIntent.getParcelableExtra("arena");
 
 
         // set background
@@ -87,13 +88,8 @@ public class PlayActivity extends AppCompatActivity {
         timerTextView.setText(currentTimePerQuestion + "s");
 
         // Change the timer every seconds
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                timer();
-                handler.postDelayed(this, 1000);
-            }
-        }, 1000);
+
+        start_timer();
 
         gameManager = new GameManager();
         startNewRound();
@@ -103,6 +99,12 @@ public class PlayActivity extends AppCompatActivity {
 
     // Start a new round
     private void startNewRound() {
+        stop_timer();
+        currentTimePerQuestion = timePerQuestion;
+        timerTextView.setText(currentTimePerQuestion + "s");
+
+
+        start_timer(); // Relance le time
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
@@ -146,6 +148,8 @@ public class PlayActivity extends AppCompatActivity {
 
 
         // Check if all question are answered
+        stop_timer();
+
         if (roundNumber< maxRoundNumber)
         {
             new Handler().postDelayed(this::startNewRound, 2000);
@@ -161,6 +165,23 @@ public class PlayActivity extends AppCompatActivity {
     }
 
 
+    private void start_timer()
+    {
+        TimerHandler = new Handler();
+
+        TimerHandler.postDelayed(TimerRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    timer();
+                    TimerHandler.postDelayed(this, 1000);
+                }
+            }, 1000);
+    }
+    private void stop_timer()
+    {
+        TimerHandler.removeCallbacks(TimerRunnable);
+
+    }
 
     private void timer()
     {
@@ -170,7 +191,7 @@ public class PlayActivity extends AppCompatActivity {
         {
             timerTextView.setText(currentTimePerQuestion + "s");
             handleClick(FalseCard);
-            currentTimePerQuestion = timePerQuestion+2;
+            currentTimePerQuestion = timePerQuestion;
         }
         else{
             timerTextView.setText(currentTimePerQuestion + "s");
