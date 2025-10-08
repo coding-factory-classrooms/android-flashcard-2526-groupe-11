@@ -16,8 +16,8 @@ public class GameManager {
         allCards.add(new Card(R.drawable.card_goblins, R.raw.gobelins_voice));
         allCards.add(new Card(R.drawable.card_hog_rider, R.raw.hog_rider_voice));
         allCards.add(new Card(R.drawable.card_mini_pekka, R.raw.mini_pekka_voice));
-        allCards.add(new Card(R.drawable.card_prince, 0));
-        allCards.add(new Card(R.drawable.card_valkiry, 0));
+        allCards.add(new Card(R.drawable.card_prince, R.raw.prince_voice));
+        allCards.add(new Card(R.drawable.card_valkiry, R.raw.valkyrie_voice));
     }
 
     public void startNewRound() {

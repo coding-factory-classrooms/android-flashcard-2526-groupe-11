@@ -35,6 +35,7 @@ public class PlayActivity extends AppCompatActivity {
     public int roundNumber = 0;
     public int maxRoundNumber = 2;
     public Arena arena;
+    public int timePerQuestion = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +189,6 @@ public class PlayActivity extends AppCompatActivity {
         intent.putExtra("difficulty", arena.getDifficulty());
         intent.putExtra("maxRound", maxRoundNumber);
         startActivity(intent);
-
     }
 
     @Override

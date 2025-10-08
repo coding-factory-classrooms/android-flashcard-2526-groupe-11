@@ -214,21 +214,29 @@
         app:layout_constraintVertical_bias="0.67"
         app:srcCompat="@drawable/text_true" />
 
-    <TextView
-        android:id="@+id/indexQuestionTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/scoreTimerLinearLayout"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/clash_regular"
-        android:shadowColor="#000000"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="4"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/white"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/imageView13"
         app:layout_constraintEnd_toEndOf="@+id/imageView13"
         app:layout_constraintStart_toStartOf="@+id/imageView13"
-        app:layout_constraintTop_toTopOf="@+id/imageView13"
-        tools:text="1/10" />
+        app:layout_constraintTop_toTopOf="@+id/imageView13">
+
+        <TextView
+            android:id="@+id/indexQuestionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/clash_regular"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/white"
+            tools:text="1/10" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
