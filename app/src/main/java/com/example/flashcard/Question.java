@@ -10,13 +10,15 @@ import java.util.List;
 
 public class Question implements Parcelable {
     List<Integer> Answers;
-    int correctAnswer;
+    int CorrectAnswer;
     int Sound;
+    Arena Difficulty;
 
-    public Question(List<Integer> answers, int correctAnswer, int sound) {
+    public Question(List<Integer> answers, int correctAnswer, int sound, Arena difficulty) {
         Answers = answers;
-        this.correctAnswer = correctAnswer;
+        this.CorrectAnswer = correctAnswer;
         Sound = sound;
+        Difficulty = difficulty;
     }
 
     protected Question(Parcel in) {
@@ -30,11 +32,11 @@ public class Question implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeList(Answers);
-        dest.writeInt(correctAnswer);
+        dest.writeInt(CorrectAnswer);
         dest.writeInt(Sound);
-
+        dest.writeString(Difficulty.getDifficulty());
+        dest.writeInt(Difficulty.getImage());
     }
-
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {
         @Override

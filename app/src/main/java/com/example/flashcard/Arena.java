@@ -6,21 +6,25 @@ import android.os.Parcelable;
 public class Arena implements Parcelable {
     private int image;
     private String difficulty;
+    private int BackgroundImage;
 
-    public Arena(int image, String difficulty) {
+    public Arena(int image, String difficulty, int backgroundImage) {
         this.image = image;
         this.difficulty = difficulty;
+        BackgroundImage = backgroundImage;
     }
 
     protected Arena(Parcel in) {
         image = in.readInt();
         difficulty = in.readString();
+        BackgroundImage = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(image);
         dest.writeString(difficulty);
+        dest.writeInt(BackgroundImage);
     }
 
     @Override
@@ -40,7 +44,6 @@ public class Arena implements Parcelable {
         }
     };
 
-    //region Getter/Setter
     public int getImage() {
         return image;
     }
@@ -56,5 +59,12 @@ public class Arena implements Parcelable {
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
-    //endregion
+
+    public int getBackgroundImage() {
+        return BackgroundImage;
+    }
+
+    public void setBackgroundImage(int backgroundImage) {
+        BackgroundImage = backgroundImage;
+    }
 }

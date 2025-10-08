@@ -2,10 +2,6 @@ package com.example.flashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,6 +23,8 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
     public static final String TAG = "MainActivity";
 
+    public Arena selectedArena =  new Arena(R.drawable.cr_arene_easy, "Facile", R.drawable.backgraound_level_one);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,44 +44,43 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
 
 
+        // Navigate to ListQuestionsActivity
         Button list = findViewById(R.id.questionButton);
         list.setOnClickListener(v -> {
             Intent newIntent = new Intent(MainActivity.this, ListQuestionsActivity.class);
             startActivity(newIntent);
         });
 
+        // Navigate to PlayActivity
         Button battleButton = findViewById(R.id.battleButton);
-        battleButton.setOnClickListener(v -> {
-            int resIDImage = getResources().getIdentifier("arenaImageButton", "id", getPackageName());
-            String difficultyName = difficultyArenaTextView.getText().toString();
-            Arena arena = new Arena(resIDImage, difficultyName);
+        battleButton.setOnClickListener(view -> {
+            Arena arena = new Arena(selectedArena.getImage(), selectedArena.getDifficulty(), selectedArena.getBackgroundImage());
 
-            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+            Intent intent = new Intent(this, PlayActivity.class);
             intent.putExtra("arena", arena);
             startActivity(intent);
         });
 
 
+        arenaImageButton.setImageResource(selectedArena.getImage());
+        difficultyArenaTextView.setText(selectedArena.getDifficulty());
 
 
-        Arena DefaultArena = new Arena(R.drawable.cr_arene_easy, "Facile");
-        arenaImageButton.setImageResource(DefaultArena.getImage());
-        difficultyArenaTextView.setText(DefaultArena.getDifficulty());
 
-
+        // Display recyclerView
         arenaImageButton.setOnClickListener(view->{
+            RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
 
             firstMainGroup.setVisibility(View.INVISIBLE);
-            RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
             recyclerView.setVisibility(View.VISIBLE);
 
             ArrayList<Arena> arenas = new ArrayList<>();
             ArenaAdapter adapter = new ArenaAdapter(arenas, this);
 
             arenas.clear();
-            arenas.add(new Arena(R.drawable.cr_arene_easy,"Facile"));
-            arenas.add(new Arena(R.drawable.cr_arene_medium,"Moyen"));
-            arenas.add(new Arena(R.drawable.cr_arene_hard,"Difficile"));
+            arenas.add(new Arena(R.drawable.cr_arene_easy,"Facile", R.drawable.backgraound_level_one));
+            arenas.add(new Arena(R.drawable.cr_arene_medium,"Moyen", R.drawable.backgraound_level_two));
+            arenas.add(new Arena(R.drawable.cr_arene_hard,"Difficile", R.drawable.backgraound_level_three));
 
 
             recyclerView.setAdapter(adapter);
@@ -94,12 +91,13 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
     public void onArenaSelected(Arena arena){
         Group firstMainGroup = findViewById(R.id.firstMainGroup);
         RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
-
         ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
         TextView difficultyArenaTextView = findViewById(R.id.difficultyArenaTextView);
+
+        this.selectedArena = arena;
+
         arenaImageButton.setImageResource(arena.getImage());
         difficultyArenaTextView.setText(arena.getDifficulty());
-
 
         recyclerView.setVisibility(View.INVISIBLE);
         firstMainGroup.setVisibility(View.VISIBLE);

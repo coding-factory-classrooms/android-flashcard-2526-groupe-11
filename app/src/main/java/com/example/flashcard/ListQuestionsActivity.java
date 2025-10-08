@@ -38,7 +38,9 @@ public class ListQuestionsActivity extends AppCompatActivity {
         Answers.add(R.drawable.card_hog_rider);
         Answers.add(R.drawable.card_valkiry);
         for (int i = 0; i < 3000; i++) {
-            questions.add(new Question(Answers,R.drawable.card_hog_rider,R.raw.hog_rider_voice));
+            questions.add(new Question(Answers,R.drawable.card_hog_rider,R.raw.hog_rider_voice,new Arena(R.drawable.cr_arene_hard,"Difficile", R.drawable.backgraound_level_three)));
+            questions.add(new Question(Answers,R.drawable.card_hog_rider,R.raw.gobelins_voice,new Arena(R.drawable.cr_arene_medium,"Moyen", R.drawable.backgraound_level_two)));
+            questions.add(new Question(Answers,R.drawable.card_hog_rider,R.raw.mini_pekka_voice,new Arena(R.drawable.cr_arene_easy,"Facile", R.drawable.backgraound_level_one)));
         }
         // On branche tout le monde
         // les données a l'adapter
