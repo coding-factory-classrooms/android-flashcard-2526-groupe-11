@@ -87,8 +87,6 @@ public class PlayActivity extends AppCompatActivity {
         indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
         timerTextView.setText(currentTimePerQuestion + "s");
 
-        // Change the timer every seconds
-
         start_timer();
 
         gameManager = new GameManager();
@@ -102,9 +100,8 @@ public class PlayActivity extends AppCompatActivity {
         stop_timer();
         currentTimePerQuestion = timePerQuestion;
         timerTextView.setText(currentTimePerQuestion + "s");
+        start_timer();
 
-
-        start_timer(); // Relance le time
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
@@ -136,20 +133,18 @@ public class PlayActivity extends AppCompatActivity {
 
     // Check if the answer is correct
     private void handleClick(Card card){
+
         if (card == correctCard) {
             showReaction(true);
         } else {
             showReaction(false);
         }
-        // Start new round after 2s
 
         roundNumber++;
         indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
 
-
         // Check if all question are answered
-        stop_timer();
-
+        // Start new round after 2s
         if (roundNumber< maxRoundNumber)
         {
             new Handler().postDelayed(this::startNewRound, 2000);
@@ -180,9 +175,9 @@ public class PlayActivity extends AppCompatActivity {
     private void stop_timer()
     {
         TimerHandler.removeCallbacks(TimerRunnable);
-
     }
 
+    // Timer Logic
     private void timer()
     {
         Card FalseCard = new Card(0, 0);
@@ -196,7 +191,6 @@ public class PlayActivity extends AppCompatActivity {
         else{
             timerTextView.setText(currentTimePerQuestion + "s");
             currentTimePerQuestion--;
-
         }
     }
 
@@ -240,6 +234,7 @@ public class PlayActivity extends AppCompatActivity {
     }
     private void navigateToVictory()
     {
+        stop_timer();
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
@@ -247,9 +242,12 @@ public class PlayActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        stop_timer();
         // Release MediaPlayer
         if (mediaPlayer != null) {
             mediaPlayer.release();
