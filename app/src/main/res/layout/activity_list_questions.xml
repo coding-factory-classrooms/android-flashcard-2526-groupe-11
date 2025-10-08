@@ -35,7 +35,11 @@
         android:id="@+id/HomeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFB903"
+        android:fontFamily="@font/font_clash_royal"
+        android:insetLeft="0dp"
         android:text="Retour"
+        app:cornerRadius="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

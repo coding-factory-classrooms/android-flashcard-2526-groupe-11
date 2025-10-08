@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
 
 
-        Button list = findViewById(R.id.buttonList);
+        Button list = findViewById(R.id.questionButton);
         list.setOnClickListener(v -> {
             Intent newIntent = new Intent(MainActivity.this, ListQuestionsActivity.class);
             startActivity(newIntent);

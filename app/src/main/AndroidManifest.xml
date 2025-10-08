@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flashcard">
         <activity
-            android:name=".ResultActivity"
+            android:name=".AboutActivity"
             android:exported="false" />
         <activity
             android:name=".PlayActivity"
@@ -21,7 +21,7 @@
             android:name=".ListQuestionsActivity"
             android:exported="false" />
         <activity
-            android:name=".AboutActivity"
+            android:name=".ResultActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

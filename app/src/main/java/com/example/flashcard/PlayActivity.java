@@ -1,8 +1,5 @@
 package com.example.flashcard;
 
-import android.animation.ObjectAnimator;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -19,9 +16,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.List;
+
 public class PlayActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
+    private GameManager gameManager;
+
+    private ImageButton response1, response2, response3;
+    private ImageView emoteencadre, emotereaction, type_response;
+    private Button listenButton;
+
+    private Card correctCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,7 @@ public class PlayActivity extends AppCompatActivity {
             return insets;
         });
 
-        //test de intentExtra
+        // Get arena from intent
         Intent srcIntent = getIntent();
         Arena arena = srcIntent.getParcelableExtra("arena");
         Log.d("arena", "imageID: " + arena.getImage() + "Difficulty: " + arena.getDifficulty() + " Background :" + arena.getBackgroundImage());
@@ -44,78 +50,118 @@ public class PlayActivity extends AppCompatActivity {
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
         backgroundDifficultyImageView.setImageResource(arena.getBackgroundImage());
 
-
-        // Button to return to main menu
+        // Home button
         ImageButton homeButton = findViewById(R.id.homebutton);
         homeButton.setOnClickListener(v -> {
             Intent intent = new Intent(PlayActivity.this, MainActivity.class);
             startActivity(intent);
         });
 
-        // Button to play audio
-        Button lissenButton = findViewById(R.id.lissenbutton);
-        mediaPlayer = MediaPlayer.create(this, R.raw.hogridervoice);
+        // Initialize UI
+        listenButton = findViewById(R.id.lissenbutton);
+        emoteencadre = findViewById(R.id.emoteencadre);
+        emotereaction = findViewById(R.id.emotereaction);
+        type_response = findViewById(R.id.type_response);
+        response1 = findViewById(R.id.response1);
+        response2 = findViewById(R.id.response2);
+        response3 = findViewById(R.id.response3);
 
-        lissenButton.setOnClickListener(v -> {
+        // Hide reactions at start
+        emoteencadre.setVisibility(View.GONE);
+        emotereaction.setVisibility(View.GONE);
+        type_response.setVisibility(View.GONE);
+
+        gameManager = new GameManager();
+        startNewRound();
+        startBarrelAnimation();
+    }
+
+    // Start a new round
+    private void startNewRound() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        gameManager.startNewRound();
+        correctCard = gameManager.getCorrectCard();
+        List<Card> roundOptions = gameManager.getRoundOptions();
+
+        // Set images for options
+        response1.setImageResource(roundOptions.get(0).getImageResId());
+        response2.setImageResource(roundOptions.get(1).getImageResId());
+        response3.setImageResource(roundOptions.get(2).getImageResId());
+
+        // Set audio for the correct card
+        mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId());
+
+        listenButton.setOnClickListener(v -> {
             if (mediaPlayer != null) {
                 mediaPlayer.start();
             }
         });
 
-        ImageView emoteencadre = findViewById(R.id.emoteencadre);
-        ImageView emotereaction = findViewById(R.id.emotereaction);
-        ImageView text_true = findViewById(R.id.text_true);
-        ImageButton response1 = findViewById(R.id.response1);
-        ImageButton response2 = findViewById(R.id.response2);
-        ImageButton response3 = findViewById(R.id.response3);
-
-        emoteencadre.setVisibility(View.GONE);
-        emotereaction.setVisibility(View.GONE);
-        text_true.setVisibility(View.GONE);
-
-        View.OnClickListener responseClickListener = v -> {
-            emoteencadre.setVisibility(View.VISIBLE);
-            emotereaction.setVisibility(View.VISIBLE);
-            text_true.setVisibility(View.VISIBLE);
-            emoteencadre.postDelayed(() -> {
-                emoteencadre.setVisibility(View.GONE);
-                emotereaction.setVisibility(View.GONE);
-                text_true.setVisibility(View.GONE);
-            }, 2000);
-        };
-
-        response1.setOnClickListener(responseClickListener);
-        response2.setOnClickListener(responseClickListener);
-        response3.setOnClickListener(responseClickListener);
-        text_true.setOnClickListener(responseClickListener);
-        startBarrelAnimation();
+        // Set click listeners
+        setResponseClick(response1, roundOptions.get(0));
+        setResponseClick(response2, roundOptions.get(1));
+        setResponseClick(response3, roundOptions.get(2));
     }
 
+    // Check if the answer is correct
+    private void setResponseClick(ImageButton button, Card card) {
+        button.setOnClickListener(v -> {
+            if (card == correctCard) {
+                showReaction(true);
+            } else {
+                showReaction(false);
+            }
+            // Start new round after 2s
+            new Handler().postDelayed(this::startNewRound, 2000);
+        });
+    }
+
+    // Show reaction (win/lose)
+    private void showReaction(boolean correct) {
+        emoteencadre.setVisibility(View.VISIBLE);
+        emotereaction.setVisibility(View.VISIBLE);
+        type_response.setVisibility(View.VISIBLE);
+
+        if (correct) {
+            emotereaction.setImageResource(R.drawable.emote_win);
+            type_response.setImageResource(R.drawable.text_true);
+        } else {
+            emotereaction.setImageResource(R.drawable.emote_lose);
+            type_response.setImageResource(R.drawable.text_false);
+        }
+
+        // Hide reactions after 2s
+        emoteencadre.postDelayed(() -> {
+            emoteencadre.setVisibility(View.GONE);
+            emotereaction.setVisibility(View.GONE);
+            type_response.setVisibility(View.GONE);
+        }, 2000);
+    }
+
+    // Skeleton animation across the screen
     private void startBarrelAnimation() {
         ImageView squeleton = findViewById(R.id.squelleton);
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         squeleton.setX(screenWidth);
         squeleton.setVisibility(View.VISIBLE);
-        ObjectAnimator animator = ObjectAnimator.ofFloat(
-                squeleton,
-                "translationX",
-                screenWidth,
-                -squeleton.getWidth()
-        );
-        animator.setDuration(2500);
-        animator.start();
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                squeleton.setVisibility(View.GONE);
-                new Handler().postDelayed(() -> startBarrelAnimation(), 4000);
-            }
-        });
+        squeleton.animate()
+                .translationX(-squeleton.getWidth())
+                .setDuration(2500)
+                .withEndAction(() -> {
+                    squeleton.setVisibility(View.GONE);
+                    new Handler().postDelayed(this::startBarrelAnimation, 4000);
+                })
+                .start();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // Release MediaPlayer
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
