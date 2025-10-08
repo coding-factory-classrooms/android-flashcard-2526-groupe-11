@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ArenaAdapter.OnArenaListener {
 
     public static final String TAG = "Difficulty";
 
@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        // Changer tout
+
+
+
 
 
 
@@ -51,20 +55,16 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Arena> arenas = new ArrayList<>();
         ArenaAdapter adapter = new ArenaAdapter(arenas, this);
 
-        Intent srcIntent = getIntent();
-        Arena arenaGet = srcIntent.getParcelableExtra("arena");
+//        Intent srcIntent = getIntent();
+//        Arena arenaGet = srcIntent.getParcelableExtra("arena");
 
         int arenaImage;
         String arenaDifficulty;
-        if (arenaGet == null)
-        {
-             arenaImage = adapter.chooseArena.getImage();
-             arenaDifficulty = adapter.chooseArena.getDifficulty();
-        }
-        else{
-            arenaImage = arenaGet.getImage();
-            arenaDifficulty = arenaGet.getDifficulty();
-        }
+
+         arenaImage = adapter.chooseArena.getImage();
+         arenaDifficulty = adapter.chooseArena.getDifficulty();
+
+
 
         arenaImageButton.setImageResource(arenaImage);
         difficultyArenaTextView.setText(arenaDifficulty);
@@ -76,8 +76,12 @@ public class MainActivity extends AppCompatActivity {
         arenaImageButton.setOnClickListener(view->{
             Log.d(TAG, "Click");
             firstMainGroup.setVisibility(View.INVISIBLE);
+            RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
+            recyclerView.setVisibility(View.VISIBLE);
 
 
+
+            arenas.clear();
             arenas.add(new Arena(R.drawable.cr_arene_easy,"Facile"));
             arenas.add(new Arena(R.drawable.cr_arene_medium,"Moyen"));
             arenas.add(new Arena(R.drawable.cr_arene_hard,"Difficile"));
@@ -86,12 +90,25 @@ public class MainActivity extends AppCompatActivity {
             // On branche tout le monde
             //  les données à l'adapter
             // l'adapter au recyclerView
-            RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         });
+    }
+    @Override
+    public void onArenaSelected(Arena arena){
+        Group firstMainGroup = findViewById(R.id.firstMainGroup);
+        RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
 
+        ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
+        TextView difficultyArenaTextView = findViewById(R.id.difficultyArenaTextView);
+        arenaImageButton.setImageResource(arena.getImage());
+        difficultyArenaTextView.setText(arena.getDifficulty());
+
+
+        recyclerView.setVisibility(View.INVISIBLE);
+        firstMainGroup.setVisibility(View.VISIBLE);
+        Log.d(TAG, "onArenaSelected: "+arena);
 
     }
 }

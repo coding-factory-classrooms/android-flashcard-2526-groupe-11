@@ -1,33 +1,30 @@
 package com.example.flashcard;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
-    Context context;
 
+
+    public interface OnArenaListener {
+        void onArenaSelected(Arena arena);
+    }
     ArrayList<Arena> arenas;
     Arena chooseArena = new Arena(R.drawable.cr_arene_easy, "Facile");
 
+    OnArenaListener arenaListener;
 
-    public ArenaAdapter(ArrayList<Arena> arenas, Context context) {
-        this.context = context;
+    public ArenaAdapter(ArrayList<Arena> arenas, OnArenaListener arenaListener) {
+        this.arenaListener = arenaListener;
         this.arenas = arenas;
 
     }
@@ -55,14 +52,14 @@ public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
 
 
         holder.arenaChooseImageButton.setOnClickListener(view->{
-
-            Log.d("Difficulty", "Click:" + arena.getDifficulty()+ " " + arena.getImage());
+            arenaListener.onArenaSelected(arena);
+//            Log.d("Difficulty", "Click:" + arena.getDifficulty()+ " " + arena.getImage());
             chooseArena.setDifficulty(arena.getDifficulty());
             chooseArena.setImage(arena.getImage());
-            Log.d("Difficulty", "onBindViewHolder: " + chooseArena);
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.putExtra("arena", chooseArena);
-            startActivity(context, intent, null);
+//            Log.d("Difficulty", "onBindViewHolder: " + chooseArena);
+//            Intent intent = new Intent(holder.arenaChooseImageButton.getContext(), MainActivity.class);
+//            intent.putExtra("arena", chooseArena);
+//            startActivity(context, intent, null);
         });
 
     }
