@@ -24,8 +24,8 @@
         android:id="@+id/firstMainGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="arenaImageButton,questionButton,logotextView,menuButtonLinearLayout,crLogoImageView"
-        tools:visibility="invisible" />
+        app:constraint_referenced_ids="arenaImageButton,questionButton,logotextView,menuButtonLinearLayout,crLogoImageView,difficultyArenaTextView"
+        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/arenaRecyclerView"
@@ -34,7 +34,8 @@
         tools:itemCount="10"
         tools:layout_editor_absoluteX="166dp"
         tools:layout_editor_absoluteY="179dp"
-        tools:listitem="@layout/item_arena" />
+        tools:listitem="@layout/item_arena"
+        tools:visibility="invisible" />
 
     <ImageButton
         android:id="@+id/arenaImageButton"
@@ -142,5 +143,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/crBackgroundImageView"
         app:srcCompat="@drawable/cr_logo" />
+
+    <TextView
+        android:id="@+id/difficultyArenaTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/menuButtonLinearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arenaImageButton"
+        tools:text="Difficile"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

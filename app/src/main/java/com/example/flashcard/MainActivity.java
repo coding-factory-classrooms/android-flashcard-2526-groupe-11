@@ -1,6 +1,9 @@
 package com.example.flashcard;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -41,11 +44,32 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
         Group firstMainGroup = findViewById(R.id.firstMainGroup);
+        TextView difficultyArenaTextView = findViewById(R.id.difficultyArenaTextView);
+
 
 
         ArrayList<Arena> arenas = new ArrayList<>();
-        ArenaAdapter adapter = new ArenaAdapter(arenas);
-        Log.d(TAG, "onCreate: " + adapter.chooseArena);
+        ArenaAdapter adapter = new ArenaAdapter(arenas, this);
+
+        Intent srcIntent = getIntent();
+        Arena arenaGet = srcIntent.getParcelableExtra("arena");
+
+        int arenaImage;
+        String arenaDifficulty;
+        if (arenaGet == null)
+        {
+             arenaImage = adapter.chooseArena.getImage();
+             arenaDifficulty = adapter.chooseArena.getDifficulty();
+        }
+        else{
+            arenaImage = arenaGet.getImage();
+            arenaDifficulty = arenaGet.getDifficulty();
+        }
+
+        arenaImageButton.setImageResource(arenaImage);
+        difficultyArenaTextView.setText(arenaDifficulty);
+
+
 
 
 

@@ -1,6 +1,10 @@
 package com.example.flashcard;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
+    Context context;
 
     ArrayList<Arena> arenas;
-    Arena chooseArena;
+    Arena chooseArena = new Arena(R.drawable.cr_arene_easy, "Facile");
 
 
-    public ArenaAdapter(ArrayList<Arena> arenas) {
+    public ArenaAdapter(ArrayList<Arena> arenas, Context context) {
+        this.context = context;
         this.arenas = arenas;
+
     }
 
     @NonNull
@@ -32,8 +39,7 @@ public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
         Context context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_arena,
                 parent, false);
-        View viewMain = LayoutInflater.from(context).inflate(R.layout.activity_main,
-                parent, false);
+
 
 
         // On crée notre instance de ViewHolder qui sera recyclée a chaque scroll de l'utilisateur
@@ -47,11 +53,16 @@ public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
         holder.arenaChooseImageButton.setImageResource(arena.getImage());
         holder.difficultyTextView.setText(arena.getDifficulty());
 
+
         holder.arenaChooseImageButton.setOnClickListener(view->{
 
-            Log.d("Difficulty", "Click:" + arena.getDifficulty() + arena.getImage());
-            chooseArena = new Arena(arena.getImage(), arena.getDifficulty());
+            Log.d("Difficulty", "Click:" + arena.getDifficulty()+ " " + arena.getImage());
+            chooseArena.setDifficulty(arena.getDifficulty());
+            chooseArena.setImage(arena.getImage());
             Log.d("Difficulty", "onBindViewHolder: " + chooseArena);
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.putExtra("arena", chooseArena);
+            startActivity(context, intent, null);
         });
 
     }
@@ -65,12 +76,14 @@ public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        Group FirstMainGroup;
         ImageButton arenaChooseImageButton;
         TextView difficultyTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+
+
 
             arenaChooseImageButton = itemView.findViewById(R.id.arenaChooseImageButton);
             difficultyTextView = itemView.findViewById(R.id.difficultyTextView);
