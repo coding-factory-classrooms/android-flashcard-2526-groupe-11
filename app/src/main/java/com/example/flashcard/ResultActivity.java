@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 // Import des différentes fonctionnalité utilisé
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
 import android.util.Log;
@@ -20,6 +21,13 @@ public class ResultActivity extends AppCompatActivity {
     private Button restartButton;
     private Button shareButton;
 
+    private TextView choiceDifficult;
+    private TextView messageResult;
+    private TextView scoreResult;
+    private ImageView resultImage;
+    private int bonneReponses;
+    private int totalQuestions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +38,53 @@ public class ResultActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Recupere info extra depuis PlayActivity
+        String difficulty = getIntent().getStringExtra("difficult");
+        totalQuestions = getIntent().getIntExtra("totalquestionns", 0);
+        bonneReponses = getIntent().getIntExtra("bonneRéponse", 0);
+
+        // code debug
+        difficulty = "facile";
+        totalQuestions = 10;
+        bonneReponses = 9;
+
+        // Récupère le niveau choisi via l'id
+
+        choiceDifficult = findViewById(R.id.difficultyTextView);
+
+        // Affichage de la difficulté en fonction du choix du joueur
+        choiceDifficult.setText(difficulty);
+
+        // Affichage du score du joueur
+
+        scoreResult = findViewById(R.id.scoreTextView);
+
+        scoreResult.setText("Score : " + bonneReponses + "/" + totalQuestions);
+
+        // Afficher une image et un petit message différents en fonction du resultat en utilisant if/else if
+
+        resultImage = findViewById(R.id.resultImageView);
+        messageResult = findViewById(R.id.messageTextView);
+
+
+        // Récupere le pourcentage du score : en utilisant float afin de recuper le score en décimal et le *100
+
+        float pourcentage = ((float) bonneReponses / totalQuestions * 100);
+
+        // On applique les conditions
+
+        if (pourcentage < 50) {
+            resultImage.setImageResource(R.drawable.loss);
+            messageResult.setText("Entraine toi !");
+        } else if (pourcentage < 80) {
+            resultImage.setImageResource(R.drawable.card_hog_rider);
+            messageResult.setText("Bien joué");
+        }else {
+            resultImage.setImageResource(R.drawable.emote_win);
+            messageResult.setText("Excellent !");
+        }
+
 
         // Recupere le bouton rejouer via l'id
         restartButton = findViewById(R.id.restartButton);
@@ -47,7 +102,7 @@ public class ResultActivity extends AppCompatActivity {
             Log.d("ResultActivity", "Boutton partagez cliqué");
 
             // Message a partagez
-            String message = "J'ai terminé le quiz sur FlashCard, essaie toi aussi ! ";
+            String message = "J'ai fait : " + bonneReponses + " / " + totalQuestions + "au Flashcard, essaie toi aussi !";
 
             // Partage via l' Intent
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
