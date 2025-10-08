@@ -46,9 +46,9 @@ public class ResultActivity extends AppCompatActivity {
         correctAnswers = getIntent().getIntExtra("score", 0);
 
         // Debug code (to remove once everything is linked)
-        difficulty = "facile";
-        totalQuestions = 10;
-        correctAnswers = 9;
+//        difficulty = "facile";
+//        totalQuestions = 10;
+//        correctAnswers = 9;
 
         // Display the chosen difficulty
         chosenDifficulty = findViewById(R.id.difficultyTextView);

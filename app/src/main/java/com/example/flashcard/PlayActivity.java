@@ -155,6 +155,7 @@ public class PlayActivity extends AppCompatActivity {
     }
     private void setResponseClick(ImageButton button, Card card) {
         button.setOnClickListener(v -> {
+            stop_timer();
             handleClick(card);
         });
     }
