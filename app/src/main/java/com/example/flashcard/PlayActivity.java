@@ -37,8 +37,12 @@ public class PlayActivity extends AppCompatActivity {
         //test de intentExtra
         Intent srcIntent = getIntent();
         Arena arena = srcIntent.getParcelableExtra("arena");
-        Log.d("arena", "imageID: " + arena.getImage() + "Difficulty: " + arena.getDifficulty());
+        Log.d("arena", "imageID: " + arena.getImage() + "Difficulty: " + arena.getDifficulty() + " Background :" + arena.getBackgroundImage());
 
+
+        // set background
+        ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
+        backgroundDifficultyImageView.setImageResource(arena.getBackgroundImage());
 
 
         // Button to return to main menu

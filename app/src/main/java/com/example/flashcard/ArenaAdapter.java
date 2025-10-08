@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -66,6 +67,7 @@ public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageButton arenaChooseImageButton;
         TextView difficultyTextView;
+        ImageView mainBackgroundImagView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

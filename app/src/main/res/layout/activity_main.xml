@@ -164,4 +164,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/mainBackgroundImagView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="nothing"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/questionButton"
+        app:srcCompat="@drawable/backgraound_level_one" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@
     tools:context=".PlayActivity">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/backgroundDifficultyImageView"
         android:layout_width="543dp"
         android:layout_height="1376dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -146,7 +146,7 @@
         android:layout_marginTop="700dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/backgroundDifficultyImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/decorthree" />
 
