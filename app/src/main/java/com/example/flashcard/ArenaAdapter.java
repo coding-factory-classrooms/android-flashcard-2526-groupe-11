@@ -1,6 +1,7 @@
 package com.example.flashcard;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
 
     ArrayList<Arena> arenas;
+    Arena chooseArena;
+
 
     public ArenaAdapter(ArrayList<Arena> arenas) {
         this.arenas = arenas;
@@ -27,6 +31,8 @@ public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
         // Pour récupérer notre item_currency.xml
         Context context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_arena,
+                parent, false);
+        View viewMain = LayoutInflater.from(context).inflate(R.layout.activity_main,
                 parent, false);
 
 
@@ -40,6 +46,14 @@ public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
         Arena arena = arenas.get(position);
         holder.arenaChooseImageButton.setImageResource(arena.getImage());
         holder.difficultyTextView.setText(arena.getDifficulty());
+
+        holder.arenaChooseImageButton.setOnClickListener(view->{
+
+            Log.d("Difficulty", "Click:" + arena.getDifficulty() + arena.getImage());
+            chooseArena = new Arena(arena.getImage(), arena.getDifficulty());
+            Log.d("Difficulty", "onBindViewHolder: " + chooseArena);
+        });
+
     }
 
     @Override
@@ -47,12 +61,17 @@ public class ArenaAdapter extends RecyclerView.Adapter<ArenaAdapter.ViewHolder>{
         return arenas.size();
     }
 
+
+
+
     class ViewHolder extends RecyclerView.ViewHolder {
+        Group FirstMainGroup;
         ImageButton arenaChooseImageButton;
         TextView difficultyTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             arenaChooseImageButton = itemView.findViewById(R.id.arenaChooseImageButton);
             difficultyTextView = itemView.findViewById(R.id.difficultyTextView);
 

@@ -3,11 +3,9 @@ package com.example.flashcard;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,8 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
         ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
         Group firstMainGroup = findViewById(R.id.firstMainGroup);
+
+
+        ArrayList<Arena> arenas = new ArrayList<>();
+        ArenaAdapter adapter = new ArenaAdapter(arenas);
+        Log.d(TAG, "onCreate: " + adapter.chooseArena);
 
 
 
@@ -49,17 +54,14 @@ public class MainActivity extends AppCompatActivity {
             firstMainGroup.setVisibility(View.INVISIBLE);
 
 
-            ArrayList<Arena> arenas = new ArrayList<>();
-            for (int i = 0; i < 1000; i++) {
-                arenas.add(new Arena(R.drawable.cr_arene_easy,"Facile"));
-                arenas.add(new Arena(R.drawable.cr_arene_medium,"Moyen"));
-                arenas.add(new Arena(R.drawable.cr_arene_hard,"Difficile"));
-            }
+            arenas.add(new Arena(R.drawable.cr_arene_easy,"Facile"));
+            arenas.add(new Arena(R.drawable.cr_arene_medium,"Moyen"));
+            arenas.add(new Arena(R.drawable.cr_arene_hard,"Difficile"));
+
 
             // On branche tout le monde
             //  les données à l'adapter
             // l'adapter au recyclerView
-            ArenaAdapter adapter = new ArenaAdapter(arenas);
             RecyclerView recyclerView = findViewById(R.id.arenaRecyclerView);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
     }
 }
+
+
