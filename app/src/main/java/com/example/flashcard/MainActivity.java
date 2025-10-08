@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        Button list = findViewById(R.id.buttonList);
+        Button list = findViewById(R.id.questionButton);
         list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
