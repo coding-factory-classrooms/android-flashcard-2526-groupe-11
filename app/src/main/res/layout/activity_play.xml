@@ -216,7 +216,7 @@
 
     <LinearLayout
         android:id="@+id/scoreTimerLinearLayout"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/imageView13"
@@ -228,7 +228,6 @@
             android:id="@+id/indexQuestionTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:fontFamily="@font/clash_regular"
             android:shadowColor="#000000"
             android:shadowDx="2"
@@ -237,6 +236,18 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/white"
             tools:text="1/10" />
+
+        <Space
+            android:layout_width="50dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/timerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/white"
+            tools:text="5s" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

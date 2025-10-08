@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -26,7 +25,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private ImageButton response1, response2, response3;
     private ImageView emoteencadre, emotereaction, type_response;
-    private TextView indexQuestionTextView;
+    private TextView indexQuestionTextView, timerTextView;
     private Button listenButton;
 
     private Card correctCard;
@@ -35,7 +34,10 @@ public class PlayActivity extends AppCompatActivity {
     public int roundNumber = 0;
     public int maxRoundNumber = 2;
     public Arena arena;
+    public int currentTimePerQuestion = 5;
     public int timePerQuestion = 5;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class PlayActivity extends AppCompatActivity {
         response2 = findViewById(R.id.response2);
         response3 = findViewById(R.id.response3);
         indexQuestionTextView = findViewById(R.id.indexQuestionTextView);
+        timerTextView = findViewById(R.id.timerTextView);
 
         // Hide reactions at start
         emoteencadre.setVisibility(View.GONE);
@@ -81,6 +84,16 @@ public class PlayActivity extends AppCompatActivity {
         type_response.setVisibility(View.GONE);
 
         indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
+        timerTextView.setText(currentTimePerQuestion + "s");
+
+        // Change the timer every seconds
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                timer();
+                handler.postDelayed(this, 1000);
+            }
+        }, 1000);
 
         gameManager = new GameManager();
         startNewRound();
@@ -120,28 +133,50 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     // Check if the answer is correct
+    private void handleClick(Card card){
+        if (card == correctCard) {
+            showReaction(true);
+        } else {
+            showReaction(false);
+        }
+        // Start new round after 2s
+
+        roundNumber++;
+        indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
+
+
+        // Check if all question are answered
+        if (roundNumber< maxRoundNumber)
+        {
+            new Handler().postDelayed(this::startNewRound, 2000);
+        }
+        else{
+            new Handler().postDelayed(this::navigateToVictory, 2000);
+        }
+    }
     private void setResponseClick(ImageButton button, Card card) {
         button.setOnClickListener(v -> {
-            if (card == correctCard) {
-                showReaction(true);
-            } else {
-                showReaction(false);
-            }
-            // Start new round after 2s
-
-            Log.d("test", "onCreate: " + roundNumber);
-            roundNumber++;
-            indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
-
-            if (roundNumber< maxRoundNumber)
-            {
-                new Handler().postDelayed(this::startNewRound, 2000);
-            }
-            else{
-                new Handler().postDelayed(this::navigateToVictory, 2000);
-            }
-
+            handleClick(card);
         });
+    }
+
+
+
+    private void timer()
+    {
+        Card FalseCard = new Card(0, 0);
+
+        if (currentTimePerQuestion <=0)
+        {
+            timerTextView.setText(currentTimePerQuestion + "s");
+            handleClick(FalseCard);
+            currentTimePerQuestion = timePerQuestion+2;
+        }
+        else{
+            timerTextView.setText(currentTimePerQuestion + "s");
+            currentTimePerQuestion--;
+
+        }
     }
 
     // Show reaction (win/lose)
