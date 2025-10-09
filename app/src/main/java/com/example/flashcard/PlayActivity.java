@@ -1,5 +1,4 @@
 package com.example.flashcard;
-
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,13 +8,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import java.util.List;
 
 public class PlayActivity extends AppCompatActivity {
@@ -68,7 +65,7 @@ public class PlayActivity extends AppCompatActivity {
             stop_timer();
             Intent intent = new Intent(PlayActivity.this, MainActivity.class);
             startActivity(intent);
-            finish(); // ferme l'activité en cours
+            finish();
         });
 
         // Initialize UI
