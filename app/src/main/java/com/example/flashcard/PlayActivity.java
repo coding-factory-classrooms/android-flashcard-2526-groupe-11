@@ -1,19 +1,21 @@
 package com.example.flashcard;
+
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import java.util.List;
 
 public class PlayActivity extends AppCompatActivity {
@@ -54,7 +56,6 @@ public class PlayActivity extends AppCompatActivity {
         this.arena = srcIntent.getParcelableExtra("arena");
         this.easterEgg = srcIntent.getBooleanExtra("easterEgg", false);
 
-
         // set background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
         backgroundDifficultyImageView.setImageResource(arena.getBackgroundImage());
@@ -91,7 +92,6 @@ public class PlayActivity extends AppCompatActivity {
 
         indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
 
-
         if (easterEgg){
             timerTextView.setText(currentTimePerQuestion + "s");
             start_timer();
@@ -104,14 +104,12 @@ public class PlayActivity extends AppCompatActivity {
 
     // Start a new round
     private void startNewRound() {
-        if (easterEgg)
-        {
+        if (easterEgg) {
             stop_timer();
             currentTimePerQuestion = timePerQuestion;
             timerTextView.setText(currentTimePerQuestion + "s");
             start_timer();
         }
-
 
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -143,14 +141,11 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     // Handle click
-    private void handleClick(Card card) {
+    private void handleClick(Card card, ImageButton clickedButton) {
         stop_timer();
 
-        if (card == correctCard) {
-            showReaction(true);
-        } else {
-            showReaction(false);
-        }
+        boolean correct = card == correctCard;
+        showReaction(correct, clickedButton);
 
         roundNumber++;
         indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
@@ -168,7 +163,7 @@ public class PlayActivity extends AppCompatActivity {
             if (easterEgg){
                 stop_timer();
             }
-            handleClick(card);
+            handleClick(card, button);
         });
     }
 
@@ -195,7 +190,7 @@ public class PlayActivity extends AppCompatActivity {
 
         if (currentTimePerQuestion <= 0) {
             timerTextView.setText(currentTimePerQuestion + "s");
-            handleClick(FalseCard);
+            handleClick(FalseCard, null);
             currentTimePerQuestion = timePerQuestion;
         } else {
             timerTextView.setText(currentTimePerQuestion + "s");
@@ -203,28 +198,51 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    // Show reaction (win/lose)
-    private void showReaction(boolean correct) {
+    // Show reaction (win/lose) and highlight correct/wrong
+// Show reaction (win/lose) and highlight answers
+    private void showReaction(boolean correct, ImageButton clickedButton) {
+
+        // Show UI
         emoteencadre.setVisibility(View.VISIBLE);
         emotereaction.setVisibility(View.VISIBLE);
         type_response.setVisibility(View.VISIBLE);
 
         if (correct) {
+            // Correct answer
             emotereaction.setImageResource(R.drawable.emote_win);
             type_response.setImageResource(R.drawable.text_true);
             score++;
         } else {
+            // Wrong answer
             emotereaction.setImageResource(R.drawable.emote_lose);
             type_response.setImageResource(R.drawable.text_false);
+
+            // Highlight correct answer
+            if (correctCard == gameManager.getRoundOptions().get(0)) {
+                response1.setColorFilter(getResources().getColor(R.color.correct_answer, null));
+            } else if (correctCard == gameManager.getRoundOptions().get(1)) {
+                response2.setColorFilter(getResources().getColor(R.color.correct_answer, null));
+            } else if (correctCard == gameManager.getRoundOptions().get(2)) {
+                response3.setColorFilter(getResources().getColor(R.color.correct_answer, null));
+            }
+
+            // Highlight wrong choice
+            if (clickedButton != null) {
+                clickedButton.setColorFilter(getResources().getColor(R.color.wrong_answer, null));
+            }
         }
 
-        // Hide reactions after 2s
+        // Hide UI and reset colors after 2s
         emoteencadre.postDelayed(() -> {
             emoteencadre.setVisibility(View.GONE);
             emotereaction.setVisibility(View.GONE);
             type_response.setVisibility(View.GONE);
+            response1.clearColorFilter();
+            response2.clearColorFilter();
+            response3.clearColorFilter();
         }, 2000);
     }
+
 
     // Skeleton animation across the screen
     private void startBarrelAnimation() {
@@ -241,8 +259,8 @@ public class PlayActivity extends AppCompatActivity {
                 })
                 .start();
     }
-    private void navigateToVictory()
-    {
+
+    private void navigateToVictory() {
         if (easterEgg || TimerRunnable != null){
             stop_timer();
         }

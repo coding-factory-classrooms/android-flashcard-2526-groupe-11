@@ -161,25 +161,15 @@
         app:srcCompat="@drawable/text_response" />
 
     <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="188dp"
-        android:layout_height="206dp"
-        android:layout_marginTop="700dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/backgroundDifficultyImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/decor_three" />
-
-    <ImageView
         android:id="@+id/imageView10"
-        android:layout_width="171dp"
-        android:layout_height="296dp"
-        android:layout_marginTop="680dp"
+        android:layout_width="187dp"
+        android:layout_height="185dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/decor_two" />
 
     <ImageView
@@ -208,12 +198,11 @@
         android:id="@+id/type_response"
         android:layout_width="167dp"
         android:layout_height="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.67"
+        app:layout_constraintVertical_bias="0.808"
         app:srcCompat="@drawable/text_true" />
 
     <LinearLayout
@@ -251,5 +240,17 @@
             android:textColor="@color/white"
             tools:text="5s" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="188dp"
+        android:layout_height="206dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/backgroundDifficultyImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/decor_three" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
