@@ -28,6 +28,7 @@ public class ResultActivity extends AppCompatActivity {
     private int correctAnswers;
     private int totalQuestions;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,7 @@ public class ResultActivity extends AppCompatActivity {
         String difficulty = getIntent().getStringExtra("difficulty");
         totalQuestions = getIntent().getIntExtra("maxRound", 0);
         correctAnswers = getIntent().getIntExtra("score", 0);
+//        failedQuestions = getIntent().getIntExtra("wrongCards",0);
 
 
         // Display the chosen difficulty

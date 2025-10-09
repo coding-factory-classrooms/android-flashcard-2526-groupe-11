@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -29,6 +30,9 @@ public class PlayActivity extends AppCompatActivity {
     private Button listenButton;
 
     private Card correctCard;
+
+//    private List<List<Card>> wrongCards= new ArrayList<>();
+    private WrongCards wrongCard;
 
     public int score = 0;
     public int roundNumber = 0;
@@ -199,7 +203,7 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     // Show reaction (win/lose) and highlight correct/wrong
-// Show reaction (win/lose) and highlight answers
+    // Show reaction (win/lose) and highlight answers
     private void showReaction(boolean correct, ImageButton clickedButton) {
 
         // Show UI
@@ -216,6 +220,9 @@ public class PlayActivity extends AppCompatActivity {
             // Wrong answer
             emotereaction.setImageResource(R.drawable.emote_lose);
             type_response.setImageResource(R.drawable.text_false);
+            // Save this question on the list to retry later
+//            wrongCard.add(gameManager.getRoundOptions());
+//            wrongCard.wrongCards.add(gameManager.getRoundOptions());
 
             // Highlight correct answer
             if (correctCard == gameManager.getRoundOptions().get(0)) {
@@ -264,9 +271,11 @@ public class PlayActivity extends AppCompatActivity {
         if (easterEgg || TimerRunnable != null){
             stop_timer();
         }
+        Log.d("TAG", "navigateToVictory: "+ wrongCard.wrongCards);
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
+        intent.putExtra("wrongCards", wrongCard);
         intent.putExtra("maxRound", maxRoundNumber);
         startActivity(intent);
     }

@@ -40,7 +40,7 @@
         android:layout_marginTop="120dp"
         android:autoText="false"
         android:fontFamily="@font/clash_regular"
-        android:text="votre score : 0/10"
+        android:text="textView"
         android:textColor="@color/white"
         android:textColorLink="@color/white"
         android:textSize="30sp"
@@ -64,7 +64,8 @@
         android:id="@+id/restartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#FEB902"
         android:fontFamily="@font/clash_regular"
         android:padding="15dp"
@@ -72,9 +73,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:cornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/difficultyTextView"
@@ -118,5 +117,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resultImageView" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Try Again"
+        android:padding="15dp"
+        android:backgroundTint="#FEB902"
+        android:fontFamily="@font/clash_regular"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="627dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
