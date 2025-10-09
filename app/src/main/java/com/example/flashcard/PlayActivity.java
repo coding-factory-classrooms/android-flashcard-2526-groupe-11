@@ -181,7 +181,8 @@ public class PlayActivity extends AppCompatActivity {
         if (isCorrect) {score++;}
         else{
             //TODO: add wrrong question
-// Récupère la liste des cartes du round depuis le GameManager
+
+            // Récupère la liste des cartes du round depuis le GameManager
             List<Card> roundOptions = gameManager.getRoundOptions();
 
             // Crée un nouvel objet "Question" correspondant au round raté
@@ -259,9 +260,10 @@ public class PlayActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
-        // intent.putExtra("wrongCards", wrongCard);
         intent.putExtra("maxRound", maxRoundNumber);
         Log.d("test", "navigateToVictory: " + wrongQuestions);
+        // Envoie des données de la liste des questions a réessayer
+        intent.putParcelableArrayListExtra("wrongQuestions", new ArrayList<>(wrongQuestions));
         startActivity(intent);
 
     }

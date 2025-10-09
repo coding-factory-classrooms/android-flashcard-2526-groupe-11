@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.view.View;
+
+import java.util.ArrayList;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -48,7 +51,7 @@ public class ResultActivity extends AppCompatActivity {
         String difficulty = getIntent().getStringExtra("difficulty");
         totalQuestions = getIntent().getIntExtra("maxRound", 0);
         correctAnswers = getIntent().getIntExtra("score", 0);
-//        failedQuestions = getIntent().getIntExtra("wrongCards",0);
+        ArrayList<Question> wrongQuestions = getIntent().getParcelableArrayListExtra("wrongQuestions");
 
 
         // Display the chosen difficulty
@@ -134,8 +137,21 @@ public class ResultActivity extends AppCompatActivity {
         // "Retry" Button
 
         retryButton = findViewById(R.id.retryButton);
-        retryButton.setOnClickListener(v ->
-                Log.d("ResultActivity", "Bouton réessayer cliqué")
-        );
+        if (percentage == 100){
+            retryButton.setVisibility(View.GONE);
+        }
+        retryButton.setOnClickListener(v -> {
+
+            // On verifie que la liste de question est bien presente avec au moins une question
+            if (wrongQuestions != null && !wrongQuestions.isEmpty()){
+
+                // On relance l'activité play via Intent
+                Intent intent = new Intent(this, PlayActivity.class);
+
+                // On renvoie la liste de question a réessayer
+                intent.putParcelableArrayListExtra("retryQuestions", wrongQuestions);
+                startActivity(intent);
+            }
+        });
     }
 }
