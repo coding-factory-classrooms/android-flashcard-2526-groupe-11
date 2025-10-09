@@ -56,6 +56,10 @@ public class GameManager {
 
     }
 
+    public GameManager(List<Card> customCards) {
+        allCards = new ArrayList<>(customCards);
+    }
+
     public void startNewRound() {
         Random random = new Random();
 

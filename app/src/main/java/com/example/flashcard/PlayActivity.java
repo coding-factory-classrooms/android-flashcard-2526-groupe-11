@@ -39,7 +39,6 @@ public class PlayActivity extends AppCompatActivity {
     // Liste des questions raté par le joueur
     private ArrayList<Question> wrongQuestions = new ArrayList<>();
 
-
     public int score = 0;
     public int roundNumber = 0;
     public int maxRoundNumber = 5;
@@ -115,7 +114,25 @@ public class PlayActivity extends AppCompatActivity {
             startTimer();
         }
 
-        gameManager = new GameManager();
+        // Liste des questions a rejouer
+        ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
+
+        // --- Convertir les questions ratées en Card ---
+        List<Card> retryCards = new ArrayList<>();
+        if (retryQuestions != null && !retryQuestions.isEmpty()) {
+            for (Question q : retryQuestions) {
+                retryCards.add(new Card(q.CorrectAnswer, q.Sound));
+            }
+        }
+
+        // --- Créer le GameManager avec les questions ratées si elles existent ---
+        if (!retryCards.isEmpty()) {
+            gameManager = new GameManager(retryCards);
+            maxRoundNumber = retryCards.size();
+        } else {
+            gameManager = new GameManager();
+            maxRoundNumber = 5;
+        }
 
         // Random tower and decor at start
         environmentManager.setRandomEnvironment();
@@ -180,9 +197,8 @@ public class PlayActivity extends AppCompatActivity {
         boolean isCorrect = reactionManager.showReaction(correct, clickedButton, correctCard, gameManager.getRoundOptions());
         if (isCorrect) {score++;}
         else{
-            //TODO: add wrrong question
 
-            // Récupère la liste des cartes du round depuis le GameManager
+// Récupère la liste des cartes du round depuis le GameManager
             List<Card> roundOptions = gameManager.getRoundOptions();
 
             // Crée un nouvel objet "Question" correspondant au round raté
@@ -199,8 +215,6 @@ public class PlayActivity extends AppCompatActivity {
 
             // Ajoute cette question à la liste des questions ratées
             wrongQuestions.add(wrongQuestion);
-
-
         }
         reactionManager.hideReactionAfterDelay();
 
@@ -262,8 +276,7 @@ public class PlayActivity extends AppCompatActivity {
         intent.putExtra("difficulty", arena.getDifficulty());
         intent.putExtra("maxRound", maxRoundNumber);
         Log.d("test", "navigateToVictory: " + wrongQuestions);
-        // Envoie des données de la liste des questions a réessayer
-        intent.putParcelableArrayListExtra("wrongQuestions", new ArrayList<>(wrongQuestions));
+        intent.putParcelableArrayListExtra("wrongQuestions", wrongQuestions);
         startActivity(intent);
 
     }

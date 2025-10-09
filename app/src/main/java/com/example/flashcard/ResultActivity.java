@@ -40,7 +40,6 @@ public class ResultActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_result);
 
-        // Adjust padding to account for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -135,7 +134,6 @@ public class ResultActivity extends AppCompatActivity {
         });
 
         // "Retry" Button
-
         retryButton = findViewById(R.id.retryButton);
         if (percentage == 100){
             retryButton.setVisibility(View.GONE);
