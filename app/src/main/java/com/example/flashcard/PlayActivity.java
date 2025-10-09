@@ -1,5 +1,4 @@
 package com.example.flashcard;
-
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -10,13 +9,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import java.util.List;
 
 public class PlayActivity extends AppCompatActivity {
@@ -40,8 +37,6 @@ public class PlayActivity extends AppCompatActivity {
     Handler TimerHandler;
     Runnable TimerRunnable;
     boolean easterEgg;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +62,15 @@ public class PlayActivity extends AppCompatActivity {
         // Home button
         ImageButton homeButton = findViewById(R.id.homebutton);
         homeButton.setOnClickListener(v -> {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+            stop_timer();
             Intent intent = new Intent(PlayActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
         });
 
         // Initialize UI
@@ -98,7 +100,6 @@ public class PlayActivity extends AppCompatActivity {
         gameManager = new GameManager();
         startNewRound();
         startBarrelAnimation();
-
     }
 
     // Start a new round
@@ -141,8 +142,9 @@ public class PlayActivity extends AppCompatActivity {
         setResponseClick(response3, roundOptions.get(2));
     }
 
-    // Check if the answer is correct
-    private void handleClick(Card card){
+    // Handle click
+    private void handleClick(Card card) {
+        stop_timer();
 
         if (card == correctCard) {
             showReaction(true);
@@ -154,15 +156,13 @@ public class PlayActivity extends AppCompatActivity {
         indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
 
         // Check if all question are answered
-        // Start new round after 2s
-        if (roundNumber< maxRoundNumber)
-        {
+        if (roundNumber < maxRoundNumber) {
             new Handler().postDelayed(this::startNewRound, 2000);
-        }
-        else{
+        } else {
             new Handler().postDelayed(this::navigateToVictory, 2000);
         }
     }
+
     private void setResponseClick(ImageButton button, Card card) {
         button.setOnClickListener(v -> {
             if (easterEgg){
@@ -172,36 +172,32 @@ public class PlayActivity extends AppCompatActivity {
         });
     }
 
-
-    private void start_timer()
-    {
+    private void start_timer() {
         TimerHandler = new Handler();
-
         TimerHandler.postDelayed(TimerRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    timer();
-                    TimerHandler.postDelayed(this, 1000);
-                }
-            }, 1000);
+            @Override
+            public void run() {
+                timer();
+                TimerHandler.postDelayed(this, 1000);
+            }
+        }, 1000);
     }
-    private void stop_timer()
-    {
-        TimerHandler.removeCallbacks(TimerRunnable);
+
+    private void stop_timer() {
+        if (TimerHandler != null && TimerRunnable != null) {
+            TimerHandler.removeCallbacks(TimerRunnable);
+        }
     }
 
     // Timer Logic
-    private void timer()
-    {
+    private void timer() {
         Card FalseCard = new Card(0, 0);
 
-        if (currentTimePerQuestion <=0)
-        {
+        if (currentTimePerQuestion <= 0) {
             timerTextView.setText(currentTimePerQuestion + "s");
             handleClick(FalseCard);
             currentTimePerQuestion = timePerQuestion;
-        }
-        else{
+        } else {
             timerTextView.setText(currentTimePerQuestion + "s");
             currentTimePerQuestion--;
         }
@@ -216,7 +212,7 @@ public class PlayActivity extends AppCompatActivity {
         if (correct) {
             emotereaction.setImageResource(R.drawable.emote_win);
             type_response.setImageResource(R.drawable.text_true);
-            score ++;
+            score++;
         } else {
             emotereaction.setImageResource(R.drawable.emote_lose);
             type_response.setImageResource(R.drawable.text_false);
@@ -247,7 +243,6 @@ public class PlayActivity extends AppCompatActivity {
     }
     private void navigateToVictory()
     {
-        Log.d("test", "navigateToVictory: " + TimerRunnable);
         if (easterEgg || TimerRunnable != null){
             stop_timer();
         }
@@ -257,8 +252,6 @@ public class PlayActivity extends AppCompatActivity {
         intent.putExtra("maxRound", maxRoundNumber);
         startActivity(intent);
     }
-
-
 
     @Override
     protected void onDestroy() {

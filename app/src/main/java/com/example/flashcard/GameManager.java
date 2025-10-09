@@ -18,6 +18,12 @@ public class GameManager {
         allCards.add(new Card(R.drawable.card_mini_pekka, R.raw.mini_pekka_voice));
         allCards.add(new Card(R.drawable.card_prince, R.raw.prince_voice));
         allCards.add(new Card(R.drawable.card_valkiry, R.raw.valkyrie_voice));
+        allCards.add(new Card(R.drawable.card_bats, 0));
+        allCards.add(new Card(R.drawable.card_bomber, 0));
+        allCards.add(new Card(R.drawable.card_elite_barbarians, 0));
+        allCards.add(new Card(R.drawable.card_firecracker, 0));
+        allCards.add(new Card(R.drawable.card_wizard, 0));
+        allCards.add(new Card(R.drawable.card_minion_horde, 0));
     }
 
     public void startNewRound() {
@@ -49,7 +55,6 @@ public class GameManager {
         // shuffle the order of the cards
         Collections.shuffle(roundOptions);
     }
-
     public Card getCorrectCard() {
         return correctCard;
     }
