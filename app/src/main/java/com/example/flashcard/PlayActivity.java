@@ -54,8 +54,13 @@ public class PlayActivity extends AppCompatActivity {
 
         // Get arena from intent
         Intent srcIntent = getIntent();
+<<<<<<< HEAD
         this.arena = srcIntent.getParcelableExtra("arena");
 
+=======
+        Arena arenaGet = srcIntent.getParcelableExtra("arena");
+        this.arena = arenaGet;
+>>>>>>> activityplaystruct
 
         // set background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
@@ -64,8 +69,14 @@ public class PlayActivity extends AppCompatActivity {
         // Home button
         ImageButton homeButton = findViewById(R.id.homebutton);
         homeButton.setOnClickListener(v -> {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
             Intent intent = new Intent(PlayActivity.this, MainActivity.class);
             startActivity(intent);
+            finish(); // ferme l'activité en cours
         });
 
         // Initialize UI
@@ -155,8 +166,28 @@ public class PlayActivity extends AppCompatActivity {
     }
     private void setResponseClick(ImageButton button, Card card) {
         button.setOnClickListener(v -> {
+<<<<<<< HEAD
             stop_timer();
             handleClick(card);
+=======
+            if (card == correctCard) {
+                showReaction(true);
+            } else {
+                showReaction(false);
+            }
+            // Start new round after 2s
+
+            Log.d("test", "onCreate: " + roundNumber);
+            roundNumber++;
+            indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
+
+            if (roundNumber < maxRoundNumber) {
+                new Handler().postDelayed(this::startNewRound, 2000);
+            } else {
+                new Handler().postDelayed(this::navigateToVictory, 2000);
+            }
+
+>>>>>>> activityplaystruct
         });
     }
 
@@ -204,7 +235,7 @@ public class PlayActivity extends AppCompatActivity {
         if (correct) {
             emotereaction.setImageResource(R.drawable.emote_win);
             type_response.setImageResource(R.drawable.text_true);
-            score ++;
+            score++;
         } else {
             emotereaction.setImageResource(R.drawable.emote_lose);
             type_response.setImageResource(R.drawable.text_false);
@@ -233,9 +264,14 @@ public class PlayActivity extends AppCompatActivity {
                 })
                 .start();
     }
+<<<<<<< HEAD
     private void navigateToVictory()
     {
         stop_timer();
+=======
+
+    private void navigateToVictory() {
+>>>>>>> activityplaystruct
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
