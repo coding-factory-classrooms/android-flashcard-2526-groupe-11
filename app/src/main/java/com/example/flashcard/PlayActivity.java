@@ -24,8 +24,8 @@ public class PlayActivity extends AppCompatActivity {
     private GameManager gameManager;
 
     private ImageButton response1, response2, response3;
-    private ImageView emoteEncadre, typeResponse;
-    private TextView indexQuestionTextView, timerTextView;
+    private ImageView emoteFrame, typeResponse;
+    private TextView questionIndexTextView, timerTextView;
     private Button listenButton;
 
     private Card correctCard;
@@ -37,11 +37,13 @@ public class PlayActivity extends AppCompatActivity {
     public int currentTimePerQuestion = 5;
     public int timePerQuestion = 5;
 
-    private Handler TimerHandler;
-    private Runnable TimerRunnable;
+    private Handler timerHandler;
+    private Runnable timerRunnable;
     private boolean easterEgg;
 
     private ReactionManager reactionManager;
+
+    private EnvironmentManager environmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class PlayActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_play);
 
+        // Adjust for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -68,68 +71,76 @@ public class PlayActivity extends AppCompatActivity {
         ImageButton homeButton = findViewById(R.id.homebutton);
         homeButton.setOnClickListener(v -> {
             releaseMediaPlayer();
-            stop_timer();
+            stopTimer();
             startActivity(new Intent(PlayActivity.this, MainActivity.class));
             finish();
         });
 
         // Initialize UI
         listenButton = findViewById(R.id.lissenbutton);
-        emoteEncadre = findViewById(R.id.emoteencadre);
+        emoteFrame = findViewById(R.id.emoteencadre);
         typeResponse = findViewById(R.id.type_response);
         response1 = findViewById(R.id.response1);
         response2 = findViewById(R.id.response2);
         response3 = findViewById(R.id.response3);
-        indexQuestionTextView = findViewById(R.id.indexQuestionTextView);
+        questionIndexTextView = findViewById(R.id.indexQuestionTextView);
         timerTextView = findViewById(R.id.timerTextView);
 
-        // Hide reactions at start
-        emoteEncadre.setVisibility(View.GONE);
+        // Initialize EnvironmentManager (tower + decor)
+        ImageView imageView9 = findViewById(R.id.imageView9);
+        ImageView imageView10 = findViewById(R.id.imageView10);
+        environmentManager = new EnvironmentManager(imageView9, imageView10);
+
+        // Hide reactions at the start
+        emoteFrame.setVisibility(View.GONE);
         typeResponse.setVisibility(View.GONE);
 
-        indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
+        questionIndexTextView.setText(roundNumber + "/" + maxRoundNumber);
 
         // Initialize ReactionManager
-        reactionManager = new ReactionManager(this, emoteEncadre, typeResponse, response1, response2, response3);
+        reactionManager = new ReactionManager(this, emoteFrame, typeResponse, response1, response2, response3);
 
         if (easterEgg) {
             timerTextView.setText(currentTimePerQuestion + "s");
-            start_timer();
+            startTimer();
         }
 
         gameManager = new GameManager();
+
+        // Random tower and decor at start
+        environmentManager.setRandomEnvironment();
+
         startNewRound();
         startBarrelAnimation();
     }
 
-    // Start a new round
     private void startNewRound() {
         if (easterEgg) {
-            stop_timer();
+            stopTimer();
             currentTimePerQuestion = timePerQuestion;
             timerTextView.setText(currentTimePerQuestion + "s");
-            start_timer();
+            startTimer();
         }
 
         releaseMediaPlayer();
         gameManager.startNewRound();
 
+        // Change tower and decor each round
+        environmentManager.setRandomEnvironment();
+
         correctCard = gameManager.getCorrectCard();
         List<Card> roundOptions = gameManager.getRoundOptions();
         if (roundOptions.size() < 3) return;
 
-        // Set images for options
         response1.setImageResource(roundOptions.get(0).getImageResId());
         response2.setImageResource(roundOptions.get(1).getImageResId());
         response3.setImageResource(roundOptions.get(2).getImageResId());
 
-        // Audio
         mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId());
         listenButton.setOnClickListener(v -> {
             if (mediaPlayer != null) mediaPlayer.start();
         });
 
-        // Listeners
         setResponseClick(response1, roundOptions.get(0));
         setResponseClick(response2, roundOptions.get(1));
         setResponseClick(response3, roundOptions.get(2));
@@ -137,22 +148,21 @@ public class PlayActivity extends AppCompatActivity {
 
     private void setResponseClick(ImageButton button, Card card) {
         button.setOnClickListener(v -> {
-            if (easterEgg) stop_timer();
+            if (easterEgg) stopTimer();
             handleClick(card, button);
         });
     }
 
     private void handleClick(Card card, ImageButton clickedButton) {
-        stop_timer();
+        stopTimer();
         boolean correct = card == correctCard;
 
-        // Utilisation de ReactionManager
         boolean isCorrect = reactionManager.showReaction(correct, clickedButton, correctCard, gameManager.getRoundOptions());
         if (isCorrect) score++;
         reactionManager.hideReactionAfterDelay();
 
         roundNumber++;
-        indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
+        questionIndexTextView.setText(roundNumber + "/" + maxRoundNumber);
 
         if (roundNumber < maxRoundNumber) {
             new Handler().postDelayed(this::startNewRound, 2000);
@@ -161,20 +171,19 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    // Timer
-    private void start_timer() {
-        TimerHandler = new Handler();
-        TimerHandler.postDelayed(TimerRunnable = new Runnable() {
+    private void startTimer() {
+        timerHandler = new Handler();
+        timerHandler.postDelayed(timerRunnable = new Runnable() {
             @Override
             public void run() {
                 timer();
-                TimerHandler.postDelayed(this, 1000);
+                timerHandler.postDelayed(this, 1000);
             }
         }, 1000);
     }
 
-    private void stop_timer() {
-        if (TimerHandler != null && TimerRunnable != null) TimerHandler.removeCallbacks(TimerRunnable);
+    private void stopTimer() {
+        if (timerHandler != null && timerRunnable != null) timerHandler.removeCallbacks(timerRunnable);
     }
 
     private void timer() {
@@ -189,22 +198,22 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void startBarrelAnimation() {
-        ImageView squeleton = findViewById(R.id.squelleton);
+        ImageView skeleton = findViewById(R.id.squelleton);
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        squeleton.setX(screenWidth);
-        squeleton.setVisibility(View.VISIBLE);
-        squeleton.animate()
-                .translationX(-squeleton.getWidth())
+        skeleton.setX(screenWidth);
+        skeleton.setVisibility(View.VISIBLE);
+        skeleton.animate()
+                .translationX(-skeleton.getWidth())
                 .setDuration(2500)
                 .withEndAction(() -> {
-                    squeleton.setVisibility(View.GONE);
+                    skeleton.setVisibility(View.GONE);
                     new Handler().postDelayed(this::startBarrelAnimation, 4000);
                 })
                 .start();
     }
 
     private void navigateToVictory() {
-        stop_timer();
+        stopTimer();
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
@@ -222,7 +231,7 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stop_timer();
+        stopTimer();
         releaseMediaPlayer();
     }
 }
