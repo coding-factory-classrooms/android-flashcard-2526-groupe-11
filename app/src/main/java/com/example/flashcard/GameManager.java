@@ -24,6 +24,36 @@ public class GameManager {
         allCards.add(new Card(R.drawable.card_firecracker, 0));
         allCards.add(new Card(R.drawable.card_wizard, 0));
         allCards.add(new Card(R.drawable.card_minion_horde, 0));
+        allCards.add(new Card(R.drawable.archer_queen, 0));
+        allCards.add(new Card(R.drawable.boss_bandit_card_frame_alpha, 0));
+        allCards.add(new Card(R.drawable.card_battle_ram_evolution_01, 0));
+        allCards.add(new Card(R.drawable.card_dagger_duchess_tower_troop_frame, 0));
+        allCards.add(new Card(R.drawable.card_dark_prince, 0));
+        allCards.add(new Card(R.drawable.card_electro_giant, 0));
+        allCards.add(new Card(R.drawable.card_electro_wizard, 0));
+        allCards.add(new Card(R.drawable.card_electro_sprit, 0));
+        allCards.add(new Card(R.drawable.card_fire_spirit, 0));
+        allCards.add(new Card(R.drawable.card_fireball, 0));
+        allCards.add(new Card(R.drawable.card_giant_bomber, 0));
+        allCards.add(new Card(R.drawable.card_goblin_gang, 0));
+        allCards.add(new Card(R.drawable.card_goblin_machine_01, 0));
+        allCards.add(new Card(R.drawable.card_ice_golem_super, 0));
+        allCards.add(new Card(R.drawable.card_ice_spirit_evolution_frame, 0));
+        allCards.add(new Card(R.drawable.card_lumberjack, 0));
+        allCards.add(new Card(R.drawable.card_magic_archer_super, 0));
+        allCards.add(new Card(R.drawable.card_magic_archer, 0));
+        allCards.add(new Card(R.drawable.card_mega_knight, 0));
+        allCards.add(new Card(R.drawable.card_monk, 0));
+        allCards.add(new Card(R.drawable.card_mother_witch, 0));
+        allCards.add(new Card(R.drawable.card_pheonix, 0));
+        allCards.add(new Card(R.drawable.card_princess, 0));
+        allCards.add(new Card(R.drawable.card_skeleton_army, 0));
+        allCards.add(new Card(R.drawable.card_skeleton_dragons, 0));
+        allCards.add(new Card(R.drawable.card_tesla, 0));
+        allCards.add(new Card(R.drawable.card_the_log, 0));
+        allCards.add(new Card(R.drawable.card_three_musketeers, 0));
+        allCards.add(new Card(R.drawable.executioner_evolution_card_alpha, 0));
+
     }
 
     public void startNewRound() {

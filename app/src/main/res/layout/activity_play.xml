@@ -69,6 +69,7 @@
         android:id="@+id/response3"
         android:layout_width="46dp"
         android:layout_height="75dp"
+        android:scaleType="center"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="@+id/textView2"
