@@ -1,20 +1,20 @@
 package com.example.flashcard;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
-public class Json {
+interface Json {
 
-    //method to create a jsonFile
-    public void jsonWrite(){
-        Gson gson = new Gson();
-        gson.toJson(123.45, new FileWriter(filePath));
+    void jsonWrite(Context context, String fileName);
 
-
-    }
-
-    // method read jsonfile
+    Json jsonRead(Context context, String fileName);
+    boolean jsonExist(Context context, String fileName);
 
     //maybe method to convert to an Object
 
