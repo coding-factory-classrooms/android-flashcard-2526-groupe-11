@@ -1,7 +1,9 @@
 package com.example.flashcard;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.PlaybackParams;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -27,8 +30,8 @@ public class PlayActivity extends AppCompatActivity {
     private GameManager gameManager;
 
     private ImageButton response1, response2, response3;
-    private ImageView emoteencadre, emotereaction, type_response;
-    private TextView indexQuestionTextView, timerTextView;
+    private ImageView emoteFrame, typeResponse;
+    private TextView questionIndexTextView, timerTextView;
     private Button listenButton;
 
     private Card correctCard;
@@ -39,125 +42,148 @@ public class PlayActivity extends AppCompatActivity {
 
     public int score = 0;
     public int roundNumber = 0;
-    public int maxRoundNumber = 2;
+    public int maxRoundNumber = 5;
     public Arena arena;
     public int currentTimePerQuestion = 5;
     public int timePerQuestion = 5;
-    Handler TimerHandler;
-    Runnable TimerRunnable;
-    boolean easterEgg;
+
+    private Handler timerHandler;
+    private Runnable timerRunnable;
+    private boolean easterEgg;
+
+    private ReactionManager reactionManager;
+
+    private EnvironmentManager environmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_play);
+
+        // Adjust for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Get arena from intent
+        // Get arena and extras
         Intent srcIntent = getIntent();
         this.arena = srcIntent.getParcelableExtra("arena");
         this.easterEgg = srcIntent.getBooleanExtra("easterEgg", false);
 
-        // set background
+        // Background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
         backgroundDifficultyImageView.setImageResource(arena.getBackgroundImage());
 
         // Home button
         ImageButton homeButton = findViewById(R.id.homebutton);
         homeButton.setOnClickListener(v -> {
-            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;
-            }
-            stop_timer();
-            Intent intent = new Intent(PlayActivity.this, MainActivity.class);
-            startActivity(intent);
+            releaseMediaPlayer();
+            stopTimer();
+            startActivity(new Intent(PlayActivity.this, MainActivity.class));
             finish();
         });
 
         // Initialize UI
         listenButton = findViewById(R.id.lissenbutton);
-        emoteencadre = findViewById(R.id.emoteencadre);
-        emotereaction = findViewById(R.id.emotereaction);
-        type_response = findViewById(R.id.type_response);
+        emoteFrame = findViewById(R.id.emoteencadre);
+        typeResponse = findViewById(R.id.type_response);
         response1 = findViewById(R.id.response1);
         response2 = findViewById(R.id.response2);
         response3 = findViewById(R.id.response3);
-        indexQuestionTextView = findViewById(R.id.indexQuestionTextView);
+        questionIndexTextView = findViewById(R.id.indexQuestionTextView);
         timerTextView = findViewById(R.id.timerTextView);
 
-        // Hide reactions at start
-        emoteencadre.setVisibility(View.GONE);
-        emotereaction.setVisibility(View.GONE);
-        type_response.setVisibility(View.GONE);
+        // Initialize EnvironmentManager (tower + decor)
+        ImageView imageView9 = findViewById(R.id.imageView9);
+        ImageView imageView10 = findViewById(R.id.imageView10);
+        environmentManager = new EnvironmentManager(imageView9, imageView10);
 
-        indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
+        // Hide reactions at the start
+        emoteFrame.setVisibility(View.GONE);
+        typeResponse.setVisibility(View.GONE);
 
-        if (easterEgg){
+        questionIndexTextView.setText(roundNumber + "/" + maxRoundNumber);
+
+        // Initialize ReactionManager
+        reactionManager = new ReactionManager(this, emoteFrame, typeResponse, response1, response2, response3);
+
+        if (easterEgg) {
             timerTextView.setText(currentTimePerQuestion + "s");
-            start_timer();
+            startTimer();
         }
 
         gameManager = new GameManager();
+
+        // Random tower and decor at start
+        environmentManager.setRandomEnvironment();
+
         startNewRound();
         startBarrelAnimation();
     }
 
-    // Start a new round
     private void startNewRound() {
         if (easterEgg) {
-            stop_timer();
+            stopTimer();
             currentTimePerQuestion = timePerQuestion;
             timerTextView.setText(currentTimePerQuestion + "s");
-            start_timer();
+            startTimer();
         }
 
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-
+        releaseMediaPlayer();
         gameManager.startNewRound();
+
+        // Change tower and decor each round
+        environmentManager.setRandomEnvironment();
+
         correctCard = gameManager.getCorrectCard();
         List<Card> roundOptions = gameManager.getRoundOptions();
+        if (roundOptions.size() < 3) return;
 
-        // Set images for options
         response1.setImageResource(roundOptions.get(0).getImageResId());
         response2.setImageResource(roundOptions.get(1).getImageResId());
         response3.setImageResource(roundOptions.get(2).getImageResId());
 
-        // Set audio for the correct card
         mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId());
+        if (Objects.equals(arena.getDifficulty(), "Difficile")){
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setVolume(500, 500);
+            PlaybackParams params = new PlaybackParams();
+            params.setPitch(0.2f);
+            mediaPlayer.setPlaybackParams(params);
+        }
+
+
 
         listenButton.setOnClickListener(v -> {
-            if (mediaPlayer != null) {
-                mediaPlayer.start();
-            }
+            if (mediaPlayer != null) mediaPlayer.start();
         });
 
-        // Set click listeners
         setResponseClick(response1, roundOptions.get(0));
         setResponseClick(response2, roundOptions.get(1));
         setResponseClick(response3, roundOptions.get(2));
     }
 
-    // Handle click
-    private void handleClick(Card card, ImageButton clickedButton) {
-        stop_timer();
+    private void setResponseClick(ImageButton button, Card card) {
+        button.setOnClickListener(v -> {
+            if (easterEgg) stopTimer();
+            handleClick(card, button);
+        });
+    }
 
+    private void handleClick(Card card, ImageButton clickedButton) {
+        stopTimer();
         boolean correct = card == correctCard;
-        showReaction(correct, clickedButton);
+
+        boolean isCorrect = reactionManager.showReaction(correct, clickedButton, correctCard, gameManager.getRoundOptions());
+        if (isCorrect) score++;
+        reactionManager.hideReactionAfterDelay();
 
         roundNumber++;
-        indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
+        questionIndexTextView.setText(roundNumber + "/" + maxRoundNumber);
 
-        // Check if all question are answered
         if (roundNumber < maxRoundNumber) {
             new Handler().postDelayed(this::startNewRound, 2000);
         } else {
@@ -165,39 +191,25 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    private void setResponseClick(ImageButton button, Card card) {
-        button.setOnClickListener(v -> {
-            if (easterEgg){
-                stop_timer();
-            }
-            handleClick(card, button);
-        });
-    }
-
-    private void start_timer() {
-        TimerHandler = new Handler();
-        TimerHandler.postDelayed(TimerRunnable = new Runnable() {
+    private void startTimer() {
+        timerHandler = new Handler();
+        timerHandler.postDelayed(timerRunnable = new Runnable() {
             @Override
             public void run() {
                 timer();
-                TimerHandler.postDelayed(this, 1000);
+                timerHandler.postDelayed(this, 1000);
             }
         }, 1000);
     }
 
-    private void stop_timer() {
-        if (TimerHandler != null && TimerRunnable != null) {
-            TimerHandler.removeCallbacks(TimerRunnable);
-        }
+    private void stopTimer() {
+        if (timerHandler != null && timerRunnable != null) timerHandler.removeCallbacks(timerRunnable);
     }
 
-    // Timer Logic
     private void timer() {
-        Card FalseCard = new Card(0, 0);
-
         if (currentTimePerQuestion <= 0) {
-            timerTextView.setText(currentTimePerQuestion + "s");
-            handleClick(FalseCard, null);
+            timerTextView.setText("0s");
+            handleClick(new Card(0, 0), null);
             currentTimePerQuestion = timePerQuestion;
         } else {
             timerTextView.setText(currentTimePerQuestion + "s");
@@ -205,90 +217,23 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    // Show reaction (win/lose) and highlight correct/wrong
-    // Show reaction (win/lose) and highlight answers
-    private void showReaction(boolean correct, ImageButton clickedButton) {
-
-        // Show UI
-        emoteencadre.setVisibility(View.VISIBLE);
-        emotereaction.setVisibility(View.VISIBLE);
-        type_response.setVisibility(View.VISIBLE);
-
-        if (correct) {
-            // Correct answer
-            emotereaction.setImageResource(R.drawable.emote_win);
-            type_response.setImageResource(R.drawable.text_true);
-            score++;
-        } else {
-            // Mauvaise réponse
-            emotereaction.setImageResource(R.drawable.emote_lose);
-            type_response.setImageResource(R.drawable.text_false);
-
-            // Récupère la liste des cartes du round depuis le GameManager
-            List<Card> roundOptions = gameManager.getRoundOptions();
-
-            // Crée un nouvel objet "Question" correspondant au round raté
-            Question wrongQuestion = new Question(
-                    Arrays.asList(
-                            roundOptions.get(0).getImageResId(),
-                            roundOptions.get(1).getImageResId(),
-                            roundOptions.get(2).getImageResId()
-                    ),
-                    gameManager.getCorrectCard().getImageResId(),
-                    gameManager.getCorrectCard().getAudioResId(),
-                    arena
-            );
-
-            // Ajoute cette question à la liste des questions ratées
-            wrongQuestions.add(wrongQuestion);
-        }
-
-        // Highlight correct answer
-        if (correctCard == gameManager.getRoundOptions().get(0)) {
-            response1.setColorFilter(getResources().getColor(R.color.correct_answer, null));
-        } else if (correctCard == gameManager.getRoundOptions().get(1)) {
-            response2.setColorFilter(getResources().getColor(R.color.correct_answer, null));
-        } else if (correctCard == gameManager.getRoundOptions().get(2)) {
-            response3.setColorFilter(getResources().getColor(R.color.correct_answer, null));
-        }
-
-        // Highlight wrong choice
-        if (clickedButton != null) {
-            clickedButton.setColorFilter(getResources().getColor(R.color.wrong_answer, null));
-        }
-    }
-
-    // Hide UI and reset colors after 2s
-        emoteencadre.postDelayed(()->{
-        emoteencadre.setVisibility(View.GONE);
-        emotereaction.setVisibility(View.GONE);
-        type_response.setVisibility(View.GONE);
-        response1.clearColorFilter();
-        response2.clearColorFilter();
-        response3.clearColorFilter();
-    }, 2000);
-
-    // Skeleton animation across the screen
     private void startBarrelAnimation() {
-        ImageView squeleton = findViewById(R.id.squelleton);
+        ImageView skeleton = findViewById(R.id.squelleton);
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        squeleton.setX(screenWidth);
-        squeleton.setVisibility(View.VISIBLE);
-        squeleton.animate()
-                .translationX(-squeleton.getWidth())
+        skeleton.setX(screenWidth);
+        skeleton.setVisibility(View.VISIBLE);
+        skeleton.animate()
+                .translationX(-skeleton.getWidth())
                 .setDuration(2500)
                 .withEndAction(() -> {
-                    squeleton.setVisibility(View.GONE);
+                    skeleton.setVisibility(View.GONE);
                     new Handler().postDelayed(this::startBarrelAnimation, 4000);
                 })
                 .start();
     }
 
     private void navigateToVictory() {
-        if (easterEgg || TimerRunnable != null){
-            stop_timer();
-        }
-        //Log.d("TAG", "navigateToVictory: "+ wrongCard.wrongCards);
+        stopTimer();
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
@@ -297,19 +242,17 @@ public class PlayActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (easterEgg){
-            stop_timer();
-        }
-        // Release MediaPlayer
+    private void releaseMediaPlayer() {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopTimer();
+        releaseMediaPlayer();
+    }
 }
-
-
-
