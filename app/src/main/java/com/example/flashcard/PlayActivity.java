@@ -142,10 +142,11 @@ public class PlayActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId());
         if (Objects.equals(arena.getDifficulty(), "Difficile")){
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setVolume(500, 500);
+            mediaPlayer.setVolume(500f, 500f);
             PlaybackParams params = new PlaybackParams();
             params.setPitch(0.2f);
             mediaPlayer.setPlaybackParams(params);
+            mediaPlayer.pause();
         }
 
 
