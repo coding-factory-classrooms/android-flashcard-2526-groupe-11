@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -38,6 +39,7 @@ public class PlayActivity extends AppCompatActivity {
     public int timePerQuestion = 5;
     Handler TimerHandler;
     Runnable TimerRunnable;
+    boolean easterEgg;
 
 
 
@@ -55,6 +57,7 @@ public class PlayActivity extends AppCompatActivity {
         // Get arena from intent
         Intent srcIntent = getIntent();
         this.arena = srcIntent.getParcelableExtra("arena");
+        this.easterEgg = srcIntent.getBooleanExtra("easterEgg", false);
 
 
         // set background
@@ -85,9 +88,12 @@ public class PlayActivity extends AppCompatActivity {
         type_response.setVisibility(View.GONE);
 
         indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
-        timerTextView.setText(currentTimePerQuestion + "s");
 
-        start_timer();
+
+        if (easterEgg){
+            timerTextView.setText(currentTimePerQuestion + "s");
+            start_timer();
+        }
 
         gameManager = new GameManager();
         startNewRound();
@@ -97,10 +103,14 @@ public class PlayActivity extends AppCompatActivity {
 
     // Start a new round
     private void startNewRound() {
-        stop_timer();
-        currentTimePerQuestion = timePerQuestion;
-        timerTextView.setText(currentTimePerQuestion + "s");
-        start_timer();
+        if (easterEgg)
+        {
+            stop_timer();
+            currentTimePerQuestion = timePerQuestion;
+            timerTextView.setText(currentTimePerQuestion + "s");
+            start_timer();
+        }
+
 
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -155,7 +165,9 @@ public class PlayActivity extends AppCompatActivity {
     }
     private void setResponseClick(ImageButton button, Card card) {
         button.setOnClickListener(v -> {
-            stop_timer();
+            if (easterEgg){
+                stop_timer();
+            }
             handleClick(card);
         });
     }
@@ -235,7 +247,10 @@ public class PlayActivity extends AppCompatActivity {
     }
     private void navigateToVictory()
     {
-        stop_timer();
+        Log.d("test", "navigateToVictory: " + TimerRunnable);
+        if (easterEgg || TimerRunnable != null){
+            stop_timer();
+        }
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
@@ -248,7 +263,9 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stop_timer();
+        if (easterEgg){
+            stop_timer();
+        }
         // Release MediaPlayer
         if (mediaPlayer != null) {
             mediaPlayer.release();

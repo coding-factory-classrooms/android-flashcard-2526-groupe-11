@@ -1,13 +1,17 @@
 package com.example.flashcard;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,13 +21,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.seismic.ShakeDetector;
+
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnArenaListener {
+public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnArenaListener, ShakeDetector.Listener {
 
     public static final String TAG = "MainActivity";
-
+    private ShakeDetector mShakeDetector;
+    private SensorManager mSensorManager;
     public Arena selectedArena =  new Arena(R.drawable.cr_arene_easy, "Facile", R.drawable.backgraound_level_one);
+    private boolean easterEgg = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +44,13 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager == null) {
+            Log.e(TAG, "SensorManager est null — l’appareil ne supporte pas les capteurs ?");
+        }
 
+        // Initialise le ShakeDetector (avec this comme Listener)
+        mShakeDetector = new ShakeDetector(this);
 
         ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
         Group firstMainGroup = findViewById(R.id.firstMainGroup);
@@ -58,6 +73,9 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
             Intent intent = new Intent(this, PlayActivity.class);
             intent.putExtra("arena", arena);
+            if (easterEgg){
+                intent.putExtra("easterEgg", true);
+            }
             startActivity(intent);
         });
 
@@ -87,6 +105,25 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mShakeDetector != null && mSensorManager != null) {
+            // Démarrer la détection de shake ici, avec un delay raisonnable
+            mShakeDetector.start(mSensorManager, SensorManager.SENSOR_DELAY_GAME);
+        } else {
+            Log.e(TAG, "Impossible de démarrer ShakeDetector — instance ou sensorManager est nul");
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mShakeDetector != null) {
+            mShakeDetector.stop();
+        }
+    }
     @Override
     public void onArenaSelected(Arena arena){
         Group firstMainGroup = findViewById(R.id.firstMainGroup);
@@ -101,6 +138,23 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
         recyclerView.setVisibility(View.INVISIBLE);
         firstMainGroup.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public synchronized void hearShake() {
+        boolean actualBoolean = easterEgg;
+        easterEgg = !actualBoolean;
+        String message = "";
+        if (easterEgg){
+            message = "Activé";
+        }
+        else{
+            message = "Désactivé";
+        }
+
+        Toast.makeText(this, "Easter Egg "+message, Toast.LENGTH_SHORT).show();
+
+
     }
 }
 
