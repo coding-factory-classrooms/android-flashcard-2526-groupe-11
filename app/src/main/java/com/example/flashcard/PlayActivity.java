@@ -178,7 +178,29 @@ public class PlayActivity extends AppCompatActivity {
         boolean correct = card == correctCard;
 
         boolean isCorrect = reactionManager.showReaction(correct, clickedButton, correctCard, gameManager.getRoundOptions());
-        if (isCorrect) score++;
+        if (isCorrect) {score++;}
+        else{
+            //TODO: add wrrong question
+// Récupère la liste des cartes du round depuis le GameManager
+            List<Card> roundOptions = gameManager.getRoundOptions();
+
+            // Crée un nouvel objet "Question" correspondant au round raté
+            Question wrongQuestion = new Question(
+                    Arrays.asList(
+                            roundOptions.get(0).getImageResId(),
+                            roundOptions.get(1).getImageResId(),
+                            roundOptions.get(2).getImageResId()
+                    ),
+                    gameManager.getCorrectCard().getImageResId(),
+                    gameManager.getCorrectCard().getAudioResId(),
+                    arena
+            );
+
+            // Ajoute cette question à la liste des questions ratées
+            wrongQuestions.add(wrongQuestion);
+
+
+        }
         reactionManager.hideReactionAfterDelay();
 
         roundNumber++;
@@ -239,7 +261,9 @@ public class PlayActivity extends AppCompatActivity {
         intent.putExtra("difficulty", arena.getDifficulty());
         // intent.putExtra("wrongCards", wrongCard);
         intent.putExtra("maxRound", maxRoundNumber);
+        Log.d("test", "navigateToVictory: " + wrongQuestions);
         startActivity(intent);
+
     }
 
     private void releaseMediaPlayer() {
