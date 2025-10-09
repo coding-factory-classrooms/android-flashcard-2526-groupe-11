@@ -1,6 +1,8 @@
 package com.example.flashcard;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.PlaybackParams;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import java.util.List;
+import java.util.Objects;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -30,7 +33,7 @@ public class PlayActivity extends AppCompatActivity {
 
     public int score = 0;
     public int roundNumber = 0;
-    public int maxRoundNumber = 2;
+    public int maxRoundNumber = 5;
     public Arena arena;
     public int currentTimePerQuestion = 5;
     public int timePerQuestion = 5;
@@ -129,6 +132,15 @@ public class PlayActivity extends AppCompatActivity {
 
         // Set audio for the correct card
         mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId());
+        if (Objects.equals(arena.getDifficulty(), "Difficile")){
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setVolume(500, 500);
+            PlaybackParams params = new PlaybackParams();
+            params.setPitch(0.2f);
+            mediaPlayer.setPlaybackParams(params);
+        }
+
+
 
         listenButton.setOnClickListener(v -> {
             if (mediaPlayer != null) {

@@ -1,5 +1,8 @@
 package com.example.flashcard;
 
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
+
 public class Card {
     private int imageResId;   // Image of the card
     private int audioResId;   // Associated audio (0 if none)
@@ -8,6 +11,7 @@ public class Card {
         this.imageResId = imageResId;
         this.audioResId = audioResId;
     }
+
 
     public int getImageResId() {
         return imageResId;
