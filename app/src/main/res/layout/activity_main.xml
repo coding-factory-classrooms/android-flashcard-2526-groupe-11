@@ -24,7 +24,7 @@
         android:id="@+id/firstMainGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="arenaImageButton,questionButton,logotextView,menuButtonLinearLayout,crLogoImageView,difficultyArenaTextView"
+        app:constraint_referenced_ids="arenaImageButton,questionButton,logotextView2,menuButtonLinearLayout,crLogoImageView2,difficultyArenaTextView"
         tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -47,7 +47,7 @@
         app:layout_constraintBottom_toTopOf="@+id/menuButtonLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logotextView"
+        app:layout_constraintTop_toBottomOf="@+id/logotextView2"
         app:srcCompat="@drawable/cr_arene_hard" />
 
     <Button
@@ -71,7 +71,7 @@
         app:layout_constraintTop_toBottomOf="@+id/menuButtonLinearLayout" />
 
     <TextView
-        android:id="@+id/logotextView"
+        android:id="@+id/logotextView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -81,7 +81,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crLogoImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/crLogoImageView2" />
 
     <LinearLayout
         android:id="@+id/menuButtonLinearLayout"
@@ -135,7 +135,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/crLogoImageView"
+        android:id="@+id/crLogoImageView2"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="32dp"
