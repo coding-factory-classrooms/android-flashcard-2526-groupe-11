@@ -7,9 +7,11 @@ import android.media.PlaybackParams;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -29,6 +31,7 @@ public class PlayActivity extends AppCompatActivity {
     private ImageButton response1, response2, response3;
     private ImageView emoteFrame, typeResponse;
     private TextView questionIndexTextView, timerTextView;
+    private LinearLayout cardLinearLayout, card2LinearLayout;
     private Button listenButton;
 
     private Card correctCard;
@@ -88,11 +91,23 @@ public class PlayActivity extends AppCompatActivity {
         response3 = findViewById(R.id.response3);
         questionIndexTextView = findViewById(R.id.indexQuestionTextView);
         timerTextView = findViewById(R.id.timerTextView);
+        cardLinearLayout = findViewById(R.id.cardLinearLayout);
+        card2LinearLayout = findViewById(R.id.card2LinearLayout);
+
 
         // Initialize EnvironmentManager (tower + decor)
         ImageView imageView9 = findViewById(R.id.imageView9);
         ImageView imageView10 = findViewById(R.id.imageView10);
         environmentManager = new EnvironmentManager(imageView9, imageView10);
+
+        // Medium Mode layout
+        if (Objects.equals(arena.getDifficulty(), "Moyen"))
+        {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) cardLinearLayout.getLayoutParams();
+            params.topMargin = 0;
+            cardLinearLayout.setLayoutParams(params);
+            card2LinearLayout.setVisibility(View.VISIBLE);
+        }
 
         // Hide reactions at the start
         emoteFrame.setVisibility(View.GONE);
