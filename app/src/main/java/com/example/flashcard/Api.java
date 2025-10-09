@@ -3,7 +3,12 @@ package com.example.flashcard;
 import android.util.Log;
 
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -37,7 +42,10 @@ public class Api {
                     }
 
                     String result = responseBody != null ? responseBody.string() : "";
-                    callback.onSuccess(result);
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<Card>>(){}.getType();
+                    List<Card> allCards = gson.fromJson(result, listType);
+                    callback.onSuccess(allCards);
 
                 } catch (IOException e) {
                     callback.onError(e);

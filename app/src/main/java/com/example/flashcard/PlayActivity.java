@@ -141,14 +141,11 @@ public class PlayActivity extends AppCompatActivity {
         api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
             @Override
             //Réécriture de la fonction onSuccess de l'interface afin d'appeler les fonctions de PlayActivity
-            public void onSuccess(String result) {
+            public void onSuccess(List<Card> result) {
                 //result renvoie le json de l'API, on récupère les données sous forme de liste avec Gson
                 //On passe ensuite cette liste dans un élément GameManager
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<Card>>(){}.getType();
-                List<Card> allCards = gson.fromJson(result, listType);
-                Log.d("AledO","Allez : "+ allCards.get(0).audioResId);
-                gameManager = new GameManager(allCards,getBaseContext());
+
+                gameManager = new GameManager(result,getBaseContext());
 
                 //Utilisation de runOnUiThread pour pouvoir accéder à l'UI du thread principal (sinon erreurs)
                 runOnUiThread(new Runnable() {
