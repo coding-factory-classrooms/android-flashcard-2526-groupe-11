@@ -51,8 +51,7 @@ public class PlayActivity extends AppCompatActivity {
         // Get arena from intent
         Intent srcIntent = getIntent();
         Arena arenaGet = srcIntent.getParcelableExtra("arena");
-        this.arena =arenaGet;
-
+        this.arena = arenaGet;
 
         // set background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
@@ -61,8 +60,14 @@ public class PlayActivity extends AppCompatActivity {
         // Home button
         ImageButton homeButton = findViewById(R.id.homebutton);
         homeButton.setOnClickListener(v -> {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
             Intent intent = new Intent(PlayActivity.this, MainActivity.class);
             startActivity(intent);
+            finish(); // ferme l'activité en cours
         });
 
         // Initialize UI
@@ -133,11 +138,9 @@ public class PlayActivity extends AppCompatActivity {
             roundNumber++;
             indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
 
-            if (roundNumber< maxRoundNumber)
-            {
+            if (roundNumber < maxRoundNumber) {
                 new Handler().postDelayed(this::startNewRound, 2000);
-            }
-            else{
+            } else {
                 new Handler().postDelayed(this::navigateToVictory, 2000);
             }
 
@@ -153,7 +156,7 @@ public class PlayActivity extends AppCompatActivity {
         if (correct) {
             emotereaction.setImageResource(R.drawable.emote_win);
             type_response.setImageResource(R.drawable.text_true);
-            score ++;
+            score++;
         } else {
             emotereaction.setImageResource(R.drawable.emote_lose);
             type_response.setImageResource(R.drawable.text_false);
@@ -182,8 +185,8 @@ public class PlayActivity extends AppCompatActivity {
                 })
                 .start();
     }
-    private void navigateToVictory()
-    {
+
+    private void navigateToVictory() {
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
