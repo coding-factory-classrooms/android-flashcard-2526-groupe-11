@@ -23,6 +23,7 @@ public class ResultActivity extends AppCompatActivity {
     private TextView chosenDifficulty;
     private TextView resultMessage;
     private TextView scoreResult;
+    private  TextView percentageResult;
     private ImageView resultImage;
     private int correctAnswers;
     private int totalQuestions;
@@ -63,25 +64,51 @@ public class ResultActivity extends AppCompatActivity {
         resultMessage = findViewById(R.id.messageTextView);
 
         // Calculate success percentage
-        float percentage = ((float) correctAnswers / totalQuestions * 100);
+        int percentage =  (int)(((float)correctAnswers / totalQuestions) * 100);
+        // Display the percentage
+        percentageResult = findViewById(R.id.percentagetextView);
+        percentageResult.setText(percentage + " %");
 
-        // Apply conditions and display different messages
+        // Apply conditions and display different messages depending on the score and the level chosen
         if (percentage < 50) {
-            resultImage.setImageResource(R.drawable.loss);
+           if (difficulty.equals("facile")){
+               resultImage.setImageResource(R.drawable.defeat_easy);
+
+           } else if (difficulty.equals("moyen")) {
+               resultImage.setImageResource(R.drawable.defeat_medium);
+
+           }else {
+               resultImage.setImageResource(R.drawable.defeat_hard);}
             resultMessage.setText("Entraîne-toi !");
         } else if (percentage < 80) {
-            resultImage.setImageResource(R.drawable.card_hog_rider);
+
+            if (difficulty.equals("facile")){
+                resultImage.setImageResource(R.drawable.correct_easy);
+
+            } else if (difficulty.equals("moyen")) {
+                resultImage.setImageResource(R.drawable.correct_medium);
+
+            }else {
+            resultImage.setImageResource(R.drawable.correct_hard);
+            }
             resultMessage.setText("Bien joué !");
         } else {
-            resultImage.setImageResource(R.drawable.emote_win);
+            if (difficulty.equals("facile")){
+                resultImage.setImageResource(R.drawable.victory_easy);
+
+            } else if (difficulty.equals("moyen")) {
+                resultImage.setImageResource(R.drawable.victory_medium);
+
+            }else {
+                resultImage.setImageResource(R.drawable.victory_hard);
+            }
             resultMessage.setText("Excellent !");
         }
 
         // "Replay" button
         restartButton = findViewById(R.id.restartButton);
         restartButton.setOnClickListener(v -> {
-            Log.d("ResultActivity", "Replay button clicked");
-
+            // Navigate to the main page
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
@@ -89,8 +116,6 @@ public class ResultActivity extends AppCompatActivity {
         // "Share" button
         shareButton = findViewById(R.id.shareButton);
         shareButton.setOnClickListener(v -> {
-            Log.d("ResultActivity", "Share button clicked");
-
             // Message to share
             String message = "J'ai fait : " + correctAnswers + " / " + totalQuestions + " au Flashcard, essaie toi aussi !";
 
