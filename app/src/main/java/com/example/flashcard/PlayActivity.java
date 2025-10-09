@@ -97,7 +97,7 @@ public class PlayActivity extends AppCompatActivity {
             start_timer();
         }
 
-        gameManager = new GameManager();
+        gameManager = new GameManager(this);
         startNewRound();
         startBarrelAnimation();
     }
@@ -123,12 +123,12 @@ public class PlayActivity extends AppCompatActivity {
         List<Card> roundOptions = gameManager.getRoundOptions();
 
         // Set images for options
-        response1.setImageResource(roundOptions.get(0).getImageResId());
-        response2.setImageResource(roundOptions.get(1).getImageResId());
-        response3.setImageResource(roundOptions.get(2).getImageResId());
+        response1.setImageResource(roundOptions.get(0).getImageResId(getBaseContext()));
+        response2.setImageResource(roundOptions.get(1).getImageResId(getBaseContext()));
+        response3.setImageResource(roundOptions.get(2).getImageResId(getBaseContext()));
 
         // Set audio for the correct card
-        mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId());
+        mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId(getBaseContext()));
 
         listenButton.setOnClickListener(v -> {
             if (mediaPlayer != null) {
@@ -149,6 +149,8 @@ public class PlayActivity extends AppCompatActivity {
         if (card == correctCard) {
             showReaction(true);
         } else {
+            // ajoute la liste question raté la question
+
             showReaction(false);
         }
 
@@ -191,7 +193,7 @@ public class PlayActivity extends AppCompatActivity {
 
     // Timer Logic
     private void timer() {
-        Card FalseCard = new Card(0, 0);
+        Card FalseCard = new Card("0", "0");
 
         if (currentTimePerQuestion <= 0) {
             timerTextView.setText(currentTimePerQuestion + "s");

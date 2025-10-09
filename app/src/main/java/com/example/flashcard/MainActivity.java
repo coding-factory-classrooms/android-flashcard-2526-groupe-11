@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
 
 
+
         // Navigate to ListQuestionsActivity
         Button list = findViewById(R.id.questionButton);
         list.setOnClickListener(v -> {
