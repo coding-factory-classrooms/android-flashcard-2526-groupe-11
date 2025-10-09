@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.media.PlaybackParams;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -213,8 +214,8 @@ public class PlayActivity extends AppCompatActivity {
 
         if (Objects.equals(arena.getDifficulty(), "Moyen") && roundOptions.size() >=5)
         {
-            response4.setImageResource(roundOptions.get(3).getImageResId());
-            response5.setImageResource(roundOptions.get(4).getImageResId());
+            response4.setImageResource(roundOptions.get(3).getImageResId(getBaseContext()));
+            response5.setImageResource(roundOptions.get(4).getImageResId(getBaseContext()));
             setResponseClick(response4, roundOptions.get(3));
             setResponseClick(response5, roundOptions.get(4));
         }
@@ -293,6 +294,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private void navigateToVictory() {
         stopTimer();
+        releaseMediaPlayer();
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
