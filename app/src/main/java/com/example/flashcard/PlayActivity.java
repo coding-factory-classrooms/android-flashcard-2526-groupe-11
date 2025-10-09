@@ -17,6 +17,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlayActivity extends AppCompatActivity {
@@ -31,8 +33,9 @@ public class PlayActivity extends AppCompatActivity {
 
     private Card correctCard;
 
-//    private List<List<Card>> wrongCards= new ArrayList<>();
-    private WrongCards wrongCard;
+    // Liste des questions raté par le joueur
+    private ArrayList<Question> wrongQuestions = new ArrayList<>();
+
 
     public int score = 0;
     public int roundNumber = 0;
@@ -217,39 +220,53 @@ public class PlayActivity extends AppCompatActivity {
             type_response.setImageResource(R.drawable.text_true);
             score++;
         } else {
-            // Wrong answer
+            // Mauvaise réponse
             emotereaction.setImageResource(R.drawable.emote_lose);
             type_response.setImageResource(R.drawable.text_false);
-            // Save this question on the list to retry later
-//            wrongCard.add(gameManager.getRoundOptions());
-//            wrongCard.wrongCards.add(gameManager.getRoundOptions());
 
-            // Highlight correct answer
-            if (correctCard == gameManager.getRoundOptions().get(0)) {
-                response1.setColorFilter(getResources().getColor(R.color.correct_answer, null));
-            } else if (correctCard == gameManager.getRoundOptions().get(1)) {
-                response2.setColorFilter(getResources().getColor(R.color.correct_answer, null));
-            } else if (correctCard == gameManager.getRoundOptions().get(2)) {
-                response3.setColorFilter(getResources().getColor(R.color.correct_answer, null));
-            }
+            // Récupère la liste des cartes du round depuis le GameManager
+            List<Card> roundOptions = gameManager.getRoundOptions();
 
-            // Highlight wrong choice
-            if (clickedButton != null) {
-                clickedButton.setColorFilter(getResources().getColor(R.color.wrong_answer, null));
-            }
+            // Crée un nouvel objet "Question" correspondant au round raté
+            Question wrongQuestion = new Question(
+                    Arrays.asList(
+                            roundOptions.get(0).getImageResId(),
+                            roundOptions.get(1).getImageResId(),
+                            roundOptions.get(2).getImageResId()
+                    ),
+                    gameManager.getCorrectCard().getImageResId(),
+                    gameManager.getCorrectCard().getAudioResId(),
+                    arena
+            );
+
+            // Ajoute cette question à la liste des questions ratées
+            wrongQuestions.add(wrongQuestion);
         }
 
-        // Hide UI and reset colors after 2s
-        emoteencadre.postDelayed(() -> {
-            emoteencadre.setVisibility(View.GONE);
-            emotereaction.setVisibility(View.GONE);
-            type_response.setVisibility(View.GONE);
-            response1.clearColorFilter();
-            response2.clearColorFilter();
-            response3.clearColorFilter();
-        }, 2000);
+        // Highlight correct answer
+        if (correctCard == gameManager.getRoundOptions().get(0)) {
+            response1.setColorFilter(getResources().getColor(R.color.correct_answer, null));
+        } else if (correctCard == gameManager.getRoundOptions().get(1)) {
+            response2.setColorFilter(getResources().getColor(R.color.correct_answer, null));
+        } else if (correctCard == gameManager.getRoundOptions().get(2)) {
+            response3.setColorFilter(getResources().getColor(R.color.correct_answer, null));
+        }
+
+        // Highlight wrong choice
+        if (clickedButton != null) {
+            clickedButton.setColorFilter(getResources().getColor(R.color.wrong_answer, null));
+        }
     }
 
+    // Hide UI and reset colors after 2s
+        emoteencadre.postDelayed(()->{
+        emoteencadre.setVisibility(View.GONE);
+        emotereaction.setVisibility(View.GONE);
+        type_response.setVisibility(View.GONE);
+        response1.clearColorFilter();
+        response2.clearColorFilter();
+        response3.clearColorFilter();
+    }, 2000);
 
     // Skeleton animation across the screen
     private void startBarrelAnimation() {
@@ -271,11 +288,11 @@ public class PlayActivity extends AppCompatActivity {
         if (easterEgg || TimerRunnable != null){
             stop_timer();
         }
-        Log.d("TAG", "navigateToVictory: "+ wrongCard.wrongCards);
+        //Log.d("TAG", "navigateToVictory: "+ wrongCard.wrongCards);
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
-        intent.putExtra("wrongCards", wrongCard);
+        // intent.putExtra("wrongCards", wrongCard);
         intent.putExtra("maxRound", maxRoundNumber);
         startActivity(intent);
     }
@@ -293,3 +310,6 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 }
+
+
+

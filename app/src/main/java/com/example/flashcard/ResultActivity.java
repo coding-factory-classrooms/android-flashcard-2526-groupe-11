@@ -19,6 +19,8 @@ public class ResultActivity extends AppCompatActivity {
     private Button restartButton;
     private Button shareButton;
 
+    private Button retryButton;
+
     // Variables
     private TextView chosenDifficulty;
     private TextView resultMessage;
@@ -128,5 +130,12 @@ public class ResultActivity extends AppCompatActivity {
 
             startActivity(Intent.createChooser(shareIntent, "Partagez via"));
         });
+
+        // "Retry" Button
+
+        retryButton = findViewById(R.id.retryButton);
+        retryButton.setOnClickListener(v ->
+                Log.d("ResultActivity", "Bouton réessayer cliqué")
+        );
     }
 }
