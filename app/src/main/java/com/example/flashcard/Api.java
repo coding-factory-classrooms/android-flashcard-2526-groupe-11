@@ -17,7 +17,7 @@ public class Api {
 
     private OkHttpClient client = new OkHttpClient();
 
-    public void getApi(String url, ApiCallback callback) throws IOException {
+    public void getApi(String url, ApiCallback callback) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();

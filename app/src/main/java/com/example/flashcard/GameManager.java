@@ -25,8 +25,8 @@ public class GameManager {
     private List<Card> roundOptions; // cards displayed in the current round
     Context context;
 
-    public GameManager(Context context) {
-        allCards = new ArrayList<>();
+    public GameManager(List<Card> AllCards,Context context) {
+        this.allCards = AllCards;
         this.context = context;
 //        for (card in jsonCard){
 //
@@ -79,84 +79,51 @@ public class GameManager {
 
 
 
-        allCards.add(new Card("card_goblins", "gobelins_voice"));
-        allCards.add(new Card("card_hog_rider", "hog_rider_voice"));
-        allCards.add(new Card("card_mini_pekka", "mini_pekka_voice"));
-        allCards.add(new Card("card_prince", "prince_voice"));
-        allCards.add(new Card("card_valkiry", "valkyrie_voice"));
-        allCards.add(new Card("card_bats", "bats_voice"));
-        allCards.add(new Card("card_bomber", "bomber_voice"));
-        allCards.add(new Card("card_elite_barbarians", "elite_barbarians_voice"));
-        allCards.add(new Card("card_firecracker", "firecracker_voice"));
-        allCards.add(new Card("card_wizard", "wizard_voice"));
-        allCards.add(new Card("card_minion_horde", "minion_horde_voice"));
-        allCards.add(new Card("archer_queen", "archer_queen_voice"));
-        allCards.add(new Card("boss_bandit_card_frame_alpha", null)); // pas de son
-        allCards.add(new Card("card_battle_ram_evolution_01", "evo_battle_ram_voice"));
-        allCards.add(new Card("card_dagger_duchess_tower_troop_frame", "dagger_duchess_voice"));
-        allCards.add(new Card("card_dark_prince", "dark_prince_voice"));
-        allCards.add(new Card("card_electro_giant", "electro_giant_voice"));
-        allCards.add(new Card("card_electro_wizard", "electro_wizard_voice"));
-        allCards.add(new Card("card_electro_sprit", "electro_spirit_voice"));
-        allCards.add(new Card("card_fire_spirit", "fire_spirit_voice"));
-        allCards.add(new Card("card_fireball", null));
-        allCards.add(new Card("card_giant_bomber", "giant_skeleton_voice"));
-        allCards.add(new Card("card_goblin_gang", "goblin_gang_voice"));
-        allCards.add(new Card("card_goblin_machine_01", null));
-        allCards.add(new Card("card_ice_golem_super", null));
-        allCards.add(new Card("card_ice_spirit_evolution_frame", "evo_ice_spirit_voice"));
-        allCards.add(new Card("card_lumberjack", "lumberjack_voice"));
-        allCards.add(new Card("card_magic_archer_super", null));
-        allCards.add(new Card("card_magic_archer", null));
-        allCards.add(new Card("card_mega_knight", null));
-        allCards.add(new Card("card_monk", "monk_voice"));
-        allCards.add(new Card("card_mother_witch", "mother_witch_voice"));
-        allCards.add(new Card("card_pheonix", "phoenix_voice"));
-        allCards.add(new Card("card_princess", "princess_voice"));
-        allCards.add(new Card("card_skeleton_army", "skeleton_army_voice"));
-        allCards.add(new Card("card_skeleton_dragons", "skeleton_dragons_voice"));
-        allCards.add(new Card("card_tesla", "tesla_voice"));
-        allCards.add(new Card("card_the_log", "log_voice"));
-        allCards.add(new Card("card_three_musketeers", null));
-        allCards.add(new Card("executioner_evolution_card_alpha", null));
+//        allCards.add(new Card("card_goblins", "gobelins_voice"));
+//        allCards.add(new Card("card_hog_rider", "hog_rider_voice"));
+//        allCards.add(new Card("card_mini_pekka", "mini_pekka_voice"));
+//        allCards.add(new Card("card_prince", "prince_voice"));
+//        allCards.add(new Card("card_valkiry", "valkyrie_voice"));
+//        allCards.add(new Card("card_bats", "bats_voice"));
+//        allCards.add(new Card("card_bomber", "bomber_voice"));
+//        allCards.add(new Card("card_elite_barbarians", "elite_barbarians_voice"));
+//        allCards.add(new Card("card_firecracker", "firecracker_voice"));
+//        allCards.add(new Card("card_wizard", "wizard_voice"));
+//        allCards.add(new Card("card_minion_horde", "minion_horde_voice"));
+//        allCards.add(new Card("archer_queen", "archer_queen_voice"));
+//        allCards.add(new Card("boss_bandit_card_frame_alpha", null)); // pas de son
+//        allCards.add(new Card("card_battle_ram_evolution_01", "evo_battle_ram_voice"));
+//        allCards.add(new Card("card_dagger_duchess_tower_troop_frame", "dagger_duchess_voice"));
+//        allCards.add(new Card("card_dark_prince", "dark_prince_voice"));
+//        allCards.add(new Card("card_electro_giant", "electro_giant_voice"));
+//        allCards.add(new Card("card_electro_wizard", "electro_wizard_voice"));
+//        allCards.add(new Card("card_electro_sprit", "electro_spirit_voice"));
+//        allCards.add(new Card("card_fire_spirit", "fire_spirit_voice"));
+//        allCards.add(new Card("card_fireball", null));
+//        allCards.add(new Card("card_giant_bomber", "giant_skeleton_voice"));
+//        allCards.add(new Card("card_goblin_gang", "goblin_gang_voice"));
+//        allCards.add(new Card("card_goblin_machine_01", null));
+//        allCards.add(new Card("card_ice_golem_super", null));
+//        allCards.add(new Card("card_ice_spirit_evolution_frame", "evo_ice_spirit_voice"));
+//        allCards.add(new Card("card_lumberjack", "lumberjack_voice"));
+//        allCards.add(new Card("card_magic_archer_super", null));
+//        allCards.add(new Card("card_magic_archer", null));
+//        allCards.add(new Card("card_mega_knight", null));
+//        allCards.add(new Card("card_monk", "monk_voice"));
+//        allCards.add(new Card("card_mother_witch", "mother_witch_voice"));
+//        allCards.add(new Card("card_pheonix", "phoenix_voice"));
+//        allCards.add(new Card("card_princess", "princess_voice"));
+//        allCards.add(new Card("card_skeleton_army", "skeleton_army_voice"));
+//        allCards.add(new Card("card_skeleton_dragons", "skeleton_dragons_voice"));
+//        allCards.add(new Card("card_tesla", "tesla_voice"));
+//        allCards.add(new Card("card_the_log", "log_voice"));
+//        allCards.add(new Card("card_three_musketeers", null));
+//        allCards.add(new Card("executioner_evolution_card_alpha", null));
 
     }
 
     public void startNewRound()  {
         Random random = new Random();
-
-        Api api = new Api();
-
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//        executor.execute(() -> {
-//            String suicide;
-//            try {
-//                suicide = api.getApi();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//            Log.d("Couilles","AledOscour : "+suicide);
-//        });
-        try {
-            api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    //result récupère le json et tout mais jsp comment l'utiliser
-                    //Log.d("API", "Réponse : " + data.get(0).audioResId);
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    Log.e("API", "Erreur : " + e.getMessage());
-                }
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        //String jsonString = String.valueOf(api.getJson());
-
-//        Card card = gson.fromJson(jsonString, Card.class);
 
         // keep only the cards that have audio
         List<Card> cardsWithAudio = new ArrayList<>();

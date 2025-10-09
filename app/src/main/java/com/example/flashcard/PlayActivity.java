@@ -10,11 +10,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.LongDef;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.List;
+
+import java.lang.reflect.Type;
+import com.google.gson.reflect.TypeToken;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -97,9 +105,40 @@ public class PlayActivity extends AppCompatActivity {
             start_timer();
         }
 
-        gameManager = new GameManager(this);
-        startNewRound();
-        startBarrelAnimation();
+        //Initialisiation d'un objet de la classe Api
+        Api api = new Api();
+
+        //Appel de la fonction getApi
+        //En argument il y a un nouvel élément de l'interface ApiCallback afin de récupérer les données de l'api sur un thread réseau pour éviter d'être arrété par android
+        api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
+            @Override
+            //Réécriture de la fonction onSuccess de l'interface afin d'appeler les fonctions de PlayActivity
+            public void onSuccess(String result) {
+                //result renvoie le json de l'API, on récupère les données sous forme de liste avec Gson
+                //On passe ensuite cette liste dans un élément GameManager
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<Card>>(){}.getType();
+                List<Card> allCards = gson.fromJson(result, listType);
+                Log.d("AledO","Allez : "+ allCards.get(0).audioResId);
+                gameManager = new GameManager(allCards,getBaseContext());
+
+                //Utilisation de runOnUiThread pour pouvoir accéder à l'UI du thread principal (sinon erreurs)
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startNewRound();
+                        startBarrelAnimation();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("ErreurAPI", "Erreur : " + e);
+            }
+        });
+
+
     }
 
     // Start a new round
