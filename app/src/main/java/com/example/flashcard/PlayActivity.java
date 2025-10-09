@@ -39,8 +39,6 @@ public class PlayActivity extends AppCompatActivity {
     Handler TimerHandler;
     Runnable TimerRunnable;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,14 +51,7 @@ public class PlayActivity extends AppCompatActivity {
         });
 
         // Get arena from intent
-        Intent srcIntent = getIntent();
-<<<<<<< HEAD
-        this.arena = srcIntent.getParcelableExtra("arena");
-
-=======
-        Arena arenaGet = srcIntent.getParcelableExtra("arena");
-        this.arena = arenaGet;
->>>>>>> activityplaystruct
+        this.arena = getIntent().getParcelableExtra("arena");
 
         // set background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
@@ -74,6 +65,7 @@ public class PlayActivity extends AppCompatActivity {
                 mediaPlayer.release();
                 mediaPlayer = null;
             }
+            stop_timer();
             Intent intent = new Intent(PlayActivity.this, MainActivity.class);
             startActivity(intent);
             finish(); // ferme l'activité en cours
@@ -103,7 +95,6 @@ public class PlayActivity extends AppCompatActivity {
         gameManager = new GameManager();
         startNewRound();
         startBarrelAnimation();
-
     }
 
     // Start a new round
@@ -142,8 +133,9 @@ public class PlayActivity extends AppCompatActivity {
         setResponseClick(response3, roundOptions.get(2));
     }
 
-    // Check if the answer is correct
-    private void handleClick(Card card){
+    // Handle click
+    private void handleClick(Card card) {
+        stop_timer();
 
         if (card == correctCard) {
             showReaction(true);
@@ -155,72 +147,43 @@ public class PlayActivity extends AppCompatActivity {
         indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
 
         // Check if all question are answered
-        // Start new round after 2s
-        if (roundNumber< maxRoundNumber)
-        {
+        if (roundNumber < maxRoundNumber) {
             new Handler().postDelayed(this::startNewRound, 2000);
-        }
-        else{
+        } else {
             new Handler().postDelayed(this::navigateToVictory, 2000);
         }
     }
+
     private void setResponseClick(ImageButton button, Card card) {
-        button.setOnClickListener(v -> {
-<<<<<<< HEAD
-            stop_timer();
-            handleClick(card);
-=======
-            if (card == correctCard) {
-                showReaction(true);
-            } else {
-                showReaction(false);
-            }
-            // Start new round after 2s
-
-            Log.d("test", "onCreate: " + roundNumber);
-            roundNumber++;
-            indexQuestionTextView.setText(roundNumber + "/" + maxRoundNumber);
-
-            if (roundNumber < maxRoundNumber) {
-                new Handler().postDelayed(this::startNewRound, 2000);
-            } else {
-                new Handler().postDelayed(this::navigateToVictory, 2000);
-            }
-
->>>>>>> activityplaystruct
-        });
+        button.setOnClickListener(v -> handleClick(card));
     }
 
-
-    private void start_timer()
-    {
+    private void start_timer() {
         TimerHandler = new Handler();
-
         TimerHandler.postDelayed(TimerRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    timer();
-                    TimerHandler.postDelayed(this, 1000);
-                }
-            }, 1000);
+            @Override
+            public void run() {
+                timer();
+                TimerHandler.postDelayed(this, 1000);
+            }
+        }, 1000);
     }
-    private void stop_timer()
-    {
-        TimerHandler.removeCallbacks(TimerRunnable);
+
+    private void stop_timer() {
+        if (TimerHandler != null && TimerRunnable != null) {
+            TimerHandler.removeCallbacks(TimerRunnable);
+        }
     }
 
     // Timer Logic
-    private void timer()
-    {
+    private void timer() {
         Card FalseCard = new Card(0, 0);
 
-        if (currentTimePerQuestion <=0)
-        {
+        if (currentTimePerQuestion <= 0) {
             timerTextView.setText(currentTimePerQuestion + "s");
             handleClick(FalseCard);
             currentTimePerQuestion = timePerQuestion;
-        }
-        else{
+        } else {
             timerTextView.setText(currentTimePerQuestion + "s");
             currentTimePerQuestion--;
         }
@@ -264,22 +227,15 @@ public class PlayActivity extends AppCompatActivity {
                 })
                 .start();
     }
-<<<<<<< HEAD
-    private void navigateToVictory()
-    {
-        stop_timer();
-=======
 
     private void navigateToVictory() {
->>>>>>> activityplaystruct
+        stop_timer();
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
         intent.putExtra("maxRound", maxRoundNumber);
         startActivity(intent);
     }
-
-
 
     @Override
     protected void onDestroy() {
