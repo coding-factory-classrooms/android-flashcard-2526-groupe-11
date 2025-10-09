@@ -71,10 +71,10 @@ public class ResultActivity extends AppCompatActivity {
 
         // Apply conditions and display different messages depending on the score and the level chosen
         if (percentage < 50) {
-           if (difficulty.equals("facile")){
+           if (difficulty.equals("Facile")){
                resultImage.setImageResource(R.drawable.defeat_easy);
 
-           } else if (difficulty.equals("moyen")) {
+           } else if (difficulty.equals("Moyen")) {
                resultImage.setImageResource(R.drawable.defeat_medium);
 
            }else {
@@ -82,10 +82,10 @@ public class ResultActivity extends AppCompatActivity {
             resultMessage.setText("Entraîne-toi !");
         } else if (percentage < 80) {
 
-            if (difficulty.equals("facile")){
+            if (difficulty.equals("Facile")){
                 resultImage.setImageResource(R.drawable.correct_easy);
 
-            } else if (difficulty.equals("moyen")) {
+            } else if (difficulty.equals("Moyen")) {
                 resultImage.setImageResource(R.drawable.correct_medium);
 
             }else {
@@ -93,10 +93,10 @@ public class ResultActivity extends AppCompatActivity {
             }
             resultMessage.setText("Bien joué !");
         } else {
-            if (difficulty.equals("facile")){
+            if (difficulty.equals("Facile")){
                 resultImage.setImageResource(R.drawable.victory_easy);
 
-            } else if (difficulty.equals("moyen")) {
+            } else if (difficulty.equals("Moyen")) {
                 resultImage.setImageResource(R.drawable.victory_medium);
 
             }else {
