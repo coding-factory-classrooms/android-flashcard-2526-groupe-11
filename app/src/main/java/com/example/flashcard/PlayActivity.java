@@ -15,13 +15,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.LongDef;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+
+import java.lang.reflect.Type;
+import com.google.gson.reflect.TypeToken;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -125,13 +132,42 @@ public class PlayActivity extends AppCompatActivity {
             startTimer();
         }
 
-        gameManager = new GameManager();
+        //Initialisiation d'un objet de la classe Api
+        Api api = new Api();
 
-        // Random tower and decor at start
-        environmentManager.setRandomEnvironment();
+        //Appel de la fonction getApi
+        //En argument il y a un nouvel élément de l'interface ApiCallback afin de récupérer les données de l'api sur un thread réseau pour éviter d'être arrété par android
+        api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
+            @Override
+            //Réécriture de la fonction onSuccess de l'interface afin d'appeler les fonctions de PlayActivity
+            public void onSuccess(String result) {
+                //result renvoie le json de l'API, on récupère les données sous forme de liste avec Gson
+                //On passe ensuite cette liste dans un élément GameManager
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<Card>>(){}.getType();
+                List<Card> allCards = gson.fromJson(result, listType);
+                Log.d("AledO","Allez : "+ allCards.get(0).audioResId);
+                gameManager = new GameManager(allCards,getBaseContext());
 
-        startNewRound();
-        startBarrelAnimation();
+                //Utilisation de runOnUiThread pour pouvoir accéder à l'UI du thread principal (sinon erreurs)
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Random tower and decor at start
+                        environmentManager.setRandomEnvironment();
+                        startNewRound();
+                        startBarrelAnimation();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("ErreurAPI", "Erreur : " + e);
+            }
+        });
+
+
     }
 
     private void startNewRound() {
@@ -154,7 +190,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
 
-        mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId());
+        mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId(getBaseContext()));
         if (Objects.equals(arena.getDifficulty(), "Difficile")){
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setVolume(500f, 500f);
@@ -164,9 +200,9 @@ public class PlayActivity extends AppCompatActivity {
             mediaPlayer.pause();
         }
 
-        response1.setImageResource(roundOptions.get(0).getImageResId());
-        response2.setImageResource(roundOptions.get(1).getImageResId());
-        response3.setImageResource(roundOptions.get(2).getImageResId());
+        response1.setImageResource(roundOptions.get(0).getImageResId(getBaseContext()));
+        response2.setImageResource(roundOptions.get(1).getImageResId(getBaseContext()));
+        response3.setImageResource(roundOptions.get(2).getImageResId(getBaseContext()));
         listenButton.setOnClickListener(v -> {
             if (mediaPlayer != null) mediaPlayer.start();
         });
@@ -232,7 +268,7 @@ public class PlayActivity extends AppCompatActivity {
     private void timer() {
         if (currentTimePerQuestion <= 0) {
             timerTextView.setText("0s");
-            handleClick(new Card(0, 0), null);
+            handleClick(new Card("0", "0"), null);
             currentTimePerQuestion = timePerQuestion;
         } else {
             timerTextView.setText(currentTimePerQuestion + "s");
