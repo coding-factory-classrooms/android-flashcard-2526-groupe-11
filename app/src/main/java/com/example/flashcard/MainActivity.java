@@ -66,6 +66,13 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
             startActivity(newIntent);
         });
 
+        // Navigate to AboutActivity
+        Button aboutButton = findViewById(R.id.AboutButton);
+        aboutButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
+        });
+
         // Navigate to PlayActivity
         Button battleButton = findViewById(R.id.battleButton);
         battleButton.setOnClickListener(view -> {
