@@ -118,7 +118,7 @@ public class PlayActivity extends AppCompatActivity {
         questionIndexTextView.setText(roundNumber + "/" + maxRoundNumber);
 
         // Initialize ReactionManager
-        reactionManager = new ReactionManager(this, emoteFrame, typeResponse, response1, response2, response3);
+        reactionManager = new ReactionManager(this, emoteFrame, typeResponse, response1, response2, response3, response4, response5);
 
         if (easterEgg) {
             timerTextView.setText(currentTimePerQuestion + "s");
