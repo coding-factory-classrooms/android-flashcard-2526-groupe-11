@@ -46,10 +46,6 @@ public class ResultActivity extends AppCompatActivity {
         totalQuestions = getIntent().getIntExtra("maxRound", 0);
         correctAnswers = getIntent().getIntExtra("score", 0);
 
-        // Debug code (to remove once everything is linked)
-//        difficulty = "facile";
-//        totalQuestions = 10;
-//        correctAnswers = 9;
 
         // Display the chosen difficulty
         chosenDifficulty = findViewById(R.id.difficultyTextView);
@@ -65,11 +61,13 @@ public class ResultActivity extends AppCompatActivity {
 
         // Calculate success percentage
         int percentage =  (int)(((float)correctAnswers / totalQuestions) * 100);
+
         // Display the percentage
         percentageResult = findViewById(R.id.percentagetextView);
         percentageResult.setText(percentage + " %");
 
         // Apply conditions and display different messages depending on the score and the level chosen
+
         if (percentage < 50) {
            if (difficulty.equals("Facile")){
                resultImage.setImageResource(R.drawable.defeat_easy);
@@ -78,7 +76,8 @@ public class ResultActivity extends AppCompatActivity {
                resultImage.setImageResource(R.drawable.defeat_medium);
 
            }else {
-               resultImage.setImageResource(R.drawable.defeat_hard);}
+               resultImage.setImageResource(R.drawable.defeat_hard);
+           }
             resultMessage.setText("Entraîne-toi !");
         } else if (percentage < 80) {
 
@@ -107,6 +106,7 @@ public class ResultActivity extends AppCompatActivity {
 
         // "Replay" button
         restartButton = findViewById(R.id.restartButton);
+
         restartButton.setOnClickListener(v -> {
             // Navigate to the main page
             Intent intent = new Intent(this, MainActivity.class);

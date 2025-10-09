@@ -1,6 +1,8 @@
 package com.example.flashcard;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,7 +35,22 @@ public class AboutActivity extends AppCompatActivity {
 
         TextView appVersion = findViewById(R.id.appVersion);
 
-        // Récupère la version de l'app automatiquement depuis le build
+        // Récupère et affiche la version de l'app automatiquement depuis le Manifest
+
+        try {
+            // Get the package Manager of the system
+            PackageManager manager = getPackageManager();
+            // Get the infos of my app
+            PackageInfo info = manager.getPackageInfo(getPackageName(),0);
+            // Get and display the version of my app
+            String versionName = info.versionName;
+            appVersion.setText("Version : " + versionName);
+
+        } // If the info its not find
+        catch (PackageManager.NameNotFoundException e){
+            e.printStackTrace();
+            appVersion.setText("Version inconnue");
+        }
 
     }
 }
