@@ -56,7 +56,7 @@ public class GameManager {
 
     }
 
-    public void startNewRound() {
+    public void startNewRound(int size) {
         Random random = new Random();
 
         // keep only the cards that have audio
@@ -75,7 +75,7 @@ public class GameManager {
         roundOptions.add(correctCard);
 
         // pick 2 additional cards
-        while (roundOptions.size() < 3) {
+        while (roundOptions.size() < size) {
             Card candidate = allCards.get(random.nextInt(allCards.size()));
             if (!roundOptions.contains(candidate)) {
                 roundOptions.add(candidate);

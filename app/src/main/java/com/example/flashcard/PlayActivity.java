@@ -28,7 +28,7 @@ public class PlayActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private GameManager gameManager;
 
-    private ImageButton response1, response2, response3;
+    private ImageButton response1, response2, response3, response4, response5;
     private ImageView emoteFrame, typeResponse;
     private TextView questionIndexTextView, timerTextView;
     private LinearLayout cardLinearLayout, card2LinearLayout;
@@ -89,6 +89,8 @@ public class PlayActivity extends AppCompatActivity {
         response1 = findViewById(R.id.response1);
         response2 = findViewById(R.id.response2);
         response3 = findViewById(R.id.response3);
+        response4 = findViewById(R.id.response4);
+        response5 = findViewById(R.id.response5);
         questionIndexTextView = findViewById(R.id.indexQuestionTextView);
         timerTextView = findViewById(R.id.timerTextView);
         cardLinearLayout = findViewById(R.id.cardLinearLayout);
@@ -141,7 +143,7 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         releaseMediaPlayer();
-        gameManager.startNewRound();
+        gameManager.startNewRound("Moyen".equals(arena.getDifficulty()) ? 5 : 3);
 
         // Change tower and decor each round
         environmentManager.setRandomEnvironment();
@@ -150,9 +152,7 @@ public class PlayActivity extends AppCompatActivity {
         List<Card> roundOptions = gameManager.getRoundOptions();
         if (roundOptions.size() < 3) return;
 
-        response1.setImageResource(roundOptions.get(0).getImageResId());
-        response2.setImageResource(roundOptions.get(1).getImageResId());
-        response3.setImageResource(roundOptions.get(2).getImageResId());
+
 
         mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId());
         if (Objects.equals(arena.getDifficulty(), "Difficile")){
@@ -164,8 +164,9 @@ public class PlayActivity extends AppCompatActivity {
             mediaPlayer.pause();
         }
 
-
-
+        response1.setImageResource(roundOptions.get(0).getImageResId());
+        response2.setImageResource(roundOptions.get(1).getImageResId());
+        response3.setImageResource(roundOptions.get(2).getImageResId());
         listenButton.setOnClickListener(v -> {
             if (mediaPlayer != null) mediaPlayer.start();
         });
@@ -173,6 +174,19 @@ public class PlayActivity extends AppCompatActivity {
         setResponseClick(response1, roundOptions.get(0));
         setResponseClick(response2, roundOptions.get(1));
         setResponseClick(response3, roundOptions.get(2));
+
+        if (Objects.equals(arena.getDifficulty(), "Moyen") && roundOptions.size() >=5)
+        {
+            response4.setImageResource(roundOptions.get(3).getImageResId());
+            response5.setImageResource(roundOptions.get(4).getImageResId());
+            setResponseClick(response4, roundOptions.get(3));
+            setResponseClick(response5, roundOptions.get(4));
+        }
+
+
+
+
+
     }
 
     private void setResponseClick(ImageButton button, Card card) {
