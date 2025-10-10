@@ -75,6 +75,10 @@ public class GlobalStats implements Json {
     }
 
     public int getMeanQuizTime() {
+        if (this.totalQuiz != 0)
+        {
+            this.meanQuizTime = (int)(this.totalTimePlay/this.totalQuiz);
+        }
         return meanQuizTime;
     }
 
@@ -105,6 +109,36 @@ public class GlobalStats implements Json {
     }
     //endregion
 
+    String convertTime(){
+        int minutes=0;
+        int hours=0;
+        long seconds=this.totalTimePlay;
+        String result ="";
+
+
+
+        if (seconds/60<= 1)
+        {
+            result = seconds +"s";
+        }
+        else{
+            minutes = (int) seconds/60;
+            seconds =  (int)seconds%60;
+            result = minutes +"m " + seconds +"s";
+        }
+
+        if (minutes/60 >=1){
+            hours= minutes/60;
+            minutes = minutes%60;
+            seconds = seconds%60;
+            result = hours +"h " + minutes +"m " + seconds +"s";
+        }
+
+
+        return result;
+
+    }
+
     @Override
     public void jsonWrite(Context context, String fileName) {
 
@@ -120,9 +154,6 @@ public class GlobalStats implements Json {
             throw new RuntimeException(e);
         }
     }
-
-
-
 
     @Override
     public GlobalStats jsonRead(Context context, String fileName) {

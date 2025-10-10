@@ -1,7 +1,10 @@
 package com.example.flashcard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQuestions.ViewHolder> {
@@ -39,6 +43,7 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Card question = questions.get(position);
+        holder.answerView.setImageResource(R.drawable.unknown_card);
         MediaPlayer mediaPlayer = MediaPlayer.create(holder.SoundButton.getContext(), question.getAudioResId(holder.SoundButton.getContext()));
         holder.SoundButton.setOnClickListener(v -> {
             if (mediaPlayer != null) {
@@ -47,6 +52,19 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
         });
         holder.answerView.setOnClickListener(v -> {
             holder.answerView.setImageResource(question.getImageResId(v.getContext()));
+        });
+        holder.TryAnswerButton.setOnClickListener(v -> {
+            Arena arena = new Arena(R.drawable.cr_arene_medium, "Moyen", R.drawable.backgraound_level_two);
+
+            Intent intent = new Intent(v.getContext(), PlayActivity.class);
+            intent.putExtra("arena", arena);
+            List<Card> SpecificQuestion = new ArrayList<>();
+            SpecificQuestion.add(question);
+            Log.d("ImageMan",question.getImageResId(v.getContext())+"");
+            Log.d("ImageMan",question.getAudioResId(v.getContext())+"");
+            intent.putExtra("SpecificAudio", question.audioResId);
+            intent.putExtra("SpecificImage", question.imageResId);
+            v.getContext().startActivity(intent);
         });
     }
 
@@ -60,14 +78,13 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView answerView;
         Button SoundButton;
-        ImageView DifficultyImage;
-
+        Button TryAnswerButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             answerView = itemView.findViewById(R.id.AnswerImage);
             SoundButton = itemView.findViewById(R.id.SoundButton);
-            DifficultyImage = itemView.findViewById(R.id.DifficultyImage);
+            TryAnswerButton = itemView.findViewById(R.id.TryAnswerButton);
         }
     }
 }

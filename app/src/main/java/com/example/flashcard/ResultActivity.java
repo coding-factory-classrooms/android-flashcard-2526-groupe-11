@@ -31,6 +31,7 @@ public class ResultActivity extends AppCompatActivity {
     private ImageView resultImage;
     private int correctAnswers;
     private int totalQuestions;
+    private int totalTimePlay;
 
 
     @Override
@@ -50,13 +51,14 @@ public class ResultActivity extends AppCompatActivity {
         totalQuestions = getIntent().getIntExtra("maxRound", 0);
         correctAnswers = getIntent().getIntExtra("score", 0);
         ArrayList<Question> wrongQuestions = getIntent().getParcelableArrayListExtra("wrongQuestions");
+        totalTimePlay = getIntent().getIntExtra("totalTimePlay", 0);
 
         // DEBUG log to see if i receive a correct list
 
         Log.d("debug", "onCreate: " + wrongQuestions);
 
         // Create/Update GlobalStats json
-        GlobalStats globalStats = new GlobalStats(1,correctAnswers,totalQuestions-correctAnswers,0,0);
+        GlobalStats globalStats = new GlobalStats(1,correctAnswers,totalQuestions-correctAnswers,totalTimePlay,0);
         if (!globalStats.jsonExist(this, "globalStats.json"))
         {
             globalStats.jsonWrite(this, "globalStats.json");
@@ -66,12 +68,13 @@ public class ResultActivity extends AppCompatActivity {
             int totalQuiz = globalStatsJson.getTotalQuiz();
             int goodAnswer = globalStatsJson.getGoodAnswer();
             int badAnswer = globalStatsJson.getBadAnswer();
-            int totalTimePlay = globalStatsJson.getTotalQuiz();
+            long totalTimePlays = globalStatsJson.getTotalTimePlay();
             int meanQuizTime = globalStatsJson.getMeanQuizTime();
+            globalStats.addMeanQuizTime(meanQuizTime);
             globalStats.addTotalQuiz(totalQuiz);
             globalStats.addGoodAnswer(goodAnswer);
             globalStats.addBadAnswer(badAnswer);
-            globalStats.addBadAnswer(totalTimePlay);
+            globalStats.addTotalTimePlay(totalTimePlays);
             globalStats.jsonWrite(this, "globalStats.json");
 
         }
