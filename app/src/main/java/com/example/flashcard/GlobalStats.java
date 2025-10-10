@@ -14,12 +14,6 @@ import java.io.IOException;
 
 
 public class GlobalStats implements Json {
-    /**
-     * Nombre total de quiz joués
-     * Nombre total de bonnes réponses / mauvaises réponses
-     * Temps total de jeu
-     * Temps moyen d'un quiz
-     */
 
     @SerializedName("totalQuiz")
     private int totalQuiz;
