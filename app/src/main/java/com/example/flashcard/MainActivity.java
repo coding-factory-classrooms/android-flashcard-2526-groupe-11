@@ -59,6 +59,12 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
 
 
 
+        // Navigate to GlobalStatsActivity
+        ImageButton profileImageButton = findViewById(R.id.profileImageButton);
+        profileImageButton.setOnClickListener(view->{
+            Intent intent = new Intent(this, GlobalStatsActivity.class);
+            startActivity(intent);
+        });
 
         // Navigate to ListQuestionsActivity
         Button list = findViewById(R.id.questionButton);
