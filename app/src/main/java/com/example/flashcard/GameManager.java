@@ -23,7 +23,7 @@ public class GameManager {
         this.SpecificQuestion = specificQuestion;
     }
 
-    public void startNewRound(int size) {
+    public void startNewRound(int size,Question wrongQuestion) {
         Random random = new Random();
         Log.d("ImageMan","eeeeeeeeeeeee");
 
@@ -37,26 +37,34 @@ public class GameManager {
             }
         }
 
-        if(SpecificQuestion != null){
-            correctCard = SpecificQuestion;
+        if(wrongQuestion!= null) {
+            correctCard = wrongQuestion.CorrectAnswer;
+            roundOptions = new ArrayList<>();
+            roundOptions.add(wrongQuestion.CorrectAnswer);
+
+            roundOptions.addAll(wrongQuestion.Answers);
         }
-        else{
-            // select one card with audio as the correct answer
-            correctCard = cardsWithAudio.get(random.nextInt(cardsWithAudio.size()));
-        }
+        else {
+            if (SpecificQuestion != null) {
+                correctCard = SpecificQuestion;
+            }
+            else {
+                // select one card with audio as the correct answer
+                correctCard = cardsWithAudio.get(random.nextInt(cardsWithAudio.size()));
+            }
 
-        Log.d("ImageMan","FFFFFFFFFFFFFFFF");
 
-        // create a new list for this round + add the correct card
-        roundOptions = new ArrayList<>();
-        roundOptions.add(correctCard);
+            // create a new list for this round + add the correct card
+            roundOptions = new ArrayList<>();
+            roundOptions.add(correctCard);
 
-        Log.d("ImageMan",size+"");
-        // pick 2 additional cards
-        while (roundOptions.size() < size) {
-            Card candidate = allCards.get(random.nextInt(allCards.size()));
-            if (!roundOptions.contains(candidate) && !Objects.equals(candidate.audioResId, correctCard.audioResId)) {
-                roundOptions.add(candidate);
+            Log.d("ImageMan", size + "");
+            // pick 2 additional cards
+            while (roundOptions.size() < size) {
+                Card candidate = allCards.get(random.nextInt(allCards.size()));
+                if (!roundOptions.contains(candidate) && !Objects.equals(candidate.audioResId, correctCard.audioResId)) {
+                    roundOptions.add(candidate);
+                }
             }
         }
 

@@ -50,7 +50,7 @@ public class ResultActivity extends AppCompatActivity {
         String difficulty = getIntent().getStringExtra("difficulty");
         totalQuestions = getIntent().getIntExtra("maxRound", 0);
         correctAnswers = getIntent().getIntExtra("score", 0);
-        ArrayList<Question> wrongQuestions = getIntent().getParcelableArrayListExtra("wrongQuestions");
+        ArrayList<Card> wrongQuestions = getIntent().getParcelableArrayListExtra("wrongQuestions");
         totalTimePlay = getIntent().getIntExtra("totalTimePlay", 0);
 
         // DEBUG log to see if i receive a correct list
@@ -172,7 +172,7 @@ public class ResultActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, PlayActivity.class);
 
                 // Send the list of questions to retry
-                intent.putParcelableArrayListExtra("retryQuestions", wrongQuestions);
+                intent.putExtra("retryQuestions", wrongQuestions);
                 startActivity(intent);
             }
         });

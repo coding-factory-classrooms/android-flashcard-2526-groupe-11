@@ -9,29 +9,23 @@ import java.util.Collections;
 import java.util.List;
 
 public class Question implements Parcelable {
-    List<Integer> Answers;
-    int CorrectAnswer;
-    int Sound;
+    List<Card> Answers;
+    Card CorrectAnswer;
     Arena Difficulty;
 
-    public Question(List<Integer> answers, int correctAnswer, int sound, Arena difficulty) {
+    public Question(List<Card> answers, Card correctAnswer, Arena difficulty) {
         Answers = answers;
         this.CorrectAnswer = correctAnswer;
-        Sound = sound;
         Difficulty = difficulty;
     }
 
 
     protected Question(Parcel in) {
-        CorrectAnswer = in.readInt();
-        Sound = in.readInt();
         Difficulty = in.readParcelable(Arena.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(CorrectAnswer);
-        dest.writeInt(Sound);
         dest.writeParcelable(Difficulty, flags);
     }
 

@@ -48,6 +48,7 @@ public class PlayActivity extends AppCompatActivity {
 
     // List of questions to retry
     private ArrayList<Question> wrongQuestions = new ArrayList<>();
+    ArrayList<Question> retryQuestions;
 
     public int score = 0;
     public int roundNumber = 0;
@@ -87,6 +88,7 @@ public class PlayActivity extends AppCompatActivity {
         this.easterEgg = srcIntent.getBooleanExtra("easterEgg", false);
         this.SpecificAudio = srcIntent.getStringExtra("SpecificAudio");
         this.SpecificImage = srcIntent.getStringExtra("SpecificImage");
+        this.retryQuestions = srcIntent.getParcelableArrayListExtra("retryQuestions");
 
         // Background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
@@ -147,7 +149,12 @@ public class PlayActivity extends AppCompatActivity {
         if (Objects.nonNull(SpecificAudio)) {
             maxRoundNumber = 1;
             gameManager = new GameManager(AllCards, getBaseContext(), new Card(SpecificImage, SpecificAudio));
-        } else {
+        }
+        else if (Objects.nonNull(retryQuestions)) {
+            maxRoundNumber = retryQuestions.size();
+            gameManager = new GameManager(AllCards, getBaseContext(), null);
+        }
+        else {
             //Creation of a new GameManager Object with List from API in arguments
             gameManager = new GameManager(AllCards, getBaseContext(), null);
 
@@ -192,7 +199,13 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         releaseMediaPlayer();
-        gameManager.startNewRound("Moyen".equals(arena.getDifficulty()) ? 5 : 3);
+        Log.d("Couilles", "startNewRound: "+ retryQuestions);
+        if (Objects.nonNull(retryQuestions)) {
+            gameManager.startNewRound("Moyen".equals(arena.getDifficulty()) ? 5 : 3, retryQuestions.get(0));
+        }
+        else {
+            gameManager.startNewRound("Moyen".equals(arena.getDifficulty()) ? 5 : 3, null);
+        }
 
         // Re-enable buttons
         response1.setEnabled(true);
@@ -266,12 +279,11 @@ public class PlayActivity extends AppCompatActivity {
             // Create a new "Question" object corresponding to the missed round
             Question wrongQuestion = new Question(
                     Arrays.asList(
-                            roundOptions.get(0).getImageResId(this),
-                            roundOptions.get(1).getImageResId(this),
-                            roundOptions.get(2).getImageResId(this)
+                            roundOptions.get(0),
+                            roundOptions.get(1),
+                            roundOptions.get(2)
                     ),
-                    gameManager.getCorrectCard().getImageResId(this),
-                    gameManager.getCorrectCard().getAudioResId(this),
+                    gameManager.getCorrectCard(),
                     arena
             );
 
@@ -362,8 +374,7 @@ public class PlayActivity extends AppCompatActivity {
             intent.putExtra("difficulty", arena.getDifficulty());
             intent.putExtra("maxRound", maxRoundNumber);
             intent.putExtra("totalTimePlay", totalTimePlay);
-            intent.putParcelableArrayListExtra("wrongQuestions", wrongQuestions);
-
+            intent.putExtra("wrongQuestions", wrongQuestions);
         }
         intent.putExtra("Questions", AllCards);
         startActivity(intent);
