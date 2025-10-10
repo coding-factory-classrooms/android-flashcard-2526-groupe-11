@@ -185,25 +185,6 @@ public class PlayActivity extends AppCompatActivity {
         startTimePlay();
     }
 
-    // Liste des questions a rejouer
-    /*ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
-
-    // --- Convertir les questions ratées en Card ---
-    List<Card> retryCards = new ArrayList<>();
-        if (retryQuestions != null && !retryQuestions.isEmpty()) {
-        for (Question q : retryQuestions) {
-            retryCards.add(new Card(q.CorrectAnswer, q.Sound));
-        }
-    }
-
-    // --- Créer le GameManager avec les questions ratées si elles existent ---
-        if (!retryCards.isEmpty()) {
-        gameManager = new GameManager(retryCards);
-        maxRoundNumber = retryCards.size();
-    } else {
-        gameManager = new GameManager();
-        maxRoundNumber = 5;
-    }*/
 
     private void startNewRound() {
         if (easterEgg) {
