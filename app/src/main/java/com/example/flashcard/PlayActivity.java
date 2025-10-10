@@ -43,7 +43,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private Card correctCard;
 
-    // Liste des questions raté par le joueur
+    // List of questions to retry
     private ArrayList<Question> wrongQuestions = new ArrayList<>();
 
     public int score = 0;
@@ -334,6 +334,7 @@ public class PlayActivity extends AppCompatActivity {
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
         intent.putExtra("maxRound", maxRoundNumber);
+        intent.putParcelableArrayListExtra("wrongQuestions", wrongQuestions);
         startActivity(intent);
     }
 
