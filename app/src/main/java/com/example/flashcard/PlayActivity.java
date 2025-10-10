@@ -46,7 +46,6 @@ public class PlayActivity extends AppCompatActivity {
 
     private Card correctCard;
 
-
     // List of questions to retry
     private ArrayList<Question> wrongQuestions = new ArrayList<>();
 
@@ -81,7 +80,6 @@ public class PlayActivity extends AppCompatActivity {
             return insets;
         });
 
-
         // Get arena and extras
         Intent srcIntent = getIntent();
         this.AllCards = srcIntent.getParcelableArrayListExtra("Questions");
@@ -89,7 +87,6 @@ public class PlayActivity extends AppCompatActivity {
         this.easterEgg = srcIntent.getBooleanExtra("easterEgg", false);
         this.SpecificAudio = srcIntent.getStringExtra("SpecificAudio");
         this.SpecificImage = srcIntent.getStringExtra("SpecificImage");
-        Log.d("ImageMan", SpecificImage + SpecificAudio);
 
         // Background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
@@ -263,10 +260,10 @@ public class PlayActivity extends AppCompatActivity {
         if (isCorrect) {score++;}
         else{
 
-            // Récupère la liste des cartes du round depuis le GameManager
+            // Get the list of cards for the current round from the GameManager
             List<Card> roundOptions = gameManager.getRoundOptions();
 
-            // Crée un nouvel objet "Question" correspondant au round raté
+            // Create a new "Question" object corresponding to the missed round
             Question wrongQuestion = new Question(
                     Arrays.asList(
                             roundOptions.get(0).getImageResId(this),
@@ -278,7 +275,7 @@ public class PlayActivity extends AppCompatActivity {
                     arena
             );
 
-            // Ajoute cette question à la liste des questions ratées
+            // Add this question to the list of wrong questions
             wrongQuestions.add(wrongQuestion);
         }
         reactionManager.hideReactionAfterDelay();
