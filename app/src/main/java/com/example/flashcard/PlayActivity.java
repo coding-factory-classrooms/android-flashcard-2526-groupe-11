@@ -152,8 +152,6 @@ public class PlayActivity extends AppCompatActivity {
         Log.d("Salut", "onCreate: "+retryQuestions);
 
 
-            //Api class object initialized
-            Api api = new Api();
 
             //Call of getApi function
             //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
