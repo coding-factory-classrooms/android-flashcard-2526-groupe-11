@@ -282,10 +282,10 @@ public class PlayActivity extends AppCompatActivity {
         if (isCorrect) {score++;}
         else{
 
-            // Récupère la liste des cartes du round depuis le GameManager
+            // get list card
             List<Card> roundOptions = gameManager.getRoundOptions();
 
-            // Crée un nouvel objet "Question" correspondant au round raté
+            // create new object question
             Question wrongQuestion = new Question(
                     Arrays.asList(
                             roundOptions.get(0).getImageResId(this),
@@ -297,7 +297,7 @@ public class PlayActivity extends AppCompatActivity {
                     arena
             );
 
-            // Ajoute cette question à la liste des questions ratées
+            // add question on the list
             wrongQuestions.add(wrongQuestion);
         }
         reactionManager.hideReactionAfterDelay();
