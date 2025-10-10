@@ -21,21 +21,23 @@ public class Question implements Parcelable {
         Difficulty = difficulty;
     }
 
+
     protected Question(Parcel in) {
+        CorrectAnswer = in.readInt();
+        Sound = in.readInt();
+        Difficulty = in.readParcelable(Arena.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(CorrectAnswer);
+        dest.writeInt(Sound);
+        dest.writeParcelable(Difficulty, flags);
     }
 
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeList(Answers);
-        dest.writeInt(CorrectAnswer);
-        dest.writeInt(Sound);
-        dest.writeString(Difficulty.getDifficulty());
-        dest.writeInt(Difficulty.getImage());
     }
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {
@@ -49,5 +51,4 @@ public class Question implements Parcelable {
             return new Question[size];
         }
     };
-
 }

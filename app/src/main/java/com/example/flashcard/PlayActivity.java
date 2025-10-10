@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.view.View;
+
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,6 +26,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +42,9 @@ public class PlayActivity extends AppCompatActivity {
     private Button listenButton;
 
     private Card correctCard;
+
+    // Liste des questions raté par le joueur
+    private ArrayList<Question> wrongQuestions = new ArrayList<>();
 
     public int score = 0;
     public int roundNumber = 0;
@@ -151,6 +158,26 @@ public class PlayActivity extends AppCompatActivity {
         });
     }
 
+    // Liste des questions a rejouer
+    /*ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
+
+    // --- Convertir les questions ratées en Card ---
+    List<Card> retryCards = new ArrayList<>();
+        if (retryQuestions != null && !retryQuestions.isEmpty()) {
+        for (Question q : retryQuestions) {
+            retryCards.add(new Card(q.CorrectAnswer, q.Sound));
+        }
+    }
+
+    // --- Créer le GameManager avec les questions ratées si elles existent ---
+        if (!retryCards.isEmpty()) {
+        gameManager = new GameManager(retryCards);
+        maxRoundNumber = retryCards.size();
+    } else {
+        gameManager = new GameManager();
+        maxRoundNumber = 5;
+    }*/
+
     private void startNewRound() {
         if (easterEgg) {
             stopTimer();
@@ -223,8 +250,29 @@ public class PlayActivity extends AppCompatActivity {
         response5.setEnabled(false);
 
         boolean correct = card == correctCard;
-        boolean isCorrect = reactionManager.showReaction(correct, null, correctCard, gameManager.getRoundOptions());
-        if (isCorrect) score++;
+
+        boolean isCorrect = reactionManager.showReaction(correct, clickedButton, correctCard, gameManager.getRoundOptions());
+        if (isCorrect) {score++;}
+        else{
+
+// Récupère la liste des cartes du round depuis le GameManager
+            List<Card> roundOptions = gameManager.getRoundOptions();
+
+            // Crée un nouvel objet "Question" correspondant au round raté
+            Question wrongQuestion = new Question(
+                    Arrays.asList(
+                            roundOptions.get(0).getImageResId(),
+                            roundOptions.get(1).getImageResId(),
+                            roundOptions.get(2).getImageResId()
+                    ),
+                    gameManager.getCorrectCard().getImageResId(),
+                    gameManager.getCorrectCard().getAudioResId(),
+                    arena
+            );
+
+            // Ajoute cette question à la liste des questions ratées
+            wrongQuestions.add(wrongQuestion);
+        }
         reactionManager.hideReactionAfterDelay();
 
         roundNumber++;
