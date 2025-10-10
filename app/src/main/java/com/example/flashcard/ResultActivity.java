@@ -21,14 +21,13 @@ public class ResultActivity extends AppCompatActivity {
     // Buttons
     private Button restartButton;
     private Button shareButton;
-
     private Button retryButton;
 
     // Variables
     private TextView chosenDifficulty;
     private TextView resultMessage;
     private TextView scoreResult;
-    private  TextView percentageResult;
+    private TextView percentageResult;
     private ImageView resultImage;
     private int correctAnswers;
     private int totalQuestions;
@@ -52,7 +51,6 @@ public class ResultActivity extends AppCompatActivity {
         correctAnswers = getIntent().getIntExtra("score", 0);
         ArrayList<Question> wrongQuestions = getIntent().getParcelableArrayListExtra("wrongQuestions");
 
-
         // Display the chosen difficulty
         chosenDifficulty = findViewById(R.id.difficultyTextView);
         chosenDifficulty.setText(difficulty);
@@ -66,45 +64,44 @@ public class ResultActivity extends AppCompatActivity {
         resultMessage = findViewById(R.id.messageTextView);
 
         // Calculate success percentage
-        int percentage =  (int)(((float)correctAnswers / totalQuestions) * 100);
+        int percentage = (int)(((float)correctAnswers / totalQuestions) * 100);
 
         // Display the percentage
         percentageResult = findViewById(R.id.percentagetextView);
         percentageResult.setText(percentage + " %");
 
-        // Apply conditions and display different messages depending on the score and the level chosen
-
+        // Apply conditions and display different messages depending on the score and the chosen difficulty
         if (percentage < 50) {
-           if (difficulty.equals("Facile")){
-               resultImage.setImageResource(R.drawable.defeat_easy);
+            if (difficulty.equals("Facile")) {
+                resultImage.setImageResource(R.drawable.defeat_easy);
 
-           } else if (difficulty.equals("Moyen")) {
-               resultImage.setImageResource(R.drawable.defeat_medium);
+            } else if (difficulty.equals("Moyen")) {
+                resultImage.setImageResource(R.drawable.defeat_medium);
 
-           }else {
-               resultImage.setImageResource(R.drawable.defeat_hard);
-           }
+            } else {
+                resultImage.setImageResource(R.drawable.defeat_hard);
+            }
             resultMessage.setText("Entraîne-toi !");
         } else if (percentage < 80) {
 
-            if (difficulty.equals("Facile")){
+            if (difficulty.equals("Facile")) {
                 resultImage.setImageResource(R.drawable.correct_easy);
 
             } else if (difficulty.equals("Moyen")) {
                 resultImage.setImageResource(R.drawable.correct_medium);
 
-            }else {
-            resultImage.setImageResource(R.drawable.correct_hard);
+            } else {
+                resultImage.setImageResource(R.drawable.correct_hard);
             }
             resultMessage.setText("Bien joué !");
         } else {
-            if (difficulty.equals("Facile")){
+            if (difficulty.equals("Facile")) {
                 resultImage.setImageResource(R.drawable.victory_easy);
 
             } else if (difficulty.equals("Moyen")) {
                 resultImage.setImageResource(R.drawable.victory_medium);
 
-            }else {
+            } else {
                 resultImage.setImageResource(R.drawable.victory_hard);
             }
             resultMessage.setText("Excellent !");
@@ -130,23 +127,23 @@ public class ResultActivity extends AppCompatActivity {
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, message);
 
-            startActivity(Intent.createChooser(shareIntent, "Partagez via"));
+            startActivity(Intent.createChooser(shareIntent, "Share via"));
         });
 
-        // "Retry" Button
+        // "Retry" button
         retryButton = findViewById(R.id.retryButton);
-        if (percentage == 100){
+        if (percentage == 100) {
             retryButton.setVisibility(View.GONE);
         }
         retryButton.setOnClickListener(v -> {
 
-            // On verifie que la liste de question est bien presente avec au moins une question
-            if (wrongQuestions != null && !wrongQuestions.isEmpty()){
+            // Check that the question list is present and not empty
+            if (wrongQuestions != null && !wrongQuestions.isEmpty()) {
 
-                // On relance l'activité play via Intent
+                // Relaunch the PlayActivity via Intent
                 Intent intent = new Intent(this, PlayActivity.class);
 
-                // On renvoie la liste de question a réessayer
+                // Send the list of questions to retry
                 intent.putParcelableArrayListExtra("retryQuestions", wrongQuestions);
                 startActivity(intent);
             }
