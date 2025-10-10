@@ -1,22 +1,11 @@
 package com.example.flashcard;
 
-
 import android.content.Context;
 import android.util.Log;
-
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class GameManager {
@@ -33,7 +22,6 @@ public class GameManager {
 
     public void startNewRound(int size) {
         Random random = new Random();
-
         // keep only the cards that have audio
         List<Card> cardsWithAudio = new ArrayList<>();
         for (Card card : allCards) {
