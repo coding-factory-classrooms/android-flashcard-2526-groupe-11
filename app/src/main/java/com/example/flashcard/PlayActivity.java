@@ -134,58 +134,43 @@ public class PlayActivity extends AppCompatActivity {
             startTimer();
         }
 
-        //Api class object initialized
-        Api api = new Api();
+        // get the list to retry :  'retryQuestions'
+        ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
 
-        //Call of getApi function
-        //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
-        api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
-            @Override
-            //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
-            public void onSuccess(List<Card> result) {
+        Log.d("Salut", "onCreate: "+retryQuestions);
 
-                //Creation of a new GameManager Object with List from API in arguments
-                gameManager = new GameManager(result,getBaseContext());
 
-                //runOnUiThread is used to access and modify the UI of the main thread (error if on current thread)
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Random tower and decor at start
-                        environmentManager.setRandomEnvironment();
-                        startNewRound();
-                        startBarrelAnimation();
-                    }
-                });
-            }
+            //Api class object initialized
+            Api api = new Api();
 
-            @Override
-            public void onError(Exception e) {
-                Log.e("ErreurAPI", "Erreur : " + e);
-            }
-        });
-    }
+            //Call of getApi function
+            //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
+            api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
+                @Override
+                //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
+                public void onSuccess(List<Card> result) {
 
-    // Liste des questions a rejouer
-    /*ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
+                    //Creation of a new GameManager Object with List from API in arguments
+                    gameManager = new GameManager(result,getBaseContext());
 
-    // --- Convertir les questions ratées en Card ---
-    List<Card> retryCards = new ArrayList<>();
-        if (retryQuestions != null && !retryQuestions.isEmpty()) {
-        for (Question q : retryQuestions) {
-            retryCards.add(new Card(q.CorrectAnswer, q.Sound));
+                    //runOnUiThread is used to access and modify the UI of the main thread (error if on current thread)
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Random tower and decor at start
+                            environmentManager.setRandomEnvironment();
+                            startNewRound();
+                            startBarrelAnimation();
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("ErreurAPI", "Erreur : " + e);
+                }
+            });
         }
-    }
-
-    // --- Créer le GameManager avec les questions ratées si elles existent ---
-        if (!retryCards.isEmpty()) {
-        gameManager = new GameManager(retryCards);
-        maxRoundNumber = retryCards.size();
-    } else {
-        gameManager = new GameManager();
-        maxRoundNumber = 5;
-    }*/
-
     private void startNewRound() {
         if (easterEgg) {
             stopTimer();
@@ -263,10 +248,10 @@ public class PlayActivity extends AppCompatActivity {
         if (isCorrect) {score++;}
         else{
 
-// Récupère la liste des cartes du round depuis le GameManager
+            // Get the list of cards for the current round from the GameManager
             List<Card> roundOptions = gameManager.getRoundOptions();
 
-            // Crée un nouvel objet "Question" correspondant au round raté
+            // Create a new "Question" object corresponding to the missed round
             Question wrongQuestion = new Question(
                     Arrays.asList(
                             roundOptions.get(0).getImageResId(this),
@@ -278,7 +263,7 @@ public class PlayActivity extends AppCompatActivity {
                     arena
             );
 
-            // Ajoute cette question à la liste des questions ratées
+            // Add this question to the list of wrong questions
             wrongQuestions.add(wrongQuestion);
         }
         reactionManager.hideReactionAfterDelay();

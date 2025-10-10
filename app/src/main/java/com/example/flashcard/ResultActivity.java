@@ -50,7 +50,10 @@ public class ResultActivity extends AppCompatActivity {
         totalQuestions = getIntent().getIntExtra("maxRound", 0);
         correctAnswers = getIntent().getIntExtra("score", 0);
         ArrayList<Question> wrongQuestions = getIntent().getParcelableArrayListExtra("wrongQuestions");
-        // put extra totalTimePlay
+
+        // DEBUG log to see if i receive a correct list
+
+        Log.d("debug", "onCreate: " + wrongQuestions);
 
         // Create/Update GlobalStats json
         GlobalStats globalStats = new GlobalStats(1,correctAnswers,totalQuestions-correctAnswers,0,0);
@@ -72,13 +75,6 @@ public class ResultActivity extends AppCompatActivity {
             globalStats.jsonWrite(this, "globalStats.json");
 
         }
-
-
-
-
-
-
-
 
         // Display the chosen difficulty
         chosenDifficulty = findViewById(R.id.difficultyTextView);
@@ -165,6 +161,7 @@ public class ResultActivity extends AppCompatActivity {
             retryButton.setVisibility(View.GONE);
         }
         retryButton.setOnClickListener(v -> {
+
             // Check that the question list is present and not empty
             if (wrongQuestions != null && !wrongQuestions.isEmpty()) {
 
