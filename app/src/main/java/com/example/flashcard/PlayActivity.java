@@ -56,6 +56,8 @@ public class PlayActivity extends AppCompatActivity {
     private Handler timerHandler;
     private Runnable timerRunnable;
     private boolean easterEgg;
+    private String SpecificAudio;
+    private String SpecificImage;
 
     private ReactionManager reactionManager;
     private EnvironmentManager environmentManager;
@@ -65,6 +67,8 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_play);
+
+
 
         // Adjust for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -77,6 +81,9 @@ public class PlayActivity extends AppCompatActivity {
         Intent srcIntent = getIntent();
         this.arena = srcIntent.getParcelableExtra("arena");
         this.easterEgg = srcIntent.getBooleanExtra("easterEgg", false);
+        this.SpecificAudio = srcIntent.getStringExtra("SpecificAudio");
+        this.SpecificImage = srcIntent.getStringExtra("SpecificImage");
+        Log.d("ImageMan",SpecificImage+SpecificAudio);
 
         // Background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
@@ -133,6 +140,8 @@ public class PlayActivity extends AppCompatActivity {
             startTimer();
         }
 
+
+
         //Api class object initialized
         Api api = new Api();
 
@@ -143,8 +152,16 @@ public class PlayActivity extends AppCompatActivity {
             //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
             public void onSuccess(List<Card> result) {
 
-                //Creation of a new GameManager Object with List from API in arguments
-                gameManager = new GameManager(result,getBaseContext());
+                if (Objects.nonNull(SpecificAudio)) {
+                    maxRoundNumber =1;
+                    gameManager = new GameManager(result,getBaseContext(),new Card(SpecificImage,SpecificAudio));
+                }
+                else{
+                    //Creation of a new GameManager Object with List from API in arguments
+                    gameManager = new GameManager(result,getBaseContext(),null);
+
+                }
+
 
                 //runOnUiThread is used to access and modify the UI of the main thread (error if on current thread)
                 runOnUiThread(new Runnable() {
@@ -337,10 +354,16 @@ public class PlayActivity extends AppCompatActivity {
     private void navigateToVictory() {
         stopTimer();
         releaseMediaPlayer();
-        Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra("score", score);
-        intent.putExtra("difficulty", arena.getDifficulty());
-        intent.putExtra("maxRound", maxRoundNumber);
+        Intent intent;
+        if (Objects.nonNull(SpecificAudio)) {
+            intent = new Intent(this, ListQuestionsActivity.class);
+        }
+        else {
+            intent = new Intent(this, ResultActivity.class);
+            intent.putExtra("score", score);
+            intent.putExtra("difficulty", arena.getDifficulty());
+            intent.putExtra("maxRound", maxRoundNumber);
+        }
         startActivity(intent);
     }
 
