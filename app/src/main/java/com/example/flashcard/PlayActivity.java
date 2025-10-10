@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.media.PlaybackParams;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private GameManager gameManager;
+    private View View;
 
     private ImageButton response1, response2, response3;
     private ImageView emoteFrame, typeResponse;
