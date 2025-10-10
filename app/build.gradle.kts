@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.code.gson:gson:2.13.2")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -42,5 +42,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.squareup:seismic:1.0.3")
-
+    implementation("com.squareup.okhttp3:okhttp:5.2.0")
 }

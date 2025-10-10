@@ -49,12 +49,13 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
             Log.e(TAG, "SensorManager est null — l’appareil ne supporte pas les capteurs ?");
         }
 
-        // Initialise le ShakeDetector (avec this comme Listener)
+        // Initilialize the shakedetector with this for the listener
         mShakeDetector = new ShakeDetector(this);
 
         ImageButton arenaImageButton = findViewById(R.id.arenaImageButton);
         Group firstMainGroup = findViewById(R.id.firstMainGroup);
         TextView difficultyArenaTextView = findViewById(R.id.difficultyArenaTextView);
+
 
 
 
@@ -117,10 +118,9 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
     protected void onResume() {
         super.onResume();
         if (mShakeDetector != null && mSensorManager != null) {
-            // Démarrer la détection de shake ici, avec un delay raisonnable
             mShakeDetector.start(mSensorManager, SensorManager.SENSOR_DELAY_GAME);
         } else {
-            Log.e(TAG, "Impossible de démarrer ShakeDetector — instance ou sensorManager est nul");
+            Log.e(TAG, "Can't start the shake detector");
         }
     }
 

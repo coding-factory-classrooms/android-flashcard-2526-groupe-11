@@ -40,14 +40,14 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Card question = questions.get(position);
-        MediaPlayer mediaPlayer = MediaPlayer.create(holder.SoundButton.getContext(), question.getAudioResId());
+        MediaPlayer mediaPlayer = MediaPlayer.create(holder.SoundButton.getContext(), question.getAudioResId(holder.SoundButton.getContext()));
         holder.SoundButton.setOnClickListener(v -> {
             if (mediaPlayer != null) {
                 mediaPlayer.start();
             }
         });
         holder.answerView.setOnClickListener(v -> {
-            holder.answerView.setImageResource(question.getImageResId());
+            holder.answerView.setImageResource(question.getImageResId(v.getContext()));
         });
     }
 

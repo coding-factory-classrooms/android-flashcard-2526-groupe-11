@@ -12,7 +12,7 @@ public class ReactionManager {
     private final Context context;
     private final ImageView emoteEncadre;
     private final ImageView typeResponse;
-    private final ImageButton response1, response2, response3;
+    private final ImageButton response1, response2, response3, response4, response5;
 
     private final int[] winEmotes = {
             R.drawable.emote_battle_healer_self_heal_perfect,
@@ -40,13 +40,15 @@ public class ReactionManager {
     };
 
     public ReactionManager(Context context, ImageView emoteEncadre, ImageView typeResponse,
-                           ImageButton response1, ImageButton response2, ImageButton response3) {
+                           ImageButton response1, ImageButton response2, ImageButton response3, ImageButton response4, ImageButton response5) {
         this.context = context;
         this.emoteEncadre = emoteEncadre;
         this.typeResponse = typeResponse;
         this.response1 = response1;
         this.response2 = response2;
         this.response3 = response3;
+        this.response4 = response4;
+        this.response5 = response5;
     }
 
     public boolean showReaction(boolean correct, ImageButton clickedButton, Card correctCard, List<Card> roundOptions) {
@@ -70,6 +72,10 @@ public class ReactionManager {
                 response2.setColorFilter(context.getResources().getColor(R.color.correct_answer, null));
             } else if (correctCard == roundOptions.get(2)) {
                 response3.setColorFilter(context.getResources().getColor(R.color.correct_answer, null));
+            }else if (correctCard == roundOptions.get(3)) {
+                response4.setColorFilter(context.getResources().getColor(R.color.correct_answer, null));
+            }else if (correctCard == roundOptions.get(4)) {
+                response5.setColorFilter(context.getResources().getColor(R.color.correct_answer, null));
             }
 
             if (clickedButton != null) {
@@ -86,6 +92,8 @@ public class ReactionManager {
             response1.clearColorFilter();
             response2.clearColorFilter();
             response3.clearColorFilter();
+            response4.clearColorFilter();
+            response5.clearColorFilter();
         }, 2000);
     }
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     tools:context=".PlayActivity">
 
@@ -23,6 +23,7 @@
         android:id="@+id/imageView4"
         android:layout_width="456dp"
         android:layout_height="672dp"
+        android:scaleX="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.222"
@@ -41,40 +42,6 @@
         app:layout_constraintHorizontal_bias="0.437"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
-    <ImageButton
-        android:id="@+id/response1"
-        android:layout_width="49dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.184"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/card_hog_rider" />
-
-    <ImageButton
-        android:id="@+id/response2"
-        android:layout_width="49dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="60dp"
-        android:scaleType="center"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/card_mini_pekka" />
-
-    <ImageButton
-        android:id="@+id/response3"
-        android:layout_width="46dp"
-        android:layout_height="75dp"
-        android:scaleType="center"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.88"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="@+id/response2"
-        app:srcCompat="@drawable/card_goblins" />
 
     <Button
         android:id="@+id/lissenbutton"
@@ -101,6 +68,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/button_home" />
+
+    <LinearLayout
+        android:id="@+id/cardLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView7">
+
+        <ImageButton
+            android:id="@+id/response1"
+            android:layout_width="49dp"
+            android:layout_height="74dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/card_hog_rider" />
+
+        <ImageButton
+            android:id="@+id/response2"
+            android:layout_width="49dp"
+            android:layout_height="74dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/card_mini_pekka" />
+
+        <ImageButton
+            android:id="@+id/response3"
+            android:layout_width="49dp"
+            android:layout_height="74dp"
+            android:scaleType="center"
+            app:srcCompat="@drawable/card_goblins" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card2LinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/cardLinearLayout"
+        app:layout_constraintStart_toStartOf="@+id/cardLinearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/cardLinearLayout"
+        tools:visibility="visible">
+
+        <ImageButton
+            android:id="@+id/response4"
+            android:layout_width="49dp"
+            android:layout_height="74dp"
+            android:layout_marginEnd="20dp"
+            android:visibility="visible"
+            app:srcCompat="@drawable/card_hog_rider" />
+
+        <ImageButton
+            android:id="@+id/response5"
+            android:layout_width="49dp"
+            android:layout_height="74dp"
+            app:srcCompat="@drawable/card_hog_rider" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/emoteencadre"
@@ -135,14 +160,14 @@
     <TextView
         android:id="@+id/imageView7"
         android:layout_width="94dp"
-        android:layout_height="39dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/clash_regular"
         android:shadowColor="#FFFFFF"
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="4"
-        android:textColor="@color/black"
         android:text="Réponses"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.124"
         app:layout_constraintStart_toStartOf="@+id/textView2"
