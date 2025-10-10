@@ -6,7 +6,6 @@ import android.media.MediaPlayer;
 import android.media.PlaybackParams;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,7 +44,6 @@ public class PlayActivity extends AppCompatActivity {
     private boolean easterEgg;
 
     private ReactionManager reactionManager;
-
     private EnvironmentManager environmentManager;
 
     @Override
@@ -66,7 +64,7 @@ public class PlayActivity extends AppCompatActivity {
         this.arena = srcIntent.getParcelableExtra("arena");
         this.easterEgg = srcIntent.getBooleanExtra("easterEgg", false);
 
-        // Background
+        // Background image based on arena
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
         backgroundDifficultyImageView.setImageResource(arena.getBackgroundImage());
 
@@ -79,7 +77,7 @@ public class PlayActivity extends AppCompatActivity {
             finish();
         });
 
-        // Initialize UI
+        // Initialize UI elements
         listenButton = findViewById(R.id.lissenbutton);
         emoteFrame = findViewById(R.id.emoteencadre);
         typeResponse = findViewById(R.id.type_response);
@@ -89,7 +87,7 @@ public class PlayActivity extends AppCompatActivity {
         questionIndexTextView = findViewById(R.id.indexQuestionTextView);
         timerTextView = findViewById(R.id.timerTextView);
 
-        // Initialize EnvironmentManager (tower + decor)
+        // Environment manager (tower + decor)
         ImageView imageView9 = findViewById(R.id.imageView9);
         ImageView imageView10 = findViewById(R.id.imageView10);
         environmentManager = new EnvironmentManager(imageView9, imageView10);
@@ -103,6 +101,7 @@ public class PlayActivity extends AppCompatActivity {
         // Initialize ReactionManager
         reactionManager = new ReactionManager(this, emoteFrame, typeResponse, response1, response2, response3);
 
+        // Start timer if easter egg mode is enabled
         if (easterEgg) {
             timerTextView.setText(currentTimePerQuestion + "s");
             startTimer();
@@ -110,7 +109,7 @@ public class PlayActivity extends AppCompatActivity {
 
         gameManager = new GameManager();
 
-        // Random tower and decor at start
+        // Randomize environment at start
         environmentManager.setRandomEnvironment();
 
         startNewRound();
@@ -128,7 +127,12 @@ public class PlayActivity extends AppCompatActivity {
         releaseMediaPlayer();
         gameManager.startNewRound();
 
-        // Change tower and decor each round
+        // Re-enable buttons
+        response1.setEnabled(true);
+        response2.setEnabled(true);
+        response3.setEnabled(true);
+
+        // Randomize environment each round
         environmentManager.setRandomEnvironment();
 
         correctCard = gameManager.getCorrectCard();
@@ -140,7 +144,7 @@ public class PlayActivity extends AppCompatActivity {
         response3.setImageResource(roundOptions.get(2).getImageResId());
 
         mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId());
-        if (Objects.equals(arena.getDifficulty(), "Difficile")){
+        if (Objects.equals(arena.getDifficulty(), "Difficile")) {
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setVolume(500, 500);
             PlaybackParams params = new PlaybackParams();
@@ -148,12 +152,12 @@ public class PlayActivity extends AppCompatActivity {
             mediaPlayer.setPlaybackParams(params);
         }
 
-
-
+        // Listen button plays the audio
         listenButton.setOnClickListener(v -> {
             if (mediaPlayer != null) mediaPlayer.start();
         });
 
+        // Set listeners for answers
         setResponseClick(response1, roundOptions.get(0));
         setResponseClick(response2, roundOptions.get(1));
         setResponseClick(response3, roundOptions.get(2));
@@ -168,8 +172,13 @@ public class PlayActivity extends AppCompatActivity {
 
     private void handleClick(Card card, ImageButton clickedButton) {
         stopTimer();
-        boolean correct = card == correctCard;
 
+        // Disable buttons
+        response1.setEnabled(false);
+        response2.setEnabled(false);
+        response3.setEnabled(false);
+
+        boolean correct = card == correctCard;
         boolean isCorrect = reactionManager.showReaction(correct, clickedButton, correctCard, gameManager.getRoundOptions());
         if (isCorrect) score++;
         reactionManager.hideReactionAfterDelay();
