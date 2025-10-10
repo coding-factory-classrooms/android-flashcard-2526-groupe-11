@@ -24,19 +24,18 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Code relou pour récupérer notre item_currency.xml
+        // Get item_question.xml View in variable
         Context context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_question,
                 parent,
                 false);
 
-        // On crée notre instance de ViewHolder qui sera recyclée a chaque scroll de l'utilisateur
+        // ViewHolder created using layout of item_question.xml
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
-    // A chaque qu'on veut afficher une ligne, cette fonction est appelée
-    // on va modifier les données pour une row de notre RecyclerView
+    // Edit each item_question.xml element to set buttons functions
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Card question = questions.get(position);
@@ -57,9 +56,7 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
         return questions.size();
     }
 
-    // Ce sont des instances de ViewHolder qui vont être recyclés lorsqu'on scroll
-    // Un ViewHolder fait le lien avec un item_currency.xml
-    // Si j'ai 10 items visibles a l'écran, j'aurais 10 instances de ViewHolder
+    // ViewHolder class with variables to store a questions' answer and sound
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView answerView;
         Button SoundButton;

@@ -30,29 +30,45 @@ public class ListQuestionsActivity extends AppCompatActivity {
             }
         });
 
-        // Je crée en dur 3000 currencies pour avoir des trucs a afficher
-        // Ca peut venir d'une API, un DB, etc
-        ArrayList<Card> questions = new ArrayList<>();
-        List<Integer> Answers = new ArrayList<Integer>();
-        Answers.add(R.drawable.card_prince);
-        Answers.add(R.drawable.card_hog_rider);
-        Answers.add(R.drawable.card_valkiry);
-        for (int i = 0; i < 3000; i++) {
-            questions.add(new Card("card_hog_rider","hog_rider_voice"));
-            questions.add(new Card("card_goblins","gobelins_voice"));
-            questions.add(new Card("card_mini_pekka","mini_pekka_voice"));
-        }
-        // On branche tout le monde
-        // les données a l'adapter
-        // l'adapter au recyclerview
-        RecyclerListQuestions adapter = new RecyclerListQuestions(questions);
 
-        RecyclerView recyclerView = findViewById(R.id.RecyclerView);
+        //Api class object initialized
+        Api api = new Api();
 
-        recyclerView.setAdapter(adapter);
+        //Call of getApi function
+        //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
+        api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
+            @Override
+            //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
+            public void onSuccess(List<Card> result) {
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.d("ListQuestionsActivity","LE PROBLEME");
+                //Cards without sound are removed from the list
+                ArrayList<Card> cardsWithSound = new ArrayList<>();
+                for(Card card : result){
+                    if (card.audioResId != null){
+                        cardsWithSound.add(card);
+                    }
+                }
+
+                //Passing the list inside the RecyclerView of ListQuestions
+                RecyclerListQuestions adapter = new RecyclerListQuestions(cardsWithSound);
+                //runOnUiThread is used to access and modify the UI of the main thread (error if on current thread)
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RecyclerView recyclerView = findViewById(R.id.RecyclerView);
+
+                        recyclerView.setAdapter(adapter);
+
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("ErreurAPI", "Erreur : " + e);
+            }
+        });
     }
 
 }
