@@ -260,10 +260,10 @@ public class PlayActivity extends AppCompatActivity {
         if (isCorrect) {score++;}
         else{
 
-            // Récupère la liste des cartes du round depuis le GameManager
+            // Retrieves the round's card list from the GameManager
             List<Card> roundOptions = gameManager.getRoundOptions();
 
-            // Crée un nouvel objet "Question" correspondant au round raté
+            // create objet question
             Question wrongQuestion = new Question(
                     Arrays.asList(
                             roundOptions.get(0).getImageResId(this),
