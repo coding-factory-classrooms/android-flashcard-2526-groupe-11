@@ -146,13 +146,19 @@ public class PlayActivity extends AppCompatActivity {
 
         //Api class object initialized
         Api api = new Api();
+        // get the list to retry :  'retryQuestions'
+        ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
 
-        //Call of getApi function
-        //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
-        api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
-            @Override
-            //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
-            public void onSuccess(List<Card> result) {
+        Log.d("Salut", "onCreate: "+retryQuestions);
+
+
+
+            //Call of getApi function
+            //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
+            api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
+                @Override
+                //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
+                public void onSuccess(List<Card> result) {
 
                 if (Objects.nonNull(SpecificAudio)) {
                     maxRoundNumber =1;
@@ -164,28 +170,24 @@ public class PlayActivity extends AppCompatActivity {
 
                 }
 
+                    //runOnUiThread is used to access and modify the UI of the main thread (error if on current thread)
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Random tower and decor at start
+                            environmentManager.setRandomEnvironment();
+                            startNewRound();
+                            startBarrelAnimation();
+                        }
+                    });
+                }
 
-                //runOnUiThread is used to access and modify the UI of the main thread (error if on current thread)
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Random tower and decor at start
-                        environmentManager.setRandomEnvironment();
-                        startNewRound();
-                        startBarrelAnimation();
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Log.e("ErreurAPI", "Erreur : " + e);
-            }
-        });
-        startTimePlay();
-    }
-
-
+                @Override
+                public void onError(Exception e) {
+                    Log.e("ErreurAPI", "Erreur : " + e);
+                }
+            });
+        }
     private void startNewRound() {
         if (easterEgg) {
             stopTimer();
@@ -263,10 +265,10 @@ public class PlayActivity extends AppCompatActivity {
         if (isCorrect) {score++;}
         else{
 
-            // get list card
+            // Récupère la liste des cartes du round depuis le GameManager
             List<Card> roundOptions = gameManager.getRoundOptions();
 
-            // create new object question
+            // Crée un nouvel objet "Question" correspondant au round raté
             Question wrongQuestion = new Question(
                     Arrays.asList(
                             roundOptions.get(0).getImageResId(this),
@@ -278,7 +280,7 @@ public class PlayActivity extends AppCompatActivity {
                     arena
             );
 
-            // add question on the list
+            // Add this question to the list of wrong questions
             wrongQuestions.add(wrongQuestion);
         }
         reactionManager.hideReactionAfterDelay();

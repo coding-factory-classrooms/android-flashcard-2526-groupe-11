@@ -53,6 +53,10 @@ public class ResultActivity extends AppCompatActivity {
         ArrayList<Question> wrongQuestions = getIntent().getParcelableArrayListExtra("wrongQuestions");
         totalTimePlay = getIntent().getIntExtra("totalTimePlay", 0);
 
+        // DEBUG log to see if i receive a correct list
+
+        Log.d("debug", "onCreate: " + wrongQuestions);
+
         // Create/Update GlobalStats json
         GlobalStats globalStats = new GlobalStats(1,correctAnswers,totalQuestions-correctAnswers,totalTimePlay,0);
         if (!globalStats.jsonExist(this, "globalStats.json"))
@@ -74,13 +78,6 @@ public class ResultActivity extends AppCompatActivity {
             globalStats.jsonWrite(this, "globalStats.json");
 
         }
-
-
-
-
-
-
-
 
         // Display the chosen difficulty
         chosenDifficulty = findViewById(R.id.difficultyTextView);
@@ -167,6 +164,7 @@ public class ResultActivity extends AppCompatActivity {
             retryButton.setVisibility(View.GONE);
         }
         retryButton.setOnClickListener(v -> {
+
             // Check that the question list is present and not empty
             if (wrongQuestions != null && !wrongQuestions.isEmpty()) {
 
