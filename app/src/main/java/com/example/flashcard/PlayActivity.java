@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.View;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -43,7 +44,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private Card correctCard;
 
-    // Liste des questions raté par le joueur
+    // List of questions to retry
     private ArrayList<Question> wrongQuestions = new ArrayList<>();
 
     public int score = 0;
@@ -361,6 +362,7 @@ public class PlayActivity extends AppCompatActivity {
         intent.putExtra("difficulty", arena.getDifficulty());
         intent.putExtra("maxRound", maxRoundNumber);
         intent.putExtra("totalTimePlay", totalTimePlay);
+        intent.putParcelableArrayListExtra("wrongQuestions", wrongQuestions);
         startActivity(intent);
     }
 

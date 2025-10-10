@@ -6,6 +6,10 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 
 public class GlobalStatsActivity extends AppCompatActivity {
 
@@ -27,7 +32,16 @@ public class GlobalStatsActivity extends AppCompatActivity {
             return insets;
         });
 
+        ImageButton homeButton = findViewById(R.id.homebutton2);
 
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GlobalStatsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
 

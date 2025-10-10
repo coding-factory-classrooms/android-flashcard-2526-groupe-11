@@ -166,7 +166,6 @@ public class ResultActivity extends AppCompatActivity {
             retryButton.setVisibility(View.GONE);
         }
         retryButton.setOnClickListener(v -> {
-
             // Check that the question list is present and not empty
             if (wrongQuestions != null && !wrongQuestions.isEmpty()) {
 
