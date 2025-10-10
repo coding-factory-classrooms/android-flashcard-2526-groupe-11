@@ -133,21 +133,28 @@ public class PlayActivity extends AppCompatActivity {
             startTimer();
         }
 
-        // Load cards from API
+        //Api class object initialized
         Api api = new Api();
+
+        //Call of getApi function
+        //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
         api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
             @Override
-            public void onSuccess(String result) {
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<Card>>() {}.getType();
-                List<Card> allCards = gson.fromJson(result, listType);
-                Log.d("API", "Cards loaded: " + allCards.size());
-                gameManager = new GameManager(allCards, getBaseContext());
+            //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
+            public void onSuccess(List<Card> result) {
 
-                runOnUiThread(() -> {
-                    environmentManager.setRandomEnvironment();
-                    startNewRound();
-                    startBarrelAnimation();
+                //Creation of a new GameManager Object with List from API in arguments
+                gameManager = new GameManager(result,getBaseContext());
+
+                //runOnUiThread is used to access and modify the UI of the main thread (error if on current thread)
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Random tower and decor at start
+                        environmentManager.setRandomEnvironment();
+                        startNewRound();
+                        startBarrelAnimation();
+                    }
                 });
             }
 
