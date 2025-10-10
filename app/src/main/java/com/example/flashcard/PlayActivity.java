@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,10 +22,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -194,6 +189,7 @@ public class PlayActivity extends AppCompatActivity {
             startTimer();
         }
 
+        // Generate new round
         releaseMediaPlayer();
         gameManager.startNewRound("Moyen".equals(arena.getDifficulty()) ? 5 : 3);
 
@@ -210,6 +206,7 @@ public class PlayActivity extends AppCompatActivity {
         List<Card> roundOptions = gameManager.getRoundOptions();
         if (roundOptions.isEmpty()) return;
 
+        // Load audio of the correct card
         mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId(getBaseContext()));
         if (Objects.equals(arena.getDifficulty(), "Difficile")) {
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -235,6 +232,7 @@ public class PlayActivity extends AppCompatActivity {
             setResponseClick(response5, roundOptions.get(4));
         }
 
+        // Play audio/button
         listenButton.setOnClickListener(v -> {
             if (mediaPlayer != null) mediaPlayer.start();
         });
