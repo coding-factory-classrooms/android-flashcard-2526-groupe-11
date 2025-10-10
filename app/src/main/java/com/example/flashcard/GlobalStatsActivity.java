@@ -1,5 +1,10 @@
 package com.example.flashcard;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -32,29 +37,21 @@ public class GlobalStatsActivity extends AppCompatActivity {
         TextView totalTimePlay = findViewById(R.id.totaltimePerQuestionTextView);
         TextView meanQuizTIme = findViewById(R.id.meanQuizTImeTextView);
 
+
+
         GlobalStats globalStats = new GlobalStats(0,0,0,0,0);
 
         if (!globalStats.jsonExist(this, "globalStats.json"))
         {
             globalStats.jsonWrite(this, "globalStats.json");
-
         }
         GlobalStats  globalStatsJson = globalStats.jsonRead(this, "globalStats.json");
 
         totalQuiz.setText("Quiz joués: " + globalStatsJson.getTotalQuiz());
         goodAnswer.setText("Bonnes réponses: "  +globalStatsJson.getGoodAnswer());
         badAnswer.setText("Mauvaises réponses: " +globalStatsJson.getBadAnswer());
-        totalTimePlay.setText("Temps de jeu: " +globalStatsJson.getTotalTimePlay());
+        totalTimePlay.setText("Temps de jeu: " +globalStatsJson.convertTime());
         meanQuizTIme.setText("temps moyen d'un quiz: " + globalStatsJson.getMeanQuizTime());
-
-
-
-
-
-
-
-
-
 
     }
 

@@ -52,9 +52,10 @@ public class PlayActivity extends AppCompatActivity {
     public Arena arena;
     public int currentTimePerQuestion = 5;
     public int timePerQuestion = 5;
+    public int totalTimePlay;
 
-    private Handler timerHandler;
-    private Runnable timerRunnable;
+    private Handler timerHandler, totaltimeHandler;
+    private Runnable timerRunnable, totalTimeRunnable;
     private boolean easterEgg;
 
     private ReactionManager reactionManager;
@@ -163,6 +164,7 @@ public class PlayActivity extends AppCompatActivity {
                 Log.e("ErreurAPI", "Erreur : " + e);
             }
         });
+        startTimePlay();
     }
 
     // Liste des questions a rejouer
@@ -262,7 +264,7 @@ public class PlayActivity extends AppCompatActivity {
         if (isCorrect) {score++;}
         else{
 
-// Récupère la liste des cartes du round depuis le GameManager
+            // Récupère la liste des cartes du round depuis le GameManager
             List<Card> roundOptions = gameManager.getRoundOptions();
 
             // Crée un nouvel objet "Question" correspondant au round raté
@@ -302,10 +304,26 @@ public class PlayActivity extends AppCompatActivity {
             }
         }, 1000);
     }
+    private void startTimePlay(){
+
+        totaltimeHandler = new Handler();
+        totaltimeHandler.postDelayed(totalTimeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                totalTimePlay++;
+                totaltimeHandler.postDelayed(this, 1000);
+            }
+        }, 1000);
+    }
 
     private void stopTimer() {
         if (timerHandler != null && timerRunnable != null)
             timerHandler.removeCallbacks(timerRunnable);
+    }
+    private void stopTimePlay()
+    {
+        if (totaltimeHandler!=null && totalTimeRunnable!=null)
+            totaltimeHandler.removeCallbacks(totalTimeRunnable);
     }
 
     private void timer() {
@@ -336,11 +354,13 @@ public class PlayActivity extends AppCompatActivity {
 
     private void navigateToVictory() {
         stopTimer();
+        stopTimePlay();
         releaseMediaPlayer();
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("score", score);
         intent.putExtra("difficulty", arena.getDifficulty());
         intent.putExtra("maxRound", maxRoundNumber);
+        intent.putExtra("totalTimePlay", totalTimePlay);
         startActivity(intent);
     }
 
