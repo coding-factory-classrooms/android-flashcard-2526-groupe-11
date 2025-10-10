@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,7 +72,11 @@ public class PlayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play);
 
 
-        // Adjust for system bars
+        // DEBUG log to see if i receive a correct list
+        ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
+        Log.d("debug", "onCreate: " + retryQuestions);
+
+        // Adjust layout for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -88,7 +91,7 @@ public class PlayActivity extends AppCompatActivity {
         this.SpecificAudio = srcIntent.getStringExtra("SpecificAudio");
         this.SpecificImage = srcIntent.getStringExtra("SpecificImage");
 
-        // Background
+        // Set difficulty background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
         backgroundDifficultyImageView.setImageResource(arena.getBackgroundImage());
 
@@ -101,7 +104,7 @@ public class PlayActivity extends AppCompatActivity {
             finish();
         });
 
-        // Initialize UI
+        // Initialize UI components
         listenButton = findViewById(R.id.lissenbutton);
         emoteFrame = findViewById(R.id.emoteencadre);
         typeResponse = findViewById(R.id.type_response);
@@ -120,7 +123,7 @@ public class PlayActivity extends AppCompatActivity {
         ImageView imageView10 = findViewById(R.id.imageView10);
         environmentManager = new EnvironmentManager(imageView9, imageView10);
 
-        // Medium Mode layout (5 answers)
+        // Medium mode layout (5 answers)
         if (Objects.equals(arena.getDifficulty(), "Moyen")) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) cardLinearLayout.getLayoutParams();
             params.topMargin = 0;
@@ -138,6 +141,7 @@ public class PlayActivity extends AppCompatActivity {
         reactionManager = new ReactionManager(this, emoteFrame, typeResponse,
                 response1, response2, response3, response4, response5);
 
+        // Start timer if easter egg mode is active
         if (easterEgg) {
             timerTextView.setText(currentTimePerQuestion + "s");
             startTimer();
@@ -160,11 +164,10 @@ public class PlayActivity extends AppCompatActivity {
         startBarrelAnimation();
     }
 
-
-
-
     // Liste des questions a rejouer
-    /*ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
+
+    /*
+    ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
 
     // --- Convertir les questions ratées en Card ---
     List<Card> retryCards = new ArrayList<>();
@@ -184,6 +187,7 @@ public class PlayActivity extends AppCompatActivity {
     }*/
 
     private void startNewRound() {
+        // Restart the timer if easter egg mode is active
         if (easterEgg) {
             stopTimer();
             currentTimePerQuestion = timePerQuestion;
@@ -201,12 +205,14 @@ public class PlayActivity extends AppCompatActivity {
         response4.setEnabled(true);
         response5.setEnabled(true);
 
+        // Change background environment
         environmentManager.setRandomEnvironment();
 
         correctCard = gameManager.getCorrectCard();
         List<Card> roundOptions = gameManager.getRoundOptions();
         if (roundOptions.isEmpty()) return;
 
+        // Prepare audio for the current round
         mediaPlayer = MediaPlayer.create(this, correctCard.getAudioResId(getBaseContext()));
         if (Objects.equals(arena.getDifficulty(), "Difficile")) {
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -225,6 +231,7 @@ public class PlayActivity extends AppCompatActivity {
         setResponseClick(response2, roundOptions.get(1));
         setResponseClick(response3, roundOptions.get(2));
 
+        // For medium mode (5 possible answers)
         if (Objects.equals(arena.getDifficulty(), "Moyen") && roundOptions.size() >= 5) {
             response4.setImageResource(roundOptions.get(3).getImageResId(getBaseContext()));
             response5.setImageResource(roundOptions.get(4).getImageResId(getBaseContext()));
@@ -232,9 +239,11 @@ public class PlayActivity extends AppCompatActivity {
             setResponseClick(response5, roundOptions.get(4));
         }
 
+        // Listen button
         listenButton.setOnClickListener(v -> {
             if (mediaPlayer != null) mediaPlayer.start();
         });
+        startTimePlay();
     }
 
     private void setResponseClick(ImageButton button, Card card) {
@@ -247,7 +256,7 @@ public class PlayActivity extends AppCompatActivity {
     private void handleClick(Card card) {
         stopTimer();
 
-        // Disable all buttons to prevent double click
+        // Disable all buttons to prevent multiple clicks
         response1.setEnabled(false);
         response2.setEnabled(false);
         response3.setEnabled(false);
@@ -257,13 +266,13 @@ public class PlayActivity extends AppCompatActivity {
         boolean correct = card == correctCard;
 
         boolean isCorrect = reactionManager.showReaction(correct, null, correctCard, gameManager.getRoundOptions());
-        if (isCorrect) {score++;}
-        else{
-
-            // Retrieves the round's card list from the GameManager
+        if (isCorrect) {
+            score++;
+        } else {
+            // Get the list of cards for the current round
             List<Card> roundOptions = gameManager.getRoundOptions();
 
-            // create objet question
+            // Create a new Question object for the missed round
             Question wrongQuestion = new Question(
                     Arrays.asList(
                             roundOptions.get(0).getImageResId(this),
@@ -275,14 +284,16 @@ public class PlayActivity extends AppCompatActivity {
                     arena
             );
 
-            // Add this question to the list of wrong questions
+            // Add this question to the wrong questions list
             wrongQuestions.add(wrongQuestion);
         }
+
         reactionManager.hideReactionAfterDelay();
 
         roundNumber++;
         questionIndexTextView.setText(roundNumber + "/" + maxRoundNumber);
 
+        // Go to next round or results
         if (roundNumber < maxRoundNumber) {
             new Handler().postDelayed(this::startNewRound, 2000);
         } else {
@@ -300,8 +311,8 @@ public class PlayActivity extends AppCompatActivity {
             }
         }, 1000);
     }
-    private void startTimePlay(){
 
+    private void startTimePlay() {
         totaltimeHandler = new Handler();
         totaltimeHandler.postDelayed(totalTimeRunnable = new Runnable() {
             @Override
@@ -316,9 +327,9 @@ public class PlayActivity extends AppCompatActivity {
         if (timerHandler != null && timerRunnable != null)
             timerHandler.removeCallbacks(timerRunnable);
     }
-    private void stopTimePlay()
-    {
-        if (totaltimeHandler!=null && totalTimeRunnable!=null)
+
+    private void stopTimePlay() {
+        if (totaltimeHandler != null && totalTimeRunnable != null)
             totaltimeHandler.removeCallbacks(totalTimeRunnable);
     }
 
@@ -333,6 +344,7 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
+    // Barrel animation for background skeleton
     private void startBarrelAnimation() {
         ImageView skeleton = findViewById(R.id.squelleton);
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -352,18 +364,17 @@ public class PlayActivity extends AppCompatActivity {
         stopTimer();
         stopTimePlay();
         releaseMediaPlayer();
+
         Intent intent;
         if (Objects.nonNull(SpecificAudio)) {
             intent = new Intent(this, ListQuestionsActivity.class);
-        }
-        else {
+        } else {
             intent = new Intent(this, ResultActivity.class);
             intent.putExtra("score", score);
             intent.putExtra("difficulty", arena.getDifficulty());
             intent.putExtra("maxRound", maxRoundNumber);
             intent.putExtra("totalTimePlay", totalTimePlay);
             intent.putParcelableArrayListExtra("wrongQuestions", wrongQuestions);
-
         }
         intent.putExtra("Questions", AllCards);
         startActivity(intent);

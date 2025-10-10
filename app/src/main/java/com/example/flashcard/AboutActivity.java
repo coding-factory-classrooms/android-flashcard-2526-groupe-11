@@ -37,9 +37,8 @@ public class AboutActivity extends AppCompatActivity {
 
         // Retrieve and display the app version automatically from the Manifest
         try {
-            // Get the system Package Manager
+            // Get the system Package Manager and the app info
             PackageManager manager = getPackageManager();
-            // Get the app info
             PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
             // Get and display the app version
             String versionName = info.versionName;

@@ -172,7 +172,7 @@ public class ResultActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, PlayActivity.class);
 
                 // Send the list of questions to retry
-                intent.putParcelableArrayListExtra("retryQuestions", wrongQuestions);
+                intent.putExtra("retryQuestions", wrongQuestions);
                 startActivity(intent);
             }
         });
