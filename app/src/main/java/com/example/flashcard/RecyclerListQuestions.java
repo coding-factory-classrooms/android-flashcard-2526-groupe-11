@@ -58,12 +58,9 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
 
             Intent intent = new Intent(v.getContext(), PlayActivity.class);
             intent.putExtra("arena", arena);
-            List<Card> SpecificQuestion = new ArrayList<>();
-            SpecificQuestion.add(question);
-            Log.d("ImageMan",question.getImageResId(v.getContext())+"");
-            Log.d("ImageMan",question.getAudioResId(v.getContext())+"");
             intent.putExtra("SpecificAudio", question.audioResId);
             intent.putExtra("SpecificImage", question.imageResId);
+            intent.putExtra("Questions", questions);
             v.getContext().startActivity(intent);
         });
     }

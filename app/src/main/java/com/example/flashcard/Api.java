@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -44,7 +45,7 @@ public class Api {
                     String result = responseBody != null ? responseBody.string() : "";
                     Gson gson = new Gson();
                     Type listType = new TypeToken<List<Card>>(){}.getType();
-                    List<Card> allCards = gson.fromJson(result, listType);
+                    ArrayList<Card> allCards = gson.fromJson(result, listType);
                     callback.onSuccess(allCards);
 
                 } catch (IOException e) {

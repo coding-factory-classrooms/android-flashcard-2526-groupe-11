@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -24,7 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.seismic.ShakeDetector;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnArenaListener, ShakeDetector.Listener {
 
@@ -66,13 +70,6 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
             startActivity(intent);
         });
 
-        // Navigate to ListQuestionsActivity
-        Button list = findViewById(R.id.questionButton);
-        list.setOnClickListener(v -> {
-            Intent newIntent = new Intent(MainActivity.this, ListQuestionsActivity.class);
-            startActivity(newIntent);
-        });
-
         // Navigate to AboutActivity
         Button aboutButton = findViewById(R.id.AboutButton);
         aboutButton.setOnClickListener(v -> {
@@ -80,18 +77,47 @@ public class MainActivity extends AppCompatActivity  implements ArenaAdapter.OnA
             startActivity(intent);
         });
 
-        // Navigate to PlayActivity
-        Button battleButton = findViewById(R.id.battleButton);
-        battleButton.setOnClickListener(view -> {
-            Arena arena = new Arena(selectedArena.getImage(), selectedArena.getDifficulty(), selectedArena.getBackgroundImage());
+        //Api class object initialized
+        Api api = new Api();
 
-            Intent intent = new Intent(this, PlayActivity.class);
-            intent.putExtra("arena", arena);
-            if (easterEgg){
-                intent.putExtra("easterEgg", true);
+        //Call of getApi function
+        //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
+        api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
+            @Override
+            //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
+            public void onSuccess(ArrayList<Card> result) {
+
+                // Navigate to PlayActivity
+                Button battleButton = findViewById(R.id.battleButton);
+                battleButton.setOnClickListener(view -> {
+                    Arena arena = new Arena(selectedArena.getImage(), selectedArena.getDifficulty(), selectedArena.getBackgroundImage());
+
+                    Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+                    intent.putExtra("arena", arena);
+                    intent.putExtra("Questions",  result);
+                    if (easterEgg){
+                        intent.putExtra("easterEgg", true);
+                    }
+                    startActivity(intent);
+                });
+
+                // Navigate to ListQuestionsActivity
+                Button list = findViewById(R.id.questionButton);
+                list.setOnClickListener(v -> {
+                    Intent newIntent = new Intent(MainActivity.this, ListQuestionsActivity.class);
+                    newIntent.putExtra("Questions", result);
+                    startActivity(newIntent);
+                });
+
             }
-            startActivity(intent);
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("ErreurAPI", "Erreur : " + e);
+            }
         });
+
+
 
 
         arenaImageButton.setImageResource(selectedArena.getImage());

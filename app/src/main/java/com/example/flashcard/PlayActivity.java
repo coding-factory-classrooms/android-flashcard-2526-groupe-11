@@ -42,7 +42,10 @@ public class PlayActivity extends AppCompatActivity {
     private LinearLayout cardLinearLayout, card2LinearLayout;
     private Button listenButton;
 
+    ArrayList<Card> AllCards;
+
     private Card correctCard;
+
 
     // List of questions to retry
     private ArrayList<Question> wrongQuestions = new ArrayList<>();
@@ -71,7 +74,6 @@ public class PlayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play);
 
 
-
         // Adjust for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -79,13 +81,15 @@ public class PlayActivity extends AppCompatActivity {
             return insets;
         });
 
+
         // Get arena and extras
         Intent srcIntent = getIntent();
+        this.AllCards = srcIntent.getParcelableArrayListExtra("Questions");
         this.arena = srcIntent.getParcelableExtra("arena");
         this.easterEgg = srcIntent.getBooleanExtra("easterEgg", false);
         this.SpecificAudio = srcIntent.getStringExtra("SpecificAudio");
         this.SpecificImage = srcIntent.getStringExtra("SpecificImage");
-        Log.d("ImageMan",SpecificImage+SpecificAudio);
+        Log.d("ImageMan", SpecificImage + SpecificAudio);
 
         // Background
         ImageView backgroundDifficultyImageView = findViewById(R.id.backgroundDifficultyImageView);
@@ -143,47 +147,24 @@ public class PlayActivity extends AppCompatActivity {
         }
 
 
+        if (Objects.nonNull(SpecificAudio)) {
+            maxRoundNumber = 1;
+            gameManager = new GameManager(AllCards, getBaseContext(), new Card(SpecificImage, SpecificAudio));
+        } else {
+            //Creation of a new GameManager Object with List from API in arguments
+            gameManager = new GameManager(AllCards, getBaseContext(), null);
 
-        //Api class object initialized
-        Api api = new Api();
-
-        //Call of getApi function
-        //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
-        api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
-            @Override
-            //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
-            public void onSuccess(List<Card> result) {
-
-                if (Objects.nonNull(SpecificAudio)) {
-                    maxRoundNumber =1;
-                    gameManager = new GameManager(result,getBaseContext(),new Card(SpecificImage,SpecificAudio));
-                }
-                else{
-                    //Creation of a new GameManager Object with List from API in arguments
-                    gameManager = new GameManager(result,getBaseContext(),null);
-
-                }
+        }
 
 
-                //runOnUiThread is used to access and modify the UI of the main thread (error if on current thread)
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Random tower and decor at start
-                        environmentManager.setRandomEnvironment();
-                        startNewRound();
-                        startBarrelAnimation();
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Log.e("ErreurAPI", "Erreur : " + e);
-            }
-        });
-        startTimePlay();
+        // Random tower and decor at start
+        environmentManager.setRandomEnvironment();
+        startNewRound();
+        startBarrelAnimation();
     }
+
+
+
 
     // Liste des questions a rejouer
     /*ArrayList<Question> retryQuestions = getIntent().getParcelableArrayListExtra("retryQuestions");
@@ -387,6 +368,7 @@ public class PlayActivity extends AppCompatActivity {
             intent.putParcelableArrayListExtra("wrongQuestions", wrongQuestions);
 
         }
+        intent.putExtra("Questions", AllCards);
         startActivity(intent);
     }
 
