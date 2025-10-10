@@ -84,6 +84,7 @@
             android:layout_width="49dp"
             android:layout_height="74dp"
             android:layout_marginRight="20dp"
+            android:scaleType="center"
             app:srcCompat="@drawable/card_hog_rider" />
 
         <ImageButton
