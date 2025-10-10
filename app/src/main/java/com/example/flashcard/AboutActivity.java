@@ -26,31 +26,29 @@ public class AboutActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Bouton pour retourner a la page d'accueil
+        // Button to return to the home page
         ImageButton homeButton = findViewById(R.id.homebutton);
         homeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this,MainActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
 
         TextView appVersion = findViewById(R.id.appVersion);
 
-        // Récupère et affiche la version de l'app automatiquement depuis le Manifest
-
+        // Retrieve and display the app version automatically from the Manifest
         try {
-            // Get the package Manager of the system
+            // Get the system Package Manager
             PackageManager manager = getPackageManager();
-            // Get the infos of my app
-            PackageInfo info = manager.getPackageInfo(getPackageName(),0);
-            // Get and display the version of my app
+            // Get the app info
+            PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
+            // Get and display the app version
             String versionName = info.versionName;
             appVersion.setText("Version : " + versionName);
 
-        } // If the info its not find
-        catch (PackageManager.NameNotFoundException e){
+        } // If the info is not found
+        catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            appVersion.setText("Version inconnue");
+            appVersion.setText("Unknown version");
         }
-
     }
 }
