@@ -19,10 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
@@ -36,20 +34,16 @@ public class PlayActivity extends AppCompatActivity {
     private TextView questionIndexTextView, timerTextView;
     private LinearLayout cardLinearLayout, card2LinearLayout;
     private Button listenButton;
-
     private Card correctCard;
-
     public int score = 0;
     public int roundNumber = 0;
     public int maxRoundNumber = 5;
     public Arena arena;
     public int currentTimePerQuestion = 5;
     public int timePerQuestion = 5;
-
     private Handler timerHandler;
     private Runnable timerRunnable;
     private boolean easterEgg;
-
     private ReactionManager reactionManager;
     private EnvironmentManager environmentManager;
 
