@@ -66,6 +66,7 @@ public class ResultActivity extends AppCompatActivity {
             int badAnswer = globalStatsJson.getBadAnswer();
             long totalTimePlays = globalStatsJson.getTotalTimePlay();
             int meanQuizTime = globalStatsJson.getMeanQuizTime();
+            globalStats.addMeanQuizTime(meanQuizTime);
             globalStats.addTotalQuiz(totalQuiz);
             globalStats.addGoodAnswer(goodAnswer);
             globalStats.addBadAnswer(badAnswer);

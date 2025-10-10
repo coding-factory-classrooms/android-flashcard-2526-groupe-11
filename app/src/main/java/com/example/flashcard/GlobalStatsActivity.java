@@ -65,7 +65,7 @@ public class GlobalStatsActivity extends AppCompatActivity {
         goodAnswer.setText("Bonnes réponses: "  +globalStatsJson.getGoodAnswer());
         badAnswer.setText("Mauvaises réponses: " +globalStatsJson.getBadAnswer());
         totalTimePlay.setText("Temps de jeu: " +globalStatsJson.convertTime());
-        meanQuizTIme.setText("temps moyen d'un quiz: " + globalStatsJson.getMeanQuizTime());
+        meanQuizTIme.setText("temps moyen d'un quiz: " + globalStatsJson.getMeanQuizTime() +"s");
 
     }
 

@@ -75,6 +75,10 @@ public class GlobalStats implements Json {
     }
 
     public int getMeanQuizTime() {
+        if (this.totalQuiz != 0)
+        {
+            this.meanQuizTime = (int)(this.totalTimePlay/this.totalQuiz);
+        }
         return meanQuizTime;
     }
 
