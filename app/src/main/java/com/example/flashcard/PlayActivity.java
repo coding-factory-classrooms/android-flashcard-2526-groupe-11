@@ -133,21 +133,20 @@ public class PlayActivity extends AppCompatActivity {
             startTimer();
         }
 
-        //Initialisiation d'un objet de la classe Api
+        //Api class object initialized
         Api api = new Api();
 
-        //Appel de la fonction getApi
-        //En argument il y a un nouvel élément de l'interface ApiCallback afin de récupérer les données de l'api sur un thread réseau pour éviter d'être arrété par android
+        //Call of getApi function
+        //Our second argument is a new ApiCallback element (Interface) to get data from the API using a background thread to avoid android stopping us
         api.getApi("https://students.gryt.tech/api/L2/clashroyaleblindtest/", new ApiCallback() {
             @Override
-            //Réécriture de la fonction onSuccess de l'interface afin d'appeler les fonctions de PlayActivity
+            //onSuccess function of ApiCallback Interface modified to edit listQuestions with API data
             public void onSuccess(List<Card> result) {
-                //result renvoie le json de l'API, on récupère les données sous forme de liste avec Gson
-                //On passe ensuite cette liste dans un élément GameManager
 
+                //Creation of a new GameManager Object with List from API in arguments
                 gameManager = new GameManager(result,getBaseContext());
 
-                //Utilisation de runOnUiThread pour pouvoir accéder à l'UI du thread principal (sinon erreurs)
+                //runOnUiThread is used to access and modify the UI of the main thread (error if on current thread)
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
