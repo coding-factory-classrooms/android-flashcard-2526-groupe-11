@@ -163,5 +163,16 @@
         tools:text="Difficile"
         tools:visibility="visible" />
 
+    <ImageButton
+        android:id="@+id/profileImageButton"
+        android:layout_width="80dp"
+        android:layout_height="90dp"
+        android:background="@android:color/transparent"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_menu_friends" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
