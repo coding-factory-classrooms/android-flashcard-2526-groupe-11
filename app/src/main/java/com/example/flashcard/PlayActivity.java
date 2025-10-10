@@ -251,7 +251,7 @@ public class PlayActivity extends AppCompatActivity {
 
         boolean correct = card == correctCard;
 
-        boolean isCorrect = reactionManager.showReaction(correct, clickedButton, correctCard, gameManager.getRoundOptions());
+        boolean isCorrect = reactionManager.showReaction(correct, null, correctCard, gameManager.getRoundOptions());
         if (isCorrect) {score++;}
         else{
 
@@ -261,12 +261,12 @@ public class PlayActivity extends AppCompatActivity {
             // Crée un nouvel objet "Question" correspondant au round raté
             Question wrongQuestion = new Question(
                     Arrays.asList(
-                            roundOptions.get(0).getImageResId(),
-                            roundOptions.get(1).getImageResId(),
-                            roundOptions.get(2).getImageResId()
+                            roundOptions.get(0).getImageResId(this),
+                            roundOptions.get(1).getImageResId(this),
+                            roundOptions.get(2).getImageResId(this)
                     ),
-                    gameManager.getCorrectCard().getImageResId(),
-                    gameManager.getCorrectCard().getAudioResId(),
+                    gameManager.getCorrectCard().getImageResId(this),
+                    gameManager.getCorrectCard().getAudioResId(this),
                     arena
             );
 

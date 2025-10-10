@@ -123,13 +123,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#FEB902"
+        android:backgroundTint="#00B0FF"
         android:fontFamily="@font/clash_regular"
         android:padding="15dp"
         android:text="Réessayer"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:cornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/messageTextView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
