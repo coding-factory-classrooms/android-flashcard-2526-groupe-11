@@ -30,7 +30,7 @@ public class GameManager {
     public GameManager(List<Card> AllCards,Context context,Card specificQuestion) {
         this.allCards = AllCards;
         this.context = context;
-
+        this.SpecificQuestion = specificQuestion;
     }
 
     public void startNewRound(int size) {
@@ -69,7 +69,6 @@ public class GameManager {
                 roundOptions.add(candidate);
             }
         }
-        Log.d("ImageMan","HHHHHHHHHHHHHH");
 
         // shuffle the order of the cards
         Collections.shuffle(roundOptions);

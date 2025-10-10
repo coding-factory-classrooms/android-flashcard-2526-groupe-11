@@ -43,6 +43,7 @@ public class RecyclerListQuestions extends RecyclerView.Adapter<RecyclerListQues
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Card question = questions.get(position);
+        holder.answerView.setImageResource(R.drawable.unknown_card);
         MediaPlayer mediaPlayer = MediaPlayer.create(holder.SoundButton.getContext(), question.getAudioResId(holder.SoundButton.getContext()));
         holder.SoundButton.setOnClickListener(v -> {
             if (mediaPlayer != null) {
